@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wirtualny Wskaźnik Wpływu — Luty 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #070d17;
+  --surface: #0c1525;
+  --surface2: #101d32;
+  --border: #182d4a;
+  --border-dim: #142540;
+  --navy: #132b46;
+  --orange: #ff5e08;
+  --orange2: #ff8438;
+  --orange-dim: rgba(255,94,8,0.15);
+  --orange-glow: rgba(255,94,8,0.06);
+  --text: #e4eaf2;
+  --text-bright: #ffffff;
+  --muted: #5e83a8;
+  --green: #34d399;
+  --green-dim: rgba(52,211,153,0.12);
+  --red: #f87171;
+  --red-dim: rgba(248,113,113,0.12);
+  --gold: #fbbf24;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Syne',sans-serif;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+
+body::before{
+  content:'';position:fixed;inset:0;
+  background:radial-gradient(ellipse at 50% 0%, rgba(19,43,70,0.4) 0%, transparent 60%);
+  pointer-events:none;z-index:0;
+}
+
+.container{max-width:660px;margin:0 auto;padding:0 20px;position:relative;z-index:1}
+
+/* HEADER */
+header{padding:64px 0 48px;border-bottom:1px solid var(--border);margin-bottom:0;position:relative;overflow:hidden}
+header::after{content:'WWW';position:absolute;right:-20px;top:50%;transform:translateY(-50%);font-size:200px;font-weight:800;color:rgba(255,94,8,0.03);pointer-events:none;letter-spacing:-8px;line-height:1}
+.label{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:16px}
+h1{font-size:clamp(32px,6vw,56px);font-weight:800;line-height:1.05;letter-spacing:-2px;margin-bottom:12px}
+h1 span{color:var(--orange)}
+.subtitle{color:var(--muted);font-family:'Space Mono',monospace;font-size:12px;margin-top:16px}
+.header-top{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:28px}
+.header-logo{flex:0 0 auto;min-width:0}
+.header-logo img{height:26px;display:block;object-fit:contain;max-width:100%}
+.header-label{flex:1 1 auto;text-align:right;white-space:nowrap}
+.header-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-top:28px;padding-top:20px;border-top:1px solid var(--border)}
+.hstat-item{min-width:0}
+.hstat-val{font-family:'Space Mono',monospace;font-size:20px;font-weight:700;color:var(--orange)}
+.hstat-lbl{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.35;text-wrap:balance}
+
+/* SECTIONS */
+section{padding:56px 0;border-bottom:1px solid var(--border)}
+.stitle{font-family:'Space Mono',monospace;font-size:13px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:24px;display:flex;align-items:center;gap:10px}
+.stitle::before{content:'';width:6px;height:6px;background:var(--orange);border-radius:50%;flex-shrink:0}
+
+/* PODIUM */
+.podium{display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:12px;align-items:end}
+.pcard{background:var(--surface);border:1px solid var(--border);padding:24px 20px;text-align:center;transition:transform 0.25s,border-color 0.25s;cursor:default;position:relative}
+.pcard:hover{transform:translateY(-4px);border-color:var(--orange)}
+.pcard.first{border-color:var(--orange);background:linear-gradient(135deg,#0c1525,#101d32);padding:32px 20px}
+.pcard.first::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--orange)}
+.prank{font-family:'Space Mono',monospace;font-size:40px;font-weight:700;line-height:1;margin-bottom:12px;opacity:0.15}
+.first .prank{opacity:1;color:var(--orange);font-size:48px}
+.second .prank{opacity:0.5;color:var(--gold)}
+.third .prank{color:var(--orange2);opacity:0.4}
+.pname{font-size:18px;font-weight:700;margin-bottom:4px;letter-spacing:-0.3px}
+.first .pname{font-size:22px;color:var(--orange);white-space:nowrap}
+.pmeta{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px}
+.pscore{font-family:'Space Mono',monospace;font-size:26px;font-weight:700}
+.first .pscore{font-size:34px;color:var(--orange)}
+.pbar{margin-top:12px;height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+.pbar-fill{height:100%;border-radius:2px;background:var(--orange)}
+.second .pbar-fill{background:var(--gold)}
+.third .pbar-fill{background:var(--orange2)}
+.pchange{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;margin-top:10px;display:inline-block;padding:2px 8px;border-radius:3px}
+.pchange.up{color:var(--green);background:var(--green-dim)}
+.pchange.down{color:var(--red);background:var(--red-dim)}
+.pchange.same{color:var(--muted)}
+
+/* HIGHLIGHT */
+.highlight{background:linear-gradient(135deg,#0c1525,#162032);border:1px solid var(--orange);padding:32px;position:relative;margin:0}
+.highlight::before{content:'★ WYDARZENIE MIESIĄCA';position:absolute;top:-10px;left:24px;background:var(--orange);color:#fff;font-size:10px;font-family:'Space Mono',monospace;letter-spacing:2px;padding:3px 12px;font-weight:700}
+.hl-grid{display:grid;grid-template-columns:auto 1fr;gap:32px;align-items:center}
+.hl-score{font-family:'Space Mono',monospace;font-size:64px;font-weight:700;color:var(--orange);line-height:1}
+.hl-score-sub{font-size:10px;color:var(--muted);font-family:'Space Mono',monospace;text-align:center;margin-top:4px}
+.hl-brand{font-size:20px;font-weight:800;margin-bottom:4px}
+.hl-desc{font-size:13px;color:var(--muted);line-height:1.7;max-width:480px}
+.hl-desc strong{color:var(--orange);font-weight:600}
+
+/* INSIGHTS */
+.ins-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.ins-card{background:var(--surface);border:1px solid var(--border);padding:24px;transition:border-color 0.2s}
+.ins-card:hover{border-color:rgba(255,94,8,0.3)}
+.ins-num{font-family:'Space Mono',monospace;font-size:11px;color:var(--orange);margin-bottom:10px;letter-spacing:2px}
+.ins-title{font-size:16px;font-weight:700;line-height:1.3;margin-bottom:8px;letter-spacing:-0.3px}
+.ins-body{font-size:13px;color:var(--muted);line-height:1.7}
+.ins-body strong{color:var(--text);font-weight:600}
+
+/* CATEGORY WINNERS */
+.cat-list{display:flex;flex-direction:column;gap:10px}
+.cat-row{display:grid;grid-template-columns:110px 1fr 60px;align-items:center;gap:14px}
+.cat-name{font-size:11px;font-family:'Space Mono',monospace;color:var(--muted);text-align:right;letter-spacing:0.5px}
+.cat-bar-wrap{height:28px;background:var(--surface);border:1px solid var(--border);overflow:hidden;position:relative}
+.cat-bar-fill{height:100%;display:flex;align-items:center;padding-left:12px;font-size:12px;font-weight:700;white-space:nowrap;background:var(--orange);color:#fff}
+.cat-bar-fill.c2{background:#7b61ff;color:#fff}
+.cat-bar-fill.c3{background:var(--orange2);color:#fff}
+.cat-bar-fill.c4{background:var(--gold);color:#fff}
+.cat-bar-fill.c5{background:#c084fc;color:#fff}
+.cat-bar-fill.c6{background:#fb923c;color:#fff}
+.cat-bar-fill.c7{background:#818cf8;color:#fff}
+.cat-winner-badge{font-size:11px;font-weight:600;color:var(--text)}
+
+/* MOVERS */
+.move-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.move-col-title{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;padding-bottom:8px;border-bottom:2px solid var(--border)}
+.move-col-title.up{color:var(--green);border-color:var(--green)}
+.move-col-title.down{color:var(--red);border-color:var(--red)}
+.move-card{background:var(--surface);border:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;gap:12px;margin-bottom:6px;transition:border-color 0.2s}
+.move-card:hover{border-color:rgba(255,94,8,0.3)}
+.move-delta{font-family:'Space Mono',monospace;font-size:14px;font-weight:700;min-width:36px;text-align:center}
+.move-delta.up{color:var(--green)}
+.move-delta.down{color:var(--red)}
+.move-name{font-size:13px;font-weight:700}
+.move-detail{font-size:10px;color:var(--muted);font-family:'Space Mono',monospace}
+.move-pos{margin-left:auto;font-family:'Space Mono',monospace;font-size:11px;color:var(--muted)}
+
+/* TABS */
+.tab-nav{display:flex;gap:4px;overflow-x:auto;padding-bottom:4px;margin-bottom:20px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.tab-nav::-webkit-scrollbar{display:none}
+.tab-btn{font-family:'Space Mono',monospace;font-size:11px;padding:8px 14px;border:1px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer;white-space:nowrap;transition:all 0.2s;letter-spacing:0.5px}
+.tab-btn:hover{border-color:var(--muted);color:var(--text)}
+.tab-btn.active{background:var(--orange);color:#fff;border-color:var(--orange)}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* RANKING TABLE */
+.rtable{width:100%;border-collapse:separate;border-spacing:0;background:var(--surface);border:1px solid var(--border);overflow:hidden;min-width:400px}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -4px;padding:0 4px}
+.rtable th{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:10px 12px;text-align:left;background:var(--surface2);border-bottom:2px solid var(--border)}
+.rtable th:last-child{text-align:right}
+.rtable th.tc{text-align:center}
+.rtable td{padding:8px 12px;font-size:13px;border-bottom:1px solid var(--border-dim)}
+.rtable tr:last-child td{border-bottom:none}
+.rtable tr:hover td{background:var(--orange-glow)}
+.rk{font-family:'Space Mono',monospace;font-weight:700;color:var(--muted);width:40px}
+.rtable tr:nth-child(1) .rk{color:var(--orange)}
+.rtable tr:nth-child(2) .rk{color:var(--gold)}
+.rtable tr:nth-child(3) .rk{color:var(--orange2)}
+.nm{font-weight:600;color:var(--text)}
+.rtable tr:nth-child(1) .nm{font-weight:700}
+.sc{font-family:'Space Mono',monospace;font-weight:600;text-align:right;color:var(--text)}
+.ch{font-family:'Space Mono',monospace;font-size:11px;font-weight:600;text-align:center;width:56px}
+.ch.up{color:var(--green)}
+.ch.down{color:var(--red)}
+.ch.same{color:var(--muted)}
+/* For detailed tables without change column */
+.lb{font-family:'Space Mono',monospace;font-size:12px;text-align:right;color:var(--muted)}
+
+/* Q&A */
+.qa-list{counter-reset:qanum}
+.qa-item{border-top:1px solid var(--border);padding:20px 0}
+.qa-item:first-of-type{border-top:none;padding-top:0}
+.qa-q{font-size:14px;font-weight:700;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;cursor:pointer}
+.qa-q::before{counter-increment:qanum;content:counter(qanum);display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;background:var(--orange);color:#fff;font-size:10px;font-family:'Space Mono',monospace;border-radius:3px;flex-shrink:0;margin-top:1px;font-weight:700}
+.qa-a{font-size:13px;color:var(--muted);line-height:1.7;padding-left:32px}
+.qa-a strong{color:var(--text);font-weight:600}
+
+/* FOOTER */
+footer{padding:32px 0 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.footer-brand{font-size:11px;font-family:'Space Mono',monospace;color:var(--muted);letter-spacing:1px}
+.footer-source{font-size:10px;font-family:'Space Mono',monospace;color:var(--border);letter-spacing:1px}
+
+@media(max-width:700px){
+  .podium{grid-template-columns:1fr;align-items:stretch}
+  .pcard.first{order:-1}
+  .cat-row{grid-template-columns:70px 1fr 48px;gap:6px}
+  .cat-name{font-size:9px;letter-spacing:0}
+  .cat-bar-fill{font-size:10px;padding-left:8px}
+  .move-grid{grid-template-columns:1fr}
+  .hl-grid{grid-template-columns:1fr;text-align:center}
+  .hl-score{font-size:48px}
+  footer{flex-direction:column;text-align:center}
+  .header-top{align-items:flex-start;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+  .header-logo{max-width:52%}
+  .header-logo img{height:auto;max-height:24px;width:auto}
+  .header-label{flex:1 1 40%;min-width:0;text-align:right;white-space:normal;line-height:1.45;font-size:10px;letter-spacing:2px}
+  .header-stats{grid-template-columns:repeat(4,minmax(0,1fr));gap:10px 8px}
+  .hstat-val{font-size:17px}
+  .hstat-lbl{font-size:9px}
+  .ins-grid{grid-template-columns:1fr}
+  .tab-nav{gap:3px}
+  .tab-btn{font-size:10px;padding:6px 10px}
+  .rtable td{padding:7px 8px;font-size:12px}
+  .rtable th{padding:8px 8px;font-size:9px}
+  .rk{width:28px;font-size:11px}
+  .ch{width:40px;font-size:10px}
+  .sc{font-size:12px}
+  .nm{font-size:12px}
+  h1{font-size:28px;letter-spacing:-1px}
+  .subtitle{font-size:10px}
+  .container{padding:0 16px}
+  header{padding:44px 0 36px}
+  .prank{font-size:28px}
+  .first .prank{font-size:36px}
+  .pname{font-size:15px}
+  .first .pname{font-size:18px}
+  .pscore{font-size:20px}
+  .first .pscore{font-size:28px}
+  .stitle{font-size:10px;letter-spacing:2px}
+  section{padding:40px 0}
+  .ins-card{padding:18px}
+  .ins-title{font-size:14px}
+  .ins-body{font-size:12px}
+  .move-card{padding:10px 12px}
+  .move-name{font-size:12px}
+  .highlight{padding:24px 16px}
+  .hl-brand{font-size:16px}
+  .hl-desc{font-size:12px}
+}
+
+@media(max-width:420px){
+  .header-top{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;column-gap:10px;row-gap:10px}
+  .header-logo{max-width:none}
+  .header-label{font-size:9px;letter-spacing:1.6px;max-width:140px;justify-self:end}
+  .header-stats{gap:10px 6px}
+  .hstat-val{font-size:16px}
+  .hstat-lbl{font-size:8px}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <div class="header-top">
+    <a class="header-logo" href="https://www.wirtualnemedia.pl" target="_blank" rel="noopener" style="display:block;opacity:0.7;transition:opacity 0.2s" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.7">
+      <img src="data:image/png;base64,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" alt="Wirtualne Media" style="display:block;object-fit:contain">
+    </a>
+    <div class="label header-label" style="margin-bottom:0">Raport Miesięczny · Luty 2026</div>
+  </div>
+  <h1>Wirtualny<br>Wskaźnik <span>Wpływu</span></h1>
+  <div class="header-stats">
+    <div class="hstat-item"><div class="hstat-val">~130</div><div class="hstat-lbl">Marek medialnych</div></div>
+    <div class="hstat-item"><div class="hstat-val">600+</div><div class="hstat-lbl">Profili social media</div></div>
+    <div class="hstat-item"><div class="hstat-val">14</div><div class="hstat-lbl">Kategorii danych</div></div>
+    <div class="hstat-item"><div class="hstat-val">7</div><div class="hstat-lbl">Kategorii tematycznych</div></div>
+  </div>
+</header>
+
+<!-- PODIUM -->
+<section>
+  <div class="stitle">Podium ogólne — TOP 3</div>
+  <div class="podium">
+    <div class="pcard second">
+      <div class="prank">#2</div>
+      <div class="pname">Onet</div>
+      <div class="pmeta">Ringier Axel Springer Polska</div>
+      <div class="pscore">48.52</div>
+      <div class="pbar"><div class="pbar-fill" style="width:88%"></div></div>
+      <div class="pchange down">▼ -1</div>
+    </div>
+    <div class="pcard first">
+      <div class="prank">#1</div>
+      <div class="pname">Wirtualna Polska</div>
+      <div class="pmeta">Wirtualna Polska Holding</div>
+      <div class="pscore">49.32</div>
+      <div class="pbar"><div class="pbar-fill" style="width:100%"></div></div>
+      <div class="pchange up">▲ +1</div>
+    </div>
+    <div class="pcard third">
+      <div class="prank">#3</div>
+      <div class="pname">Interia</div>
+      <div class="pmeta">Grupa Polsat Plus</div>
+      <div class="pscore">37.41</div>
+      <div class="pbar"><div class="pbar-fill" style="width:68%"></div></div>
+      <div class="pchange same">–</div>
+    </div>
+  </div>
+  <p style="font-size:12px;font-family:'Space Mono',monospace;color:var(--orange2);text-align:center;margin-top:16px;opacity:0.85">
+    WP po raz pierwszy od dłuższego czasu wypchnęła Onet z pierwszego miejsca — o włos.
+  </p>
+</section>
+
+<!-- HIGHLIGHT -->
+<section>
+  <div class="highlight">
+    <div class="hl-grid">
+      <div>
+        <div class="hl-score">31.59</div>
+        <div class="hl-score-sub">pkt WWW</div>
+      </div>
+      <div>
+        <div class="hl-brand">Eurosport Polska</div>
+        <div class="hl-desc">Rekordowy wynik WWW w kategorii Sport w historii rankingu. Eurosport transmitował Igrzyska Olimpijskie szeroko — w kanałach TV i social media. Samodzielnie osiągnąłby <strong>4. miejsce w TOP50</strong>, gdyby nie był osadzony w domenie TVN24.pl.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSIGHTS -->
+<section>
+  <div class="stitle">Kluczowe wątki lutego</div>
+  <div class="ins-grid">
+    <div class="ins-card">
+      <div class="ins-num">01</div>
+      <div class="ins-title">Bitwa o jedynkę</div>
+      <div class="ins-body">WP o włos prześcignęła Onet. Zadecydowała solidna odwiedzalność portalu, mocna cytowalność i konsekwentnie <strong>najlepsze wyniki na Facebooku</strong> — zarówno zaangażowanie, jak i odsłony wideo.</div>
+    </div>
+    <div class="ins-card">
+      <div class="ins-num">02</div>
+      <div class="ins-title">Czy portal Zero.pl robi różnicę?</div>
+      <div class="ins-body">Pierwszy miesiąc z własnym portalem. Debiut na poziomie <strong>~900 tys. RU</strong>, ale 7. miejsce w TOP50 — pozycja, którą Kanał Zero osiągał już wcześniej, bez portalu.</div>
+    </div>
+    <div class="ins-card">
+      <div class="ins-num">03</div>
+      <div class="ins-title">Czuć nowe ramówki</div>
+      <div class="ins-body">TVN <strong>+11 pozycji</strong>, Polsat <strong>+13 pozycji</strong>. Obie stacje podskoczyły dzięki nowym, rozkręcającym się ramówkom wiosennym.</div>
+    </div>
+    <div class="ins-card">
+      <div class="ins-num">04</div>
+      <div class="ins-title">wPolsce24 wchodzi do TOP50</div>
+      <div class="ins-body">Prawicowa TV po raz pierwszy w historii w TOP50. <strong>50. miejsce</strong>, awans o 7 pozycji. Pomogły wyniki wideo na Facebooku i interakcje na X/Twitterze.</div>
+    </div>
+    <div class="ins-card">
+      <div class="ins-num">05</div>
+      <div class="ins-title">Elle skacze o 24 pozycje</div>
+      <div class="ins-body">Największy awans w TOP50. Elle Polska na <strong>28. pozycji</strong> (+24) i jednocześnie lider kategorii Lifestyle (11.42 pkt). Mocne interakcje na Instagramie i TikToku.</div>
+    </div>
+    <div class="ins-card">
+      <div class="ins-num">06</div>
+      <div class="ins-title">Stabilna rozrywka</div>
+      <div class="ins-body">Najbardziej stabilna kategoria. Jedyna istotna zmiana: spadek Świata Gwiazd o <strong>15 pozycji</strong> w TOP50 (z 29. na 44.). Reszta stawki bez zmian.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORY WINNERS -->
+<section>
+  <div class="stitle">Liderzy kategorii tematycznych</div>
+  <div class="cat-list">
+    <div class="cat-row"><div class="cat-name">Informacje</div><div class="cat-bar-wrap"><div class="cat-bar-fill" style="width:100%">Wirtualna Polska · 49.32</div></div><div class="cat-winner-badge">▲ +1</div></div>
+    <div class="cat-row"><div class="cat-name">Sport</div><div class="cat-bar-wrap"><div class="cat-bar-fill c2" style="width:64%">Eurosport PL · 31.59</div></div><div class="cat-winner-badge">★ rekord</div></div>
+    <div class="cat-row"><div class="cat-name">Rozrywka</div><div class="cat-bar-wrap"><div class="cat-bar-fill c3" style="width:29%">Filmweb · 14.30</div></div><div class="cat-winner-badge">–</div></div>
+    <div class="cat-row"><div class="cat-name">Biznes</div><div class="cat-bar-wrap"><div class="cat-bar-fill c4" style="width:26%">Business Insider · 12.69</div></div><div class="cat-winner-badge">▲ +1</div></div>
+    <div class="cat-row"><div class="cat-name">Lifestyle</div><div class="cat-bar-wrap"><div class="cat-bar-fill c5" style="width:23%">Elle Polska · 11.42</div></div><div class="cat-winner-badge">–</div></div>
+    <div class="cat-row"><div class="cat-name">Lokalne</div><div class="cat-bar-wrap"><div class="cat-bar-fill c6" style="width:20%">Nasze Miasto · 9.63</div></div><div class="cat-winner-badge">–</div></div>
+    <div class="cat-row"><div class="cat-name">Tech</div><div class="cat-bar-wrap"><div class="cat-bar-fill c7" style="width:13%">Spiders Web · 6.44</div></div><div class="cat-winner-badge">–</div></div>
+  </div>
+</section>
+
+<!-- MOVERS -->
+<section>
+  <div class="stitle">Największe ruchy miesiąca</div>
+  <div class="move-grid">
+    <div>
+      <div class="move-col-title up">▲ Awanse</div>
+      <div class="move-card"><div class="move-delta up">+24</div><div><div class="move-name">Elle</div><div class="move-detail">Lifestyle</div></div><div class="move-pos">→28.</div></div>
+      <div class="move-card"><div class="move-delta up">+13</div><div><div class="move-name">Polsat</div><div class="move-detail">TV · nowa ramówka</div></div><div class="move-pos">→11.</div></div>
+      <div class="move-card"><div class="move-delta up">+11</div><div><div class="move-name">TVN</div><div class="move-detail">TV · nowa ramówka</div></div><div class="move-pos">→10.</div></div>
+      <div class="move-card"><div class="move-delta up">+10</div><div><div class="move-name">Polsat Sport</div><div class="move-detail">Sport · efekt IO</div></div><div class="move-pos">→22.</div></div>
+      <div class="move-card"><div class="move-delta up">+8</div><div><div class="move-name">Sport.pl</div><div class="move-detail">Sport</div></div><div class="move-pos">→27.</div></div>
+      <div class="move-card"><div class="move-delta up">+7</div><div><div class="move-name">wPolsce24</div><div class="move-detail">TV · debiut TOP50</div></div><div class="move-pos">→50.</div></div>
+    </div>
+    <div>
+      <div class="move-col-title down">▼ Spadki</div>
+      <div class="move-card"><div class="move-delta down">-15</div><div><div class="move-name">Świat Gwiazd</div><div class="move-detail">Rozrywka</div></div><div class="move-pos">→44.</div></div>
+      <div class="move-card"><div class="move-delta down">-9</div><div><div class="move-name">Fakt</div><div class="move-detail">Informacje</div></div><div class="move-pos">→15.</div></div>
+      <div class="move-card"><div class="move-delta down">-7</div><div><div class="move-name">Kozaczek</div><div class="move-detail">Rozrywka</div></div><div class="move-pos">→29.</div></div>
+      <div class="move-card"><div class="move-delta down">-6</div><div><div class="move-name">Infor</div><div class="move-detail">Biznes</div></div><div class="move-pos">→31.</div></div>
+      <div class="move-card"><div class="move-delta down">-5</div><div><div class="move-name">Filmweb</div><div class="move-detail">Rozrywka</div></div><div class="move-pos">→20.</div></div>
+      <div class="move-card"><div class="move-delta down">-4</div><div><div class="move-name">TVP Info</div><div class="move-detail">Informacje</div></div><div class="move-pos">→24.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FULL TABLES -->
+<section id="tabele">
+  <div class="stitle">Pełne wyniki — Luty 2026</div>
+
+  <div class="tab-nav" id="mainTabs">
+    <button class="tab-btn active" data-tab="top50">TOP50</button>
+    <button class="tab-btn" data-tab="informacje">Informacje</button>
+    <button class="tab-btn" data-tab="sport">Sport</button>
+    <button class="tab-btn" data-tab="biznes">Biznes</button>
+    <button class="tab-btn" data-tab="rozrywka">Rozrywka</button>
+    <button class="tab-btn" data-tab="lokalne">Lokalne</button>
+    <button class="tab-btn" data-tab="tech">Tech</button>
+    <button class="tab-btn" data-tab="lifestyle">Lifestyle</button>
+  </div>
+
+  <!-- TOP50 -->
+  <div class="tab-panel active" id="tab-top50"><table class="rtable"><thead><tr><th>#</th><th>Wydawca</th><th class="tc">Zmiana</th><th style="text-align:right">WWW</th></tr></thead><tbody>
+  <tr><td class="rk">1</td><td class="nm">Wirtualna Polska</td><td class="ch up">+1</td><td class="sc">49.32</td></tr>
+  <tr><td class="rk">2</td><td class="nm">Onet</td><td class="ch down">-1</td><td class="sc">48.52</td></tr>
+  <tr><td class="rk">3</td><td class="nm">Interia</td><td class="ch same">–</td><td class="sc">37.41</td></tr>
+  <tr><td class="rk">4</td><td class="nm">TVN24</td><td class="ch up">+1</td><td class="sc">25.56</td></tr>
+  <tr><td class="rk">5</td><td class="nm">TVP</td><td class="ch down">-1</td><td class="sc">24.54</td></tr>
+  <tr><td class="rk">6</td><td class="nm">Super Express</td><td class="ch up">+2</td><td class="sc">22.24</td></tr>
+  <tr><td class="rk">7</td><td class="nm">Kanał Zero</td><td class="ch up">+2</td><td class="sc">21.16</td></tr>
+  <tr><td class="rk">8</td><td class="nm">Goniec</td><td class="ch down">-1</td><td class="sc">20.12</td></tr>
+  <tr><td class="rk">9</td><td class="nm">Gazeta.pl</td><td class="ch up">+1</td><td class="sc">19.12</td></tr>
+  <tr><td class="rk">10</td><td class="nm">TVN</td><td class="ch up">+11</td><td class="sc">18.60</td></tr>
+  <tr><td class="rk">11</td><td class="nm">Polsat</td><td class="ch up">+13</td><td class="sc">18.53</td></tr>
+  <tr><td class="rk">12</td><td class="nm">RMF FM</td><td class="ch same">–</td><td class="sc">17.87</td></tr>
+  <tr><td class="rk">13</td><td class="nm">Polsat News</td><td class="ch down">-2</td><td class="sc">17.73</td></tr>
+  <tr><td class="rk">14</td><td class="nm">TV Republika</td><td class="ch down">-1</td><td class="sc">16.54</td></tr>
+  <tr><td class="rk">15</td><td class="nm">Fakt</td><td class="ch down">-9</td><td class="sc">16.13</td></tr>
+  <tr><td class="rk">16</td><td class="nm">Gazeta Wyborcza</td><td class="ch down">-2</td><td class="sc">15.33</td></tr>
+  <tr><td class="rk">17</td><td class="nm">Meczyki</td><td class="ch up">+1</td><td class="sc">15.06</td></tr>
+  <tr><td class="rk">18</td><td class="nm">O2</td><td class="ch down">-1</td><td class="sc">14.95</td></tr>
+  <tr><td class="rk">19</td><td class="nm">Radio Zet</td><td class="ch down">-3</td><td class="sc">14.79</td></tr>
+  <tr><td class="rk">20</td><td class="nm">Filmweb</td><td class="ch down">-5</td><td class="sc">14.30</td></tr>
+  <tr><td class="rk">21</td><td class="nm">Radio Eska</td><td class="ch down">-2</td><td class="sc">13.47</td></tr>
+  <tr><td class="rk">22</td><td class="nm">Polsat Sport</td><td class="ch up">+10</td><td class="sc">12.71</td></tr>
+  <tr><td class="rk">23</td><td class="nm">Business Insider</td><td class="ch up">+4</td><td class="sc">12.69</td></tr>
+  <tr><td class="rk">24</td><td class="nm">TVP Info</td><td class="ch down">-4</td><td class="sc">12.58</td></tr>
+  <tr><td class="rk">25</td><td class="nm">RMF24</td><td class="ch down">-2</td><td class="sc">12.39</td></tr>
+  <tr><td class="rk">26</td><td class="nm">Rzeczpospolita</td><td class="ch same">–</td><td class="sc">12.00</td></tr>
+  <tr><td class="rk">27</td><td class="nm">Sport.pl</td><td class="ch up">+8</td><td class="sc">11.99</td></tr>
+  <tr><td class="rk">28</td><td class="nm">Elle</td><td class="ch up">+24</td><td class="sc">11.42</td></tr>
+  <tr><td class="rk">29</td><td class="nm">Kozaczek</td><td class="ch down">-7</td><td class="sc">11.31</td></tr>
+  <tr><td class="rk">30</td><td class="nm">Money</td><td class="ch down">-2</td><td class="sc">11.16</td></tr>
+  <tr><td class="rk">31</td><td class="nm">Infor</td><td class="ch down">-6</td><td class="sc">11.06</td></tr>
+  <tr><td class="rk">32</td><td class="nm">Pudelek</td><td class="ch down">-2</td><td class="sc">10.62</td></tr>
+  <tr><td class="rk">33</td><td class="nm">Polskie Radio24</td><td class="ch up">+5</td><td class="sc">10.59</td></tr>
+  <tr><td class="rk">34</td><td class="nm">Dziennik.pl</td><td class="ch down">-3</td><td class="sc">10.45</td></tr>
+  <tr><td class="rk">35</td><td class="nm">Pomponik</td><td class="ch down">-2</td><td class="sc">10.02</td></tr>
+  <tr><td class="rk">36</td><td class="nm">Wprost</td><td class="ch up">+1</td><td class="sc">9.91</td></tr>
+  <tr><td class="rk">37</td><td class="nm">Nasze Miasto</td><td class="ch down">-3</td><td class="sc">9.63</td></tr>
+  <tr><td class="rk">38</td><td class="nm">Forsal</td><td class="ch up">+2</td><td class="sc">9.15</td></tr>
+  <tr><td class="rk">39</td><td class="nm">Portal Samorządowy</td><td class="ch down">-3</td><td class="sc">8.85</td></tr>
+  <tr><td class="rk">40</td><td class="nm">WNP</td><td class="ch down">-1</td><td class="sc">8.79</td></tr>
+  <tr><td class="rk">41</td><td class="nm">Rynek Zdrowia</td><td class="ch up">+1</td><td class="sc">8.76</td></tr>
+  <tr><td class="rk">42</td><td class="nm">Medonet</td><td class="ch up">+1</td><td class="sc">8.74</td></tr>
+  <tr><td class="rk">43</td><td class="nm">Dziennik Gazeta Prawna</td><td class="ch up">+3</td><td class="sc">8.44</td></tr>
+  <tr><td class="rk">44</td><td class="nm">Świat Gwiazd</td><td class="ch down">-15</td><td class="sc">8.29</td></tr>
+  <tr><td class="rk">45</td><td class="nm">Plejada</td><td class="ch down">-4</td><td class="sc">8.19</td></tr>
+  <tr><td class="rk">46</td><td class="nm">Bankier</td><td class="ch down">-1</td><td class="sc">7.56</td></tr>
+  <tr><td class="rk">47</td><td class="nm">TOK FM</td><td class="ch down">-3</td><td class="sc">7.41</td></tr>
+  <tr><td class="rk">48</td><td class="nm">Plotek</td><td class="ch down">-1</td><td class="sc">7.33</td></tr>
+  <tr><td class="rk">49</td><td class="nm">Kanał Sportowy</td><td class="ch up">+6</td><td class="sc">7.19</td></tr>
+  <tr><td class="rk">50</td><td class="nm">wPolsce24</td><td class="ch up">+7</td><td class="sc">7.17</td></tr>
+  </tbody></table></div>
+
+  <!-- INFORMACJE -->
+  <div class="tab-panel" id="tab-informacje"><table class="rtable"><thead><tr><th>#</th><th>Wydawca</th><th class="tc">Zmiana</th><th style="text-align:right">WWW</th></tr></thead><tbody>
+  <tr><td class="rk">1</td><td class="nm">Wirtualna Polska</td><td class="ch up">+1</td><td class="sc">49.32</td></tr>
+  <tr><td class="rk">2</td><td class="nm">Onet</td><td class="ch down">-1</td><td class="sc">48.52</td></tr>
+  <tr><td class="rk">3</td><td class="nm">Interia</td><td class="ch same">–</td><td class="sc">37.41</td></tr>
+  <tr><td class="rk">4</td><td class="nm">TVN24</td><td class="ch same">–</td><td class="sc">25.56</td></tr>
+  <tr><td class="rk">5</td><td class="nm">Super Express</td><td class="ch up">+2</td><td class="sc">22.24</td></tr>
+  <tr><td class="rk">6</td><td class="nm">Kanał Zero</td><td class="ch up">+2</td><td class="sc">21.16</td></tr>
+  <tr><td class="rk">7</td><td class="nm">Goniec</td><td class="ch down">-1</td><td class="sc">20.12</td></tr>
+  <tr><td class="rk">8</td><td class="nm">Gazeta.pl</td><td class="ch up">+1</td><td class="sc">19.12</td></tr>
+  <tr><td class="rk">9</td><td class="nm">RMF FM</td><td class="ch up">+2</td><td class="sc">17.87</td></tr>
+  <tr><td class="rk">10</td><td class="nm">Polsat News</td><td class="ch same">–</td><td class="sc">17.73</td></tr>
+  </tbody></table></div>
+
+  <!-- SPORT -->
+  <div class="tab-panel" id="tab-sport"><table class="rtable"><thead><tr><th>#</th><th>Wydawca</th><th class="tc">Zmiana</th><th style="text-align:right">WWW</th></tr></thead><tbody>
+  <tr><td class="rk">1</td><td class="nm">Eurosport Polska</td><td class="ch up">+1</td><td class="sc">31.59</td></tr>
+  <tr><td class="rk">2</td><td class="nm">TVP Sport</td><td class="ch down">-1</td><td class="sc">24.23</td></tr>
+  <tr><td class="rk">3</td><td class="nm">Przegląd Sportowy</td><td class="ch up">+1</td><td class="sc">16.70</td></tr>
+  <tr><td class="rk">4</td><td class="nm">Meczyki</td><td class="ch down">-1</td><td class="sc">15.06</td></tr>
+  <tr><td class="rk">5</td><td class="nm">Polsat Sport</td><td class="ch up">+2</td><td class="sc">12.71</td></tr>
+  <tr><td class="rk">6</td><td class="nm">Sport.pl</td><td class="ch up">+2</td><td class="sc">11.99</td></tr>
+  <tr><td class="rk">7</td><td class="nm">Interia Sport</td><td class="ch down">-1</td><td class="sc">11.00</td></tr>
+  <tr><td class="rk">8</td><td class="nm">WP SportoweFakty</td><td class="ch down">-3</td><td class="sc">10.67</td></tr>
+  <tr><td class="rk">9</td><td class="nm">Canal+ Sport</td><td class="ch same">–</td><td class="sc">7.50</td></tr>
+  <tr><td class="rk">10</td><td class="nm">Kanał Sportowy</td><td class="ch same">–</td><td class="sc">7.19</td></tr>
+  </tbody></table></div>
+
+  <!-- BIZNES -->
+  <div class="tab-panel" id="tab-biznes"><table class="rtable"><thead><tr><th>#</th><th>Wydawca</th><th class="tc">Zmiana</th><th style="text-align:right">WWW</th></tr></thead><tbody>
+  <tr><td class="rk">1</td><td class="nm">Business Insider</td><td class="ch up">+1</td><td class="sc">12.69</td></tr>
+  <tr><td class="rk">2</td><td class="nm">Money</td><td class="ch up">+1</td><td class="sc">11.16</td></tr>
+  <tr><td class="rk">3</td><td class="nm">Infor</td><td class="ch down">-2</td><td class="sc">11.06</td></tr>
+  <tr><td class="rk">4</td><td class="nm">Forsal</td><td class="ch up">+1</td><td class="sc">9.15</td></tr>
+  <tr><td class="rk">5</td><td class="nm">WNP</td><td class="ch down">-1</td><td class="sc">8.79</td></tr>
+  <tr><td class="rk">6</td><td class="nm">Dziennik Gazeta Prawna</td><td class="ch up">+1</td><td class="sc">8.44</td></tr>
+  <tr><td class="rk">7</td><td class="nm">Bankier</td><td class="ch down">-1</td><td class="sc">7.56</td></tr>
+  <tr><td class="rk">8</td><td class="nm">Biznes Info</td><td class="ch same">–</td><td class="sc">5.86</td></tr>
+  <tr><td class="rk">9</td><td class="nm">Wirtualnemedia</td><td class="ch same">–</td><td class="sc">5.61</td></tr>
+  <tr><td class="rk">10</td><td class="nm">Dla Handlu</td><td class="ch same">–</td><td class="sc">5.45</td></tr>
+  </tbody></table></div>
+
+  <!-- ROZRYWKA -->
+  <div class="tab-panel" id="tab-rozrywka"><table class="rtable"><thead><tr><th>#</th><th>Wydawca</th><th class="tc">Zmiana</th><th style="text-align:right">WWW</th></tr></thead><tbody>
+  <tr><td class="rk">1</td><td class="nm">Filmweb</td><td class="ch same">–</td><td class="sc">14.30</td></tr>
+  <tr><td class="rk">2</td><td class="nm">Kozaczek</td><td class="ch same">–</td><td class="sc">11.31</td></tr>
+  <tr><td class="rk">3</td><td class="nm">Pudelek</td><td class="ch up">+1</td><td class="sc">10.62</td></tr>
+  <tr><td class="rk">4</td><td class="nm">Pomponik</td><td class="ch up">+1</td><td class="sc">10.02</td></tr>
+  <tr><td class="rk">5</td><td class="nm">Świat Gwiazd</td><td class="ch down">-2</td><td class="sc">8.29</td></tr>
+  <tr><td class="rk">6</td><td class="nm">Plejada</td><td class="ch same">–</td><td class="sc">8.19</td></tr>
+  <tr><td class="rk">7</td><td class="nm">Plotek</td><td class="ch same">–</td><td class="sc">7.33</td></tr>
+  <tr><td class="rk">8</td><td class="nm">Jastrząb Post</td><td class="ch same">–</td><td class="sc">6.53</td></tr>
+  <tr><td class="rk">9</td><td class="nm">Party</td><td class="ch same">–</td><td class="sc">5.78</td></tr>
+  <tr><td class="rk">10</td><td class="nm">Na Ekranie</td><td class="ch same">–</td><td class="sc">4.70</td></tr>
+  </tbody></table></div>
+
+  <!-- LOKALNE -->
+  <div class="tab-panel" id="tab-lokalne"><table class="rtable"><thead><tr><th>#</th><th>Wydawca</th><th class="tc">Zmiana</th><th style="text-align:right">WWW</th></tr></thead><tbody>
+  <tr><td class="rk">1</td><td class="nm">Nasze Miasto</td><td class="ch same">–</td><td class="sc">9.63</td></tr>
+  <tr><td class="rk">2</td><td class="nm">Trójmiasto.pl</td><td class="ch same">–</td><td class="sc">6.63</td></tr>
+  <tr><td class="rk">3</td><td class="nm">Gazeta Pomorska</td><td class="ch same">–</td><td class="sc">6.03</td></tr>
+  <tr><td class="rk">4</td><td class="nm">Dziennik Zachodni</td><td class="ch up">+1</td><td class="sc">5.95</td></tr>
+  <tr><td class="rk">5</td><td class="nm">Gazeta Wrocławska</td><td class="ch up">+2</td><td class="sc">5.31</td></tr>
+  <tr><td class="rk">6</td><td class="nm">Gazeta Krakowska</td><td class="ch same">–</td><td class="sc">5.05</td></tr>
+  <tr><td class="rk">7</td><td class="nm">Warszawa w Pigułce</td><td class="ch down">-3</td><td class="sc">4.78</td></tr>
+  <tr><td class="rk">8</td><td class="nm">Głos Wielkopolski</td><td class="ch same">–</td><td class="sc">4.74</td></tr>
+  <tr><td class="rk">9</td><td class="nm">Dziennik Bałtycki</td><td class="ch up">+5</td><td class="sc">4.48</td></tr>
+  <tr><td class="rk">10</td><td class="nm">Express Bydgoski</td><td class="ch up">+5</td><td class="sc">4.47</td></tr>
+  </tbody></table></div>
+
+  <!-- TECH -->
+  <div class="tab-panel" id="tab-tech"><table class="rtable"><thead><tr><th>#</th><th>Wydawca</th><th class="tc">Zmiana</th><th style="text-align:right">WWW</th></tr></thead><tbody>
+  <tr><td class="rk">1</td><td class="nm">Spiders Web</td><td class="ch same">–</td><td class="sc">6.44</td></tr>
+  <tr><td class="rk">2</td><td class="nm">Gry Online</td><td class="ch up">+2</td><td class="sc">5.51</td></tr>
+  <tr><td class="rk">3</td><td class="nm">Telepolis</td><td class="ch down">-1</td><td class="sc">5.47</td></tr>
+  <tr><td class="rk">4</td><td class="nm">PPE</td><td class="ch up">+2</td><td class="sc">4.70</td></tr>
+  <tr><td class="rk">5</td><td class="nm">Dobreprogramy</td><td class="ch up">+3</td><td class="sc">4.59</td></tr>
+  <tr><td class="rk">6</td><td class="nm">Antyweb</td><td class="ch up">+3</td><td class="sc">4.27</td></tr>
+  <tr><td class="rk">7</td><td class="nm">GSManiak</td><td class="ch same">–</td><td class="sc">3.99</td></tr>
+  <tr><td class="rk">8</td><td class="nm">Android.com.pl</td><td class="ch down">-3</td><td class="sc">3.98</td></tr>
+  <tr><td class="rk">9</td><td class="nm">Tabletowo</td><td class="ch up">+4</td><td class="sc">3.64</td></tr>
+  <tr><td class="rk">10</td><td class="nm">Benchmark</td><td class="ch same">–</td><td class="sc">3.59</td></tr>
+  </tbody></table></div>
+
+  <!-- LIFESTYLE -->
+  <div class="tab-panel" id="tab-lifestyle"><table class="rtable"><thead><tr><th>#</th><th>Wydawca</th><th class="tc">Zmiana</th><th style="text-align:right">WWW</th></tr></thead><tbody>
+  <tr><td class="rk">1</td><td class="nm">Elle Polska</td><td class="ch same">–</td><td class="sc">11.42</td></tr>
+  <tr><td class="rk">2</td><td class="nm">Polki</td><td class="ch same">–</td><td class="sc">6.91</td></tr>
+  <tr><td class="rk">3</td><td class="nm">Glamour</td><td class="ch up">+6</td><td class="sc">6.57</td></tr>
+  <tr><td class="rk">4</td><td class="nm">Ofeminin</td><td class="ch down">-1</td><td class="sc">6.30</td></tr>
+  <tr><td class="rk">5</td><td class="nm">Viva</td><td class="ch down">-1</td><td class="sc">5.88</td></tr>
+  <tr><td class="rk">6</td><td class="nm">Zwierciadło</td><td class="ch down">-1</td><td class="sc">5.46</td></tr>
+  <tr><td class="rk">7</td><td class="nm">Vogue Polska</td><td class="ch up">+1</td><td class="sc">5.39</td></tr>
+  <tr><td class="rk">8</td><td class="nm">Wizaż</td><td class="ch down">-2</td><td class="sc">5.34</td></tr>
+  <tr><td class="rk">9</td><td class="nm">Kobieta.pl</td><td class="ch down">-1</td><td class="sc">5.21</td></tr>
+  <tr><td class="rk">10</td><td class="nm">Wysokie Obcasy</td><td class="ch same">–</td><td class="sc">4.38</td></tr>
+  </tbody></table></div>
+</section>
+
+<!-- DETAILED RESULTS -->
+<section>
+  <div class="stitle">Wyniki szczegółowe — TOP 30 poszczególnych kategorii</div>
+
+  <div class="tab-nav" id="detailTabs">
+    <button class="tab-btn active" data-tab="d-ru">Realni użytkownicy</button>
+    <button class="tab-btn" data-tab="d-dru">Śr. dzienna RU</button>
+    <button class="tab-btn" data-tab="d-pv">Odsłony WWW</button>
+    <button class="tab-btn" data-tab="d-time">Śr. czas na stronie</button>
+    <button class="tab-btn" data-tab="d-cyt">Cytowania</button>
+    <button class="tab-btn" data-tab="d-yt">YouTube odsłony</button>
+    <button class="tab-btn" data-tab="d-fbint">FB interakcje</button>
+    <button class="tab-btn" data-tab="d-fbvid">FB wideo</button>
+    <button class="tab-btn" data-tab="d-igint">IG interakcje</button>
+    <button class="tab-btn" data-tab="d-igvid">IG wideo</button>
+    <button class="tab-btn" data-tab="d-ttint">TikTok interakcje</button>
+    <button class="tab-btn" data-tab="d-ttvid">TikTok wideo</button>
+    <button class="tab-btn" data-tab="d-xint">X interakcje</button>
+    <button class="tab-btn" data-tab="d-xvw">X odsłony</button>
+  </div>
+
+  <!-- Realni użytkownicy -->
+  <div class="tab-panel active" id="tab-d-ru"><table class="rtable"><thead><tr><th>#</th><th>Wydawca</th><th style="text-align:right">Liczba</th><th style="text-align:right">Benchmark</th></tr></thead><tbody>
+  <tr><td class="rk">1</td><td class="nm">Interia</td><td class="sc">15 373 800</td><td class="lb">100.00</td></tr>
+  <tr><td class="rk">2</td><td class="nm">Wirtualna Polska</td><td class="sc">14 841 630</td><td class="lb">96.54</td></tr>
+  <tr><td class="rk">3</td><td class="nm">Onet</td><td class="sc">14 110 686</td><td class="lb">91.78</td></tr>
+  <tr><td class="rk">4</td><td class="nm">Gazeta.pl</td><td class="sc"></td><td class="lb">57.88</td></tr>
+  <tr><td class="rk">5</td><td class="nm">TVN24</td><td class="sc"></td><td class="lb">53.13</td></tr>
+  <tr><td class="rk">6</td><td class="nm">Fakt</td><td class="sc"></td><td class="lb">51.08</td></tr>
+  <tr><td class="rk">7</td><td class="nm">Filmweb</td><td class="sc"></td><td class="lb">49.72</td></tr>
+  <tr><td class="rk">8</td><td class="nm">O2</td><td class="sc"></td><td class="lb">48.78</td></tr>
+  <tr><td class="rk">9</td><td class="nm">Infor</td><td class="sc"></td><td class="lb">45.49</td></tr>
+  <tr><td class="rk">10</td><td class="nm">TVP</td><td class="sc"></td><td class="lb">42.36</td></tr>
+  <tr><td class="rk">11</td><td class="nm">Business Insider</td><td class="sc"></td><td class="lb">42.08</td></tr>
+  <tr><td class="rk">12</td><td class="nm">RMF FM</td><td class="sc"></td><td class="lb">41.74</td></tr>
+  <tr><td class="rk">13</td><td class="nm">Gazeta Wyborcza</td><td class="sc"></td><td class="lb">41.39</td></tr>
+  <tr><td class="rk">14</td><td class="nm">Nasze Miasto</td><td class="sc"></td><td class="lb">40.37</td></tr>
+  <tr><td class="rk">15</td><td class="nm">Dziennik</td><td class="sc"></td><td class="lb">40.22</td></tr>
+  <tr><td class="rk">16</td><td class="nm">Super Express</td><td class="sc"></td><td class="lb">39.87</td></tr>
+  <tr><td class="rk">17</td><td class="nm">RMF24</td><td class="sc"></td><td class="lb">39.69</td></tr>
+  <tr><td class="rk">18</td><td class="nm">Money</td><td class="sc"></td><td class="lb">37.35</td></tr>
+  <tr><td class="rk">19</td><td class="nm">Forsal</td><td class="sc"></td><td class="lb">36.47</td></tr>
+  <tr><td class="rk">20</td><td class="nm">Wprost</td><td class="sc"></td><td class="lb">35.77</td></tr>
+  <tr><td class="rk">21</td><td class="nm">Portal Samorządowy</td><td class="sc"></td><td class="lb">33.94</td></tr>
+  <tr><td class="rk">22</td><td class="nm">Sport.pl</td><td class="sc"></td><td class="lb">33.72</td></tr>
+  <tr><td class="rk">23</td><td class="nm">WNP</td><td class="sc"></td><td class="lb">33.41</td></tr>
+  <tr><td class="rk">24</td><td class="nm">Polskie Radio24</td><td class="sc"></td><td class="lb">32.83</td></tr>
+  <tr><td class="rk">25</td><td class="nm">Medonet</td><td class="sc"></td><td class="lb">32.07</td></tr>
+  <tr><td class="rk">26</td><td class="nm">Pomponik</td><td class="sc"></td><td class="lb">31.94</td></tr>
+  <tr><td class="rk">27</td><td class="nm">Rynek Zdrowia</td><td class="sc"></td><td class="lb">30.89</td></tr>
+  <tr><td class="rk">28</td><td class="nm">Radio Eska</td><td class="sc"></td><td class="lb">30.05</td></tr>
+  <tr><td class="rk">29</td><td class="nm">Eska</td><td class="sc"></td><td class="lb">30.46</td></tr>
+  <tr><td class="rk">30</td><td class="nm">Sport.pl</td><td class="sc"></td><td class="lb">29.98</td></tr>
+  </tbody></table><p style="font-size:10px;font-family:'Space Mono',monospace;color:var(--muted);margin-top:8px;text-align:right">Dane: Mediapanel, luty 2026</p></div>
+
+  <!-- Remaining detail tabs - generated via JS for brevity -->
+  <div class="tab-panel" id="tab-d-dru"></div>
+  <div class="tab-panel" id="tab-d-pv"></div>
+  <div class="tab-panel" id="tab-d-time"></div>
+  <div class="tab-panel" id="tab-d-cyt"></div>
+  <div class="tab-panel" id="tab-d-yt"></div>
+  <div class="tab-panel" id="tab-d-fbint"></div>
+  <div class="tab-panel" id="tab-d-fbvid"></div>
+  <div class="tab-panel" id="tab-d-igint"></div>
+  <div class="tab-panel" id="tab-d-igvid"></div>
+  <div class="tab-panel" id="tab-d-ttint"></div>
+  <div class="tab-panel" id="tab-d-ttvid"></div>
+  <div class="tab-panel" id="tab-d-xint"></div>
+  <div class="tab-panel" id="tab-d-xvw"></div>
+</section>
+
+<!-- Q&A -->
+<section>
+  <div class="stitle">O rankingu WWW</div>
+
+  <div class="qa-list">
+  <div class="qa-item">
+    <div class="qa-q">Czym jest Wirtualny Wskaźnik Wpływu (WWW)?</div>
+    <div class="qa-a">Autorski projekt serwisu Wirtualne Media, który mierzy skumulowaną cyfrową aktywność polskich wydawców. To swego rodzaju „power ranking" — nie bada pojedynczej metryki, lecz łączy <strong>14 kategorii danych</strong> w jeden syntetyczny wskaźnik. Analizowane jest wyłącznie to, co dzieje się w internecie.</div>
+  </div>
+
+  <div class="qa-item">
+    <div class="qa-q">Jakie dane składają się na wynik WWW?</div>
+    <div class="qa-a">Wskaźnik bazuje na 14 kategoriach z odpowiednimi wagami: <strong>realni użytkownicy strony</strong> (waga ×2), odsłony strony (×1), średnia dzienna liczba RU (×1), średni czas na stronie (×1), cytowania (×1), odsłony YouTube (×1,5), interakcje na Facebooku (×1), odsłony wideo FB (×0,5), interakcje na Instagramie (×1), odsłony wideo IG (×0,5), interakcje na TikToku (×1), odsłony wideo TikTok (×0,5), interakcje na X/Twitterze (×0,5) i odsłony postów na X (×0,5).</div>
+  </div>
+
+  <div class="qa-item">
+    <div class="qa-q">Jak jest wyliczany wynik końcowy?</div>
+    <div class="qa-a">Metodą benchmarku. W każdej kategorii lider (najwyższy wynik bezwzględny) otrzymuje <strong>100 punktów</strong>. Reszta jest przeliczana proporcjonalnie — np. połowa wyniku lidera = 50 pkt. Następnie wyniki wszystkich kategorii są sumowane z uwzględnieniem wag i dzielone przez liczbę kategorii (14), dając finalny wskaźnik WWW.</div>
+  </div>
+
+  <div class="qa-item">
+    <div class="qa-q">Skąd pochodzą dane?</div>
+    <div class="qa-a">Z czterech źródeł: <strong>Mediapanel</strong> (dane o ruchu na stronach), <strong>Social Blade</strong> (YouTube), <strong>Sotrender</strong> (Facebook, Instagram, TikTok, X/Twitter — ok. 600 profili) oraz <strong>Mediaboard</strong> (cytowalność mediów).</div>
+  </div>
+
+  <div class="qa-item">
+    <div class="qa-q">Ile marek jest analizowanych i jak często?</div>
+    <div class="qa-a">Ranking obejmuje ok. <strong>130 marek medialnych</strong> i ponad <strong>600 profili social media</strong>. Wyniki publikowane są <strong>co miesiąc</strong>. Jeśli medium ma kilka profili na danej platformie, ich wyniki się sumują — liczy się skumulowana aktywność marki.</div>
+  </div>
+
+  </div><!-- /qa-list -->
+
+  <div style="margin-top:32px;padding-top:24px;border-top:1px solid var(--border)">
+    <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:12px">Lista analizowanych marek</div>
+    <p style="font-size:12px;color:var(--muted);line-height:1.8">Android, Antyweb, Bankier, Benchmark, Bezprawnik, Biznes Info, Business Insider, Canal Plus Sport, Chip, Defence24, Dla Handlu, Do Rzeczy, Dobreprogramy, Donald, Dziennik Bałtycki, Dziennik Gazeta Prawna, Dziennik Zachodni, Dziennik Łódzki, Dziennik.pl, Elle Polska, Radio Eska, Eurosport Polska, Express Bydgoski, Express Ilustrowany, Fakt, Filmweb, Forbes, Forsal, Gazeta.pl, Gazeta Krakowska, Gazeta Pomorska, Gazeta Wrocławska, Gazeta Wyborcza, Glamour, Głos Koszaliński, Głos Szczeciński, Głos Wielkopolski, Gol24, Goniec, Gry Online, GSMmaniak, IT Hardware, Interia, Interia Sport, Infor.pl, Jastrząb Post, Kanał Sportowy, Kanał Zero, Kobieta.pl, Komputer Świat, Kozaczek, Krytyka Polityczna, Lubimy Czytać, Medonet, Medycyna Praktyczna, Meczyki, Miejski Reporter, Money, Na Ekranie, naTemat, Nasze Miasto, New Once, Newsweek, Niebezpiecznik, Niezależna, Nowiny24, Nowości.com.pl, O2, Ofeminin, OKO.press, Onet, Pacjenci, Party, Plejada, Plotek, Polityka, Polki, Polsat, Polsat News, Polsat Sport, Polskie Radio, Polskie Radio 24, Pomponik, Portal Samorządowy, PPE, Przegląd Sportowy, Pudelek, Puls Biznesu, Pyszności, Radio Zet, RMF FM, RMF24, Rzeczpospolita, Rynek Zdrowia, Smakosze, Spider's Web, Sport.pl, Super Express, Świat Gwiazd, Tabletowo, Telepolis, TOK FM, Transfery, Trójmiasto, TVN, TVN24, TVP, TVP Info, TVP Sport, TV Republika, Viva, Vogue Polska, Warszawa w Pigułce, Weszło, Wirtualnemedia, Wizaż, WNP, Wirtualna Polska, WP Sportowefakty, wPolityce, wPolsce24, Wprost, Wysokie Obcasy, Zwierciadło, XYZ.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-brand">WIRTUALNY WSKAŹNIK WPŁYWU · LUTY 2026</div>
+  <div class="footer-source">ŹRÓDŁO: WIRTUALNEMEDIA.PL · 24.03.2026</div>
+</footer>
+
+</div>
+
+<script>
+// Tab switching for both tab groups
+document.querySelectorAll('.tab-nav').forEach(nav => {
+  nav.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      nav.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      // Find parent section, then toggle panels
+      const section = nav.closest('section');
+      section.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      const target = section.querySelector('#tab-' + btn.dataset.tab);
+      if(target) target.classList.add('active');
+    });
+  });
+});
+
+// Populate detail tables from data
+const detailData = {
+  'd-dru': {title:'Średnia dzienna liczba RU', source:'Mediapanel', rows:[
+    ['Interia','4 586 937','100.00'],['Wirtualna Polska','4 208 054','91.74'],['Onet','4 429 595','96.57'],['O2','','34.50'],['Gazeta.pl','','34.29'],['TVN24','','29.16'],['Fakt','','25.61'],['Business Insider','','21.69'],['Gazeta Wyborcza','','21.23'],['RMF24','','20.14'],['Sport.pl','','18.83'],['Filmweb','','17.48'],['Dziennik','','17.07'],['TVP','','16.94'],['Infor','','16.28'],['RMF FM','','16.02'],['Money','','15.89'],['Pomponik','','15.12'],['Super Express','','13.63'],['Pudelek','','13.60'],['Wprost','','12.96'],['Polskie Radio24','','12.91'],['Polsat News','','11.65'],['Portal Samorządowy','','11.40'],['Goniec','','11.26'],['Nasze Miasto','','10.90'],['Forsal','','10.66'],['Medonet','','10.17'],['Rynek Zdrowia','','9.96'],['WNP','','9.87']]},
+  'd-pv': {title:'Odsłony strony WWW', source:'Mediapanel', rows:[
+    ['Onet','1 377 324 723','100.00'],['Interia','1 081 352 992','78.51'],['Wirtualna Polska','884 434 626','64.21'],['Gazeta.pl','','14.36'],['Filmweb','','13.37'],['O2','','12.56'],['TVP','','8.56'],['TVN24','','7.81'],['Fakt','','5.71'],['Sport.pl','','4.59'],['RMF24','','4.44'],['Super Express','','4.33'],['Pudelek','','4.30'],['Nasze Miasto','','4.27'],['Dziennik','','4.18'],['Gazeta Wyborcza','','3.85'],['Business Insider','','3.66'],['Polsat News','','3.12'],['Bankier','','3.10'],['Money','','2.76'],['Pomponik','','2.59'],['RMF FM','','2.50'],['Trójmiasto','','2.49'],['Infor','','2.34'],['Wprost','','2.19'],['Radio Eska','','2.14'],['Polskie Radio24','','2.04'],['Plotek','','1.98'],['Goniec','','1.93'],['Niezależna','','1.87']]},
+  'd-time': {title:'Średni czas na stronie', source:'Mediapanel', rows:[
+    ['TVP','2h 01m 26s','100.00'],['Onet','1h 34m 15s','77.62'],['Wirtualna Polska','1h 18m 49s','64.91'],['TV Republika','','60.72'],['Interia','','49.82'],['O2','','21.36'],['Polki','','19.63'],['Radio Eska','','16.82'],['Kobieta.pl','','16.54'],['Gazeta.pl','','14.99'],['Radio Zet','','14.11'],['TVN24','','13.48'],['Niezależna','','13.44'],['Pudelek','','13.41'],['Gazeta Wyborcza','','13.16'],['RMF FM','','11.03'],['Fakt','','10.90'],['Sport.pl','','10.42'],['90minut','','9.10'],['Weszło','','9.02'],['RMF24','','8.96'],['Pomponik','','8.70'],['Do Rzeczy','','8.51'],['Business Insider','','8.41'],['Bankier','','8.24'],['Krytyka Polityczna','','8.15'],['Polsat News','','8.13'],['Trójmiasto','','7.18'],['Filmweb','','6.96'],['TVP Info','','6.91']]},
+  'd-cyt': {title:'Cytowania', source:'Mediaboard', rows:[
+    ['Wirtualna Polska','2262','100.00'],['TVN24','1997','88.28'],['RMF FM','1915','84.66'],['Polsat News','','83.51'],['Onet','','78.56'],['Rzeczpospolita','','73.56'],['Radio Zet','','46.29'],['TVP','','45.00'],['TVP Info','','44.69'],['Gazeta Wyborcza','','40.19'],['Interia','','37.98'],['TVN','','36.16'],['Super Express','','33.47'],['Fakt','','32.36'],['Polskie Radio','','32.27'],['Gazeta Prawna','','31.03'],['TOK FM','','30.95'],['TV Republika','','28.25'],['Business Insider','','20.34'],['Polsat Sport','','17.46'],['RMF24','','15.65'],['Newsweek','','12.29'],['Rynek Zdrowia','','11.67'],['Radio Eska','','11.67'],['Money','','11.10'],['Forbes','','10.21'],['Viva','','9.81'],['Sport.pl','','9.59'],['Kanał Zero','','9.46'],['Wirtualnemedia','','9.15']]},
+  'd-yt': {title:'Odsłony na YouTube', source:'Social Blade', rows:[
+    ['Kanał Zero','86 088 242','100.00'],['TV Republika','58 404 669','67.84'],['Super Express','32 706 112','37.99'],['Polsat','','36.66'],['Polsat News','','28.56'],['TVN','','25.49'],['wPolsce24','','19.30'],['Radio Zet','','18.98'],['TVP Info','','15.10'],['Wirtualna Polska','','14.89'],['Kozaczek','','10.36'],['Kanał Sportowy','','10.10'],['Goniec','','8.20'],['Zwierciadło','','7.86'],['Meczyki','','7.27'],['Weszło','','6.21'],['TVP','','6.05'],['Sport.pl','','5.94'],['Onet','','5.30'],['TVN24','','5.25'],['naTemat','','4.63'],['Świat Gwiazd','','4.15'],['Pudelek','','4.08'],['TOK FM','','4.00'],['Fakt','','3.51'],['Radio Eska','','3.15'],['Viva','','3.14'],['RMF24','','2.52'],['Pomponik','','2.06'],['Bankier','','2.04']]},
+  'd-fbint': {title:'Interakcje na Facebooku', source:'Sotrender', rows:[
+    ['Wirtualna Polska','3 112 765','100.00'],['Onet','2 616 578','84.06'],['Goniec','2 261 071','72.64'],['Super Express','','66.39'],['Kanał Zero','','53.13'],['TVN24','','39.58'],['TVP Info','','34.06'],['TV Republika','','27.38'],['Gazeta.pl','','25.67'],['TVP','','25.49'],['Radio Eska','','23.81'],['wPolsce24','','20.72'],['Interia','','20.46'],['Świat Gwiazd','','18.72'],['Polskie Radio24','','17.57'],['Polsat Sport','','16.71'],['Polsat News','','13.89'],['Party','','12.48'],['Gazeta Wyborcza','','12.32'],['Kozaczek','','11.90'],['TVN','','11.73'],['Meczyki','','11.46'],['Polsat','','11.44'],['Money','','10.83'],['Viva','','9.32'],['wPolityce','','8.87'],['Radio Zet','','8.74'],['OKO.press','','8.00'],['naTemat','','7.80'],['Donald','','7.13']]},
+  'd-fbvid': {title:'Odsłony wideo na Facebooku', source:'Sotrender', rows:[
+    ['Wirtualna Polska','115 274 706','100.00'],['Kanał Zero','90 968 379','78.91'],['TVP','79 677 184','69.12'],['Super Express','','64.17'],['TVP Info','','31.42'],['Party','','30.29'],['TVN','','27.94'],['Polsat Sport','','26.78'],['Polsat','','23.42'],['Kozaczek','','22.29'],['Goniec','','20.89'],['Polsat News','','16.89'],['TVN24','','16.59'],['Radio Eska','','16.27'],['wPolsce24','','15.39'],['Gazeta.pl','','15.13'],['Onet','','15.09'],['Meczyki','','13.36'],['Jastrząb Post','','12.46'],['Świat Gwiazd','','12.04'],['Plotek','','11.91'],['Sport.pl','','9.81'],['Interia','','9.74'],['Pomponik','','9.28'],['TV Republika','','8.46'],['Radio Zet','','7.67'],['Dziennik Zachodni','','7.30'],['ePoznań','','6.93'],['Polskie Radio24','','6.40'],['Pudelek','','5.90']]},
+  'd-igint': {title:'Interakcje na Instagramie', source:'Sotrender', rows:[
+    ['Meczyki','1 911 844','100.00'],['Elle','1 036 192','54.20'],['Kanał Zero','827 503','43.28'],['Polsat Sport','','34.73'],['Kanał Sportowy','','29.49'],['TVN','','27.43'],['Glamour','','23.58'],['Polsat','','17.53'],['TVN24','','16.52'],['TVP','','15.98'],['Radio Eska','','13.90'],['Kozaczek','','13.48'],['Donald','','13.29'],['Filmweb','','11.82'],['Vogue','','11.40'],['TVP Info','','10.68'],['OKO.press','','10.61'],['Onet','','9.33'],['New Once','','8.74'],['RMF FM','','8.65'],['Radio Zet','','6.96'],['Super Express','','6.55'],['Gazeta.pl','','6.52'],['Świat Gwiazd','','6.23'],['Fakt','','5.55'],['Weszło','','4.72'],['TOK FM','','4.30'],['Zwierciadło','','3.81'],['Wirtualna Polska','','3.77'],['Goniec','','3.67']]},
+  'd-igvid': {title:'Odsłony wideo na Instagramie', source:'Sotrender', rows:[
+    ['Kanał Zero','76 906 473','100.00'],['TVN','26 457 592','34.40'],['Kozaczek','20 727 521','26.95'],['Kanał Sportowy','','22.61'],['Polsat','','20.38'],['TVP','','20.01'],['TVN24','','19.10'],['Elle','','18.73'],['RMF FM','','16.12'],['Świat Gwiazd','','12.95'],['Meczyki','','12.05'],['Radio Zet','','11.35'],['Radio Eska','','11.24'],['Super Express','','11.08'],['Tabletowo','','10.31'],['Glamour','','8.01'],['Goniec','','7.99'],['Onet','','6.56'],['TVP Info','','6.44'],['Donald','','6.15'],['Wirtualna Polska','','5.78'],['Pomponik','','5.44'],['New Once','','5.43'],['Polsat News','','5.29'],['Gazeta.pl','','5.01'],['Vogue','','4.82'],['Party','','4.72'],['Polskie Radio','','3.92'],['TOK FM','','3.61'],['Filmweb','','3.44']]},
+  'd-ttint': {title:'Interakcje na TikToku', source:'Sotrender', rows:[
+    ['Polsat','2 308 821','100.00'],['Goniec','2 253 524','97.60'],['TVN','1 627 099','70.47'],['Kozaczek','','65.62'],['Elle','','37.97'],['Kanał Zero','','36.59'],['Polsat Sport','','31.77'],['Super Express','','27.94'],['Wirtualna Polska','','22.91'],['Kanał Sportowy','','17.18'],['TVN24','','16.50'],['Glamour','','14.66'],['Meczyki','','14.15'],['Radio Eska','','13.64'],['Gazeta.pl','','12.91'],['Świat Gwiazd','','12.51'],['Pudelek','','12.16'],['Onet','','9.24'],['Radio Zet','','8.50'],['New Once','','7.88'],['Filmweb','','6.80'],['Trójmiasto','','6.71'],['Sport.pl','','6.54'],['RMF FM','','5.94'],['TVP','','5.87'],['Fakt','','5.09'],['Plotek','','3.86'],['TVP Info','','3.44'],['Polsat News','','2.75'],['Jastrząb Post','','2.73']]},
+  'd-ttvid': {title:'Odsłony wideo na TikToku', source:'Sotrender', rows:[
+    ['Goniec','71 565 244','100.00'],['Polsat','62 801 966','87.75'],['Kozaczek','53 572 868','74.86'],['TVN','','57.12'],['Polsat Sport','','50.69'],['Super Express','','35.48'],['Kanał Zero','','34.69'],['Wirtualna Polska','','30.00'],['TVN24','','18.03'],['Kanał Sportowy','','16.15'],['Świat Gwiazd','','15.77'],['Onet','','15.13'],['Gazeta.pl','','13.70'],['Radio Eska','','11.09'],['Meczyki','','10.88'],['Elle','','10.84'],['Glamour','','9.08'],['TVP','','8.80'],['Sport.pl','','8.25'],['Radio Zet','','8.17'],['Pudelek','','8.06'],['Trójmiasto','','7.98'],['RMF FM','','6.98'],['New Once','','6.50'],['Filmweb','','6.42'],['Fakt','','6.23'],['Plejada','','5.76'],['TOK FM','','5.02'],['Plotek','','4.74'],['Wizaż','','4.10']]},
+  'd-xint': {title:'Interakcje na X/Twitter', source:'Sotrender', rows:[
+    ['Kanał Zero','277 639','100.00'],['TVP Info','227 160','81.82'],['Donald','215 896','77.76'],['TV Republika','','70.51'],['TVN24','','49.70'],['Do Rzeczy','','39.51'],['Kanał Sportowy','','37.15'],['Meczyki','','29.71'],['Goniec','','28.72'],['Weszło','','28.18'],['wPolityce','','26.61'],['Super Express','','26.05'],['wPolsce24','','25.78'],['Polsat News','','24.96'],['Polsat Sport','','24.02'],['RMF24','','20.64'],['Niezależna','','15.48'],['Radio Zet','','14.42'],['Onet','','12.80'],['OKO.press','','9.86'],['Rzeczpospolita','','8.97'],['Defence24','','8.41'],['Newsweek','','5.55'],['Transfery','','5.25'],['Niebezpiecznik','','5.02'],['Interia','','3.52'],['Sport.pl','','2.75'],['Wirtualna Polska','','2.70'],['TOK FM','','2.43'],['Polityka','','2.37']]},
+  'd-xvw': {title:'Odsłony postów na X/Twitter', source:'Sotrender', rows:[
+    ['Kanał Zero','26 113 495','100.00'],['Kanał Sportowy','18 071 193','69.20'],['Meczyki','12 487 604','47.82'],['Goniec','','45.11'],['Weszło','','43.82'],['TVN24','','41.05'],['Donald','','39.66'],['TVP Info','','26.13'],['Polsat Sport','','24.33'],['RMF24','','23.55'],['Polsat News','','22.30'],['TV Republika','','16.19'],['Do Rzeczy','','15.32'],['Rzeczpospolita','','13.87'],['Transfery','','13.20'],['Onet','','12.33'],['Radio Zet','','11.34'],['Defence24','','8.65'],['Super Express','','7.20'],['OKO.press','','6.85'],['wPolityce','','5.98'],['Newsweek','','5.95'],['Niebezpiecznik','','4.80'],['wPolsce24','','4.77'],['RMF FM','','4.63'],['Wirtualna Polska','','4.52'],['Interia','','4.42'],['Dziennik','','4.01'],['Fakt','','3.95'],['Niezależna','','3.52']]}
+};
+
+// Build detail tables
+Object.entries(detailData).forEach(([key, data]) => {
+  const panel = document.getElementById('tab-' + key);
+  if(!panel || panel.innerHTML.trim()) return;
+  let html = `<table class="rtable"><thead><tr><th>#</th><th>${data.title}</th><th style="text-align:right">Liczba</th><th style="text-align:right">Benchmark</th></tr></thead><tbody>`;
+  data.rows.forEach((r, i) => {
+    html += `<tr><td class="rk">${i+1}</td><td class="nm">${r[0]}</td><td class="sc">${r[1]}</td><td class="lb">${r[2]}</td></tr>`;
+  });
+  html += `</tbody></table><p style="font-size:10px;font-family:'Space Mono',monospace;color:var(--muted);margin-top:8px;text-align:right">Dane: ${data.source}, luty 2026</p>`;
+  panel.innerHTML = html;
+});
+
+// Intersection Observer for fade-in
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)'} });
+}, {threshold:0.1});
+
+document.querySelectorAll('.ins-card,.pcard,.move-card,.cat-row,.qa-item').forEach((el,i) => {
+  el.style.opacity='0';el.style.transform='translateY(16px)';
+  el.style.transition=`opacity 0.5s ease ${i*0.05}s, transform 0.5s ease ${i*0.05}s`;
+  obs.observe(el);
+});
+</script>
+</body>
+</html>
