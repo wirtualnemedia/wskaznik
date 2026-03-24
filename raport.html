@@ -1,0 +1,1591 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meta-analiza WWW — Wrzesień 2025 do Luty 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #070d17;
+  --surface: #0c1525;
+  --surface2: #101d32;
+  --border: #182d4a;
+  --border-dim: #142540;
+  --navy: #132b46;
+  --orange: #ff5e08;
+  --orange2: #ff8438;
+  --orange-dim: rgba(255,94,8,0.15);
+  --orange-glow: rgba(255,94,8,0.06);
+  --text: #e4eaf2;
+  --text-bright: #ffffff;
+  --muted: #5e83a8;
+  --green: #34d399;
+  --green-dim: rgba(52,211,153,0.12);
+  --red: #f87171;
+  --red-dim: rgba(248,113,113,0.12);
+  --gold: #fbbf24;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Syne',sans-serif;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+
+body::before{
+  content:'';position:fixed;inset:0;
+  background:radial-gradient(ellipse at 50% 0%, rgba(19,43,70,0.4) 0%, transparent 60%);
+  pointer-events:none;z-index:0;
+}
+
+.container{max-width:660px;margin:0 auto;padding:0 20px;position:relative;z-index:1}
+
+/* HEADER */
+header{padding:64px 0 48px;border-bottom:1px solid var(--border);margin-bottom:0;position:relative;overflow:hidden}
+header::after{content:'WWW';position:absolute;right:-20px;top:50%;transform:translateY(-50%);font-size:200px;font-weight:800;color:rgba(255,94,8,0.03);pointer-events:none;letter-spacing:-8px;line-height:1}
+.label{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:16px}
+h1{font-size:clamp(32px,6vw,56px);font-weight:800;line-height:1.05;letter-spacing:-2px;margin-bottom:12px}
+h1 span{color:var(--orange)}
+.subtitle{color:var(--muted);font-family:'Space Mono',monospace;font-size:12px;margin-top:16px}
+.header-stats{display:flex;gap:28px;margin-top:28px;padding-top:20px;border-top:1px solid var(--border);flex-wrap:wrap}
+.hstat-val{font-family:'Space Mono',monospace;font-size:20px;font-weight:700;color:var(--orange)}
+.hstat-lbl{font-size:11px;color:var(--muted);margin-top:2px}
+
+/* SECTIONS */
+section{padding:56px 0;border-bottom:1px solid var(--border)}
+.stitle{font-family:'Inter',system-ui,sans-serif;font-weight:800;letter-spacing:-0.02em;font-family:'Inter',system-ui,sans-serif;font-weight:800;letter-spacing:-0.02em;font-family:'Space Mono',monospace;font-size:13px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:24px;display:flex;align-items:center;gap:10px}
+.stitle::before{content:'';width:6px;height:6px;background:var(--orange);border-radius:50%;flex-shrink:0}
+
+/* PODIUM */
+.podium{display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:12px;align-items:end}
+.pcard{background:var(--surface);border:1px solid var(--border);padding:24px 20px;text-align:center;transition:transform 0.25s,border-color 0.25s;cursor:default;position:relative}
+.pcard:hover{transform:translateY(-4px);border-color:var(--orange)}
+.pcard.first{border-color:var(--orange);background:linear-gradient(135deg,#0c1525,#101d32);padding:32px 20px}
+.pcard.first::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--orange)}
+.prank{font-family:'Space Mono',monospace;font-size:40px;font-weight:700;line-height:1;margin-bottom:12px;opacity:0.15}
+.first .prank{opacity:1;color:var(--orange);font-size:48px}
+.second .prank{opacity:0.5;color:var(--gold)}
+.third .prank{color:var(--orange2);opacity:0.4}
+.pname{font-size:18px;font-weight:700;margin-bottom:4px;letter-spacing:-0.3px}
+.first .pname{font-size:22px;color:var(--orange);white-space:nowrap}
+.pmeta{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px}
+.pscore{font-family:'Space Mono',monospace;font-size:26px;font-weight:700}
+.first .pscore{font-size:34px;color:var(--orange)}
+.pbar{margin-top:12px;height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+.pbar-fill{height:100%;border-radius:2px;background:var(--orange)}
+.second .pbar-fill{background:var(--gold)}
+.third .pbar-fill{background:var(--orange2)}
+.pchange{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;margin-top:10px;display:inline-block;padding:2px 8px;border-radius:3px}
+.pchange.up{color:var(--green);background:var(--green-dim)}
+.pchange.down{color:var(--red);background:var(--red-dim)}
+.pchange.same{color:var(--muted)}
+
+/* HIGHLIGHT */
+.highlight{background:linear-gradient(135deg,#0c1525,#162032);border:1px solid var(--orange);padding:32px;position:relative;margin:0}
+.highlight::before{content:'★ WYDARZENIE MIESIĄCA';position:absolute;top:-10px;left:24px;background:var(--orange);color:#fff;font-size:10px;font-family:'Space Mono',monospace;letter-spacing:2px;padding:3px 12px;font-weight:700}
+.hl-grid{display:grid;grid-template-columns:auto 1fr;gap:32px;align-items:center}
+.hl-score{font-family:'Space Mono',monospace;font-size:64px;font-weight:700;color:var(--orange);line-height:1}
+.hl-score-sub{font-size:10px;color:var(--muted);font-family:'Space Mono',monospace;text-align:center;margin-top:4px}
+.hl-brand{font-size:20px;font-weight:800;margin-bottom:4px}
+.hl-desc{font-size:13px;color:var(--muted);line-height:1.7;max-width:480px}
+.hl-desc strong{color:var(--orange);font-weight:600}
+
+/* INSIGHTS */
+.ins-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.ins-card{background:var(--surface);border:1px solid var(--border);padding:24px;transition:border-color 0.2s}
+.ins-card:hover{border-color:rgba(255,94,8,0.3)}
+.ins-num{font-family:'Space Mono',monospace;font-size:11px;color:var(--orange);margin-bottom:10px;letter-spacing:2px}
+.ins-title{font-size:16px;font-weight:700;line-height:1.3;margin-bottom:8px;letter-spacing:-0.3px}
+.ins-body{font-size:13px;color:var(--muted);line-height:1.7}
+.ins-body strong{color:var(--text);font-weight:600}
+
+/* CATEGORY WINNERS */
+.cat-list{display:flex;flex-direction:column;gap:10px}
+.cat-row{display:grid;grid-template-columns:110px 1fr 60px;align-items:center;gap:14px}
+.cat-name{font-size:11px;font-family:'Space Mono',monospace;color:var(--muted);text-align:right;letter-spacing:0.5px}
+.cat-bar-wrap{height:28px;background:var(--surface);border:1px solid var(--border);overflow:hidden;position:relative}
+.cat-bar-fill{height:100%;display:flex;align-items:center;padding-left:12px;font-size:12px;font-weight:700;white-space:nowrap;background:var(--orange);color:#fff}
+.cat-bar-fill.c2{background:#7b61ff;color:#fff}
+.cat-bar-fill.c3{background:var(--orange2);color:#fff}
+.cat-bar-fill.c4{background:var(--gold);color:#fff}
+.cat-bar-fill.c5{background:#c084fc;color:#fff}
+.cat-bar-fill.c6{background:#fb923c;color:#fff}
+.cat-bar-fill.c7{background:#818cf8;color:#fff}
+.cat-winner-badge{font-size:11px;font-weight:600;color:var(--text)}
+
+/* MOVERS */
+.move-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.move-col-title{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;padding-bottom:8px;border-bottom:2px solid var(--border)}
+.move-col-title.up{color:var(--green);border-color:var(--green)}
+.move-col-title.down{color:var(--red);border-color:var(--red)}
+.move-card{background:var(--surface);border:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;gap:12px;margin-bottom:6px;transition:border-color 0.2s}
+.move-card:hover{border-color:rgba(255,94,8,0.3)}
+.move-delta{font-family:'Space Mono',monospace;font-size:14px;font-weight:700;min-width:36px;text-align:center}
+.move-delta.up{color:var(--green)}
+.move-delta.down{color:var(--red)}
+.move-name{font-size:13px;font-weight:700}
+.move-detail{font-size:10px;color:var(--muted);font-family:'Space Mono',monospace}
+.move-pos{margin-left:auto;font-family:'Space Mono',monospace;font-size:11px;color:var(--muted)}
+
+/* TABS */
+.tab-nav{display:flex;gap:4px;overflow-x:auto;padding-bottom:4px;margin-bottom:20px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.tab-nav::-webkit-scrollbar{display:none}
+.tab-btn{font-family:'Space Mono',monospace;font-size:11px;padding:8px 14px;border:1px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer;white-space:nowrap;transition:all 0.2s;letter-spacing:0.5px}
+.tab-btn:hover{border-color:var(--muted);color:var(--text)}
+.tab-btn.active{background:var(--orange);color:#fff;border-color:var(--orange)}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* RANKING TABLE */
+.rtable{width:100%;border-collapse:separate;border-spacing:0;background:var(--surface);border:1px solid var(--border);overflow:hidden;min-width:400px}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -4px;padding:0 4px}
+.rtable th{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:10px 12px;text-align:left;background:var(--surface2);border-bottom:2px solid var(--border)}
+.rtable th:last-child{text-align:right}
+.rtable th.tc{text-align:center}
+.rtable td{padding:8px 12px;font-size:13px;border-bottom:1px solid var(--border-dim)}
+.rtable tr:last-child td{border-bottom:none}
+.rtable tr:hover td{background:var(--orange-glow)}
+.rk{font-family:'Space Mono',monospace;font-weight:700;color:var(--muted);width:40px}
+.rtable tr:nth-child(1) .rk{color:var(--orange)}
+.rtable tr:nth-child(2) .rk{color:var(--gold)}
+.rtable tr:nth-child(3) .rk{color:var(--orange2)}
+.nm{font-weight:600;color:var(--text)}
+.rtable tr:nth-child(1) .nm{font-weight:700}
+.sc{font-family:'Space Mono',monospace;font-weight:600;text-align:right;color:var(--text)}
+.ch{font-family:'Space Mono',monospace;font-size:11px;font-weight:600;text-align:center;width:56px}
+.ch.up{color:var(--green)}
+.ch.down{color:var(--red)}
+.ch.same{color:var(--muted)}
+/* For detailed tables without change column */
+.lb{font-family:'Space Mono',monospace;font-size:12px;text-align:right;color:var(--muted)}
+
+/* Q&A */
+.qa-list{counter-reset:qanum}
+.qa-item{border-top:1px solid var(--border);padding:20px 0}
+.qa-item:first-of-type{border-top:none;padding-top:0}
+.qa-q{font-size:14px;font-weight:700;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;cursor:pointer}
+.qa-q::before{counter-increment:qanum;content:counter(qanum);display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;background:var(--orange);color:#fff;font-size:10px;font-family:'Space Mono',monospace;border-radius:3px;flex-shrink:0;margin-top:1px;font-weight:700}
+.qa-a{font-size:13px;color:var(--muted);line-height:1.7;padding-left:32px}
+.qa-a strong{color:var(--text);font-weight:600}
+
+/* FOOTER */
+footer{padding:32px 0 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.footer-brand{font-size:11px;font-family:'Space Mono',monospace;color:var(--muted);letter-spacing:1px}
+.footer-source{font-size:10px;font-family:'Space Mono',monospace;color:var(--border);letter-spacing:1px}
+
+@media(max-width:700px){
+  .stitle{font-size:22px !important; line-height:1.2;}
+
+  .podium{grid-template-columns:1fr;align-items:stretch}
+  .pcard.first{order:-1}
+  .cat-row{grid-template-columns:70px 1fr 48px;gap:6px}
+  .cat-name{font-size:9px;letter-spacing:0}
+  .cat-bar-fill{font-size:10px;padding-left:8px}
+  .move-grid{grid-template-columns:1fr}
+  .hl-grid{grid-template-columns:1fr;text-align:center}
+  .hl-score{font-size:48px}
+  footer{flex-direction:column;text-align:center}
+  .header-stats{gap:16px}
+  .ins-grid{grid-template-columns:1fr}
+  .tab-nav{gap:3px}
+  .tab-btn{font-size:10px;padding:6px 10px}
+  .rtable td{padding:7px 8px;font-size:12px}
+  .rtable th{padding:8px 8px;font-size:9px}
+  .rk{width:28px;font-size:11px}
+  .ch{width:40px;font-size:10px}
+  .sc{font-size:12px}
+  .nm{font-size:12px}
+  h1{font-size:28px;letter-spacing:-1px}
+  .subtitle{font-size:10px}
+  .container{padding:0 16px}
+  .prank{font-size:28px}
+  .first .prank{font-size:36px}
+  .pname{font-size:15px}
+  .first .pname{font-size:18px}
+  .pscore{font-size:20px}
+  .first .pscore{font-size:28px}
+  .stitle{font-family:'Inter',system-ui,sans-serif;font-weight:800;letter-spacing:-0.02em;font-size:10px;letter-spacing:2px}
+  section{padding:40px 0}
+  .ins-card{padding:18px}
+  .ins-title{font-size:14px}
+  .ins-body{font-size:12px}
+  .move-card{padding:10px 12px}
+  .move-name{font-size:12px}
+  .highlight{padding:24px 16px}
+  .hl-brand{font-size:16px}
+  .hl-desc{font-size:12px}
+}
+
+/* META REPORT */
+.matrix{
+  position:relative;
+  height:420px;
+  border:1px solid var(--border);
+  background:
+    linear-gradient(to right, transparent 49.8%, var(--border) 49.8%, var(--border) 50.2%, transparent 50.2%),
+    linear-gradient(to bottom, transparent 49.8%, var(--border) 49.8%, var(--border) 50.2%, transparent 50.2%),
+    linear-gradient(180deg, rgba(255,94,8,0.03), rgba(19,43,70,0.03));
+  overflow:hidden;
+}
+.matrix-label{
+  position:absolute;
+  font-family:'Inter',system-ui,sans-serif;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:0.01em;
+  color:var(--muted);
+  text-transform:none;
+}
+.matrix-label.x-left{left:18px;bottom:10px}
+.matrix-label.x-right{right:18px;bottom:10px}
+.matrix-label.y-top{left:12px;top:18px;transform:rotate(-90deg) translateX(-100%);transform-origin:left top}
+.matrix-label.y-bottom{left:12px;bottom:18px;transform:rotate(-90deg) translateX(-100%);transform-origin:left bottom}
+.matrix-card{
+  position:absolute;
+  width:180px;
+  background:linear-gradient(135deg, var(--surface), var(--surface2));
+  border:1px solid var(--border);
+  padding:14px;
+  box-shadow:0 10px 24px rgba(0,0,0,0.18);
+}
+.matrix-card strong{
+  display:block;
+  font-size:16px;
+  line-height:1.25;
+  margin-bottom:8px;
+  color:var(--text-bright);
+  font-family:'Inter',system-ui,sans-serif;
+  font-weight:800;
+}
+.matrix-card span{
+  font-size:13px;
+  color:var(--muted);
+  line-height:1.55;
+  font-family:'Inter',system-ui,sans-serif;
+}
+.matrix-card.orange{border-color:var(--orange)}
+.matrix-card.purple{border-color:#7b61ff}
+.matrix-card.gold{border-color:var(--gold)}
+.matrix-card.teal{border-color:#22d3ee}
+
+.model-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+}
+.model{
+  background:var(--surface);
+  border:1px solid var(--border);
+  padding:22px;
+}
+.model-top{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px
+}
+.model-title{font-size:18px;font-weight:800;letter-spacing:-0.4px}
+.model-tag{
+  font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;border:1px solid var(--border);padding:4px 8px;color:var(--orange)
+}
+.model-body{font-size:13px;color:var(--muted);line-height:1.7}
+.model-body strong{color:var(--text)}
+.model-risk{
+  margin-top:14px;padding-top:12px;border-top:1px solid var(--border);
+  font-size:11px;font-family:'Space Mono',monospace;color:var(--orange2)
+}
+
+.signal-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+}
+.signal{
+  background:var(--surface);
+  border:1px solid var(--border);
+  padding:18px;
+}
+.signal-kicker{
+  font-family:'Space Mono',monospace;font-size:10px;color:var(--orange);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px
+}
+.signal-title{font-size:16px;font-weight:800;line-height:1.3;margin-bottom:8px}
+.signal-text{font-size:13px;color:var(--muted);line-height:1.65}
+.signal-text strong{color:var(--text)}
+
+.meta-bars{display:flex;flex-direction:column;gap:10px}
+.meta-bar-row{display:grid;grid-template-columns:180px 1fr 82px;align-items:center;gap:14px}
+.meta-bar-row .lbl{font-size:12px;color:var(--muted);text-align:right;font-family:'Space Mono',monospace}
+.meta-bar-wrap{height:32px;background:var(--surface);border:1px solid var(--border);position:relative;overflow:hidden}
+.meta-bar-fill{
+  height:100%;display:flex;align-items:center;padding-left:12px;
+  background:linear-gradient(90deg,var(--orange),var(--orange2));
+  color:#fff;font-size:12px;font-weight:700
+}
+.meta-bar-fill.alt1{background:linear-gradient(90deg,#7b61ff,#9381ff)}
+.meta-bar-fill.alt2{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
+.meta-bar-fill.alt3{background:linear-gradient(90deg,#22d3ee,#38bdf8)}
+.meta-bar-fill.alt4{background:linear-gradient(90deg,#34d399,#10b981)}
+.meta-bar-fill.alt5{background:linear-gradient(90deg,#fb7185,#f43f5e)}
+.meta-bar-note{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted)}
+
+.quote-box{
+  border:1px solid var(--orange);
+  background:linear-gradient(135deg, rgba(255,94,8,0.08), rgba(19,43,70,0.04));
+  padding:28px;
+}
+.quote-box .q{
+  font-size:24px;font-weight:800;line-height:1.35;letter-spacing:-0.8px
+}
+.quote-box .q span{color:var(--orange)}
+.quote-box .a{
+  margin-top:12px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1.4px;color:var(--muted);text-transform:uppercase
+}
+
+.heat{
+  border:1px solid var(--border);
+  overflow:hidden;
+}
+.heat-head,.heat-row{
+  display:grid;
+  grid-template-columns:180px repeat(5,1fr);
+}
+.heat-head div{
+  background:var(--surface2);padding:12px 10px;border-right:1px solid var(--border);
+  font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.2px;color:var(--muted);text-transform:uppercase
+}
+.heat-row div{
+  padding:12px 10px;border-top:1px solid var(--border);border-right:1px solid var(--border);font-size:12px
+}
+.heat-row .rlabel{font-weight:700;background:var(--surface)}
+.heat .hi{background:rgba(255,94,8,0.18);color:var(--text)}
+.heat .mid{background:rgba(255,94,8,0.08);color:var(--text)}
+.heat .lo{color:var(--muted)}
+.heat .tag{font-family:'Space Mono',monospace;font-size:10px;color:var(--orange)}
+
+@media(max-width:700px){
+  .matrix{height:560px}
+  .matrix-card{width:140px;padding:10px}
+  .matrix-card strong{font-size:12px}
+  .matrix-card span{font-size:10px}
+  .model-grid,.signal-grid{grid-template-columns:1fr}
+  .meta-bar-row{grid-template-columns:1fr;gap:6px}
+  .meta-bar-row .lbl{text-align:left}
+  .heat-head,.heat-row{grid-template-columns:120px repeat(5, minmax(72px,1fr))}
+  .quote-box .q{font-size:18px}
+}
+
+
+header{position:relative}
+.wm-header-logo{
+  display:block;
+  width:min(320px, 52vw);
+  max-width:320px;
+  margin:0 0 14px 0;
+  opacity:1;
+}
+.label{
+  font-family:'Space Mono', monospace;
+  font-size:12px !important;
+  letter-spacing:2.2px !important;
+  color:var(--orange2) !important;
+}
+header h1{
+  font-family:'Inter',system-ui,sans-serif !important;
+  font-size:clamp(34px, 6vw, 58px) !important;
+  line-height:1.08 !important;
+  letter-spacing:-0.04em !important;
+  font-weight:900 !important;
+  max-width:1100px;
+}
+.subtitle{
+  font-family:'Inter',system-ui,sans-serif !important;
+  font-size:20px !important;
+  line-height:1.45 !important;
+  color:var(--muted) !important;
+  max-width:920px;
+}
+.header-stats{
+  display:grid !important;
+  grid-template-columns:repeat(4,1fr) !important;
+  gap:18px !important;
+  margin-top:26px !important;
+}
+.hstat-val{
+  font-family:'Inter',system-ui,sans-serif !important;
+  font-size:clamp(34px,4vw,54px) !important;
+  line-height:1 !important;
+  letter-spacing:-0.04em !important;
+  font-weight:900 !important;
+}
+.hstat-lbl{
+  font-family:'Inter',system-ui,sans-serif !important;
+  font-size:15px !important;
+  line-height:1.35 !important;
+  color:var(--muted) !important;
+}
+.signal{
+  padding:28px !important;
+}
+.signal-title{
+  font-family:'Inter',system-ui,sans-serif !important;
+  font-size:clamp(22px,2.1vw,34px) !important;
+  line-height:1.15 !important;
+  letter-spacing:-0.035em !important;
+  font-weight:900 !important;
+  max-width:92%;
+}
+.signal-text{
+  font-size:16px !important;
+  line-height:1.72 !important;
+  color:#95abd1 !important;
+}
+.signal-kicker{
+  font-size:12px !important;
+  letter-spacing:2px !important;
+}
+.quote-box .q{
+  font-family:'Inter',system-ui,sans-serif !important;
+  font-size:clamp(32px,4.2vw,58px) !important;
+  line-height:1.12 !important;
+  letter-spacing:-0.04em !important;
+  font-weight:900 !important;
+}
+.matrix{
+  height:520px !important;
+  margin-top:8px;
+}
+.matrix-label{
+  font-size:13px !important;
+  font-weight:700 !important;
+  color:#8da4ce !important;
+}
+.matrix-card{
+  width:230px !important;
+  padding:18px !important;
+  background:rgba(7,22,45,0.92) !important;
+  backdrop-filter: blur(2px);
+}
+.matrix-card strong{
+  font-size:17px !important;
+  line-height:1.25 !important;
+}
+.matrix-card span{
+  font-size:14px !important;
+  line-height:1.65 !important;
+  color:#95abd1 !important;
+}
+@media(max-width:900px){
+  .header-stats{grid-template-columns:repeat(2,1fr) !important;}
+  .signal-title{max-width:100%}
+}
+@media(max-width:700px){
+  .wm-header-logo{width:220px !important; margin-bottom:12px !important;}
+  .subtitle{font-size:16px !important;}
+  .signal{padding:18px !important;}
+  .signal-title{font-size:26px !important; line-height:1.18 !important;}
+  .signal-text{font-size:15px !important; line-height:1.68 !important;}
+  .matrix{height:760px !important;}
+  .matrix-card{width:170px !important; padding:14px !important;}
+  .matrix-card strong{font-size:15px !important;}
+  .matrix-card span{font-size:12px !important; line-height:1.55 !important;}
+}
+
+
+/* CLEANUP / UNIFICATION */
+:root{
+  --maxw: 1080px;
+}
+body, p, li, div, span, td, th { font-family:'Inter', system-ui, sans-serif; }
+.label, .stitle, .signal-kicker, .model-tag, .model-risk, .a, .meta-bar-note, .hstat-lbl {
+  font-family:'Space Mono', monospace !important;
+}
+.container{
+  width:min(var(--maxw), calc(100vw - 48px)) !important;
+}
+header{
+  padding-top: 8px !important;
+}
+header h1{
+  max-width: 980px !important;
+  font-size: clamp(28px, 5vw, 42px) !important;
+  line-height: 1.06 !important;
+  letter-spacing: -0.045em !important;
+  margin: 12px 0 16px !important;
+}
+.subtitle{
+  max-width: 860px !important;
+  font-size: clamp(17px, 2.1vw, 21px) !important;
+  line-height: 1.45 !important;
+  margin-bottom: 24px !important;
+}
+.header-stats{
+  grid-template-columns: repeat(4, minmax(0,1fr)) !important;
+  gap: 22px !important;
+}
+.header-stats > div{
+  min-width: 0 !important;
+}
+.hstat-val{
+  font-size: clamp(30px, 4vw, 48px) !important;
+  margin-bottom: 6px !important;
+}
+.hstat-lbl{
+  font-size: 11px !important;
+  line-height: 1.45 !important;
+  letter-spacing: 1px !important;
+}
+.stitle{
+  font-size: 16px !important;
+  line-height: 1.35 !important;
+  letter-spacing: 3px !important;
+}
+.quote-box{
+  padding: 34px 36px !important;
+}
+.quote-box .q{
+  font-size: clamp(28px, 4vw, 40px) !important;
+  line-height: 1.1 !important;
+  letter-spacing: -0.04em !important;
+  max-width: 920px !important;
+}
+.quote-box .a{
+  font-size: 10px !important;
+  letter-spacing: 1.6px !important;
+}
+.signal-grid{
+  grid-template-columns: repeat(3, minmax(0,1fr)) !important;
+  gap: 16px !important;
+  align-items: stretch !important;
+}
+.signal{
+  padding: 22px !important;
+  min-width: 0 !important;
+}
+.signal-title{
+  font-family:'Inter', system-ui, sans-serif !important;
+  font-size: clamp(17px, 2vw, 22px) !important;
+  line-height: 1.14 !important;
+  letter-spacing: -0.03em !important;
+  max-width: 100% !important;
+  word-break: normal !important;
+  overflow-wrap: anywhere !important;
+}
+.signal-text{
+  font-size: 14px !important;
+  line-height: 1.62 !important;
+  overflow-wrap: anywhere !important;
+}
+.matrix{
+  height: 500px !important;
+  overflow: hidden !important;
+}
+.matrix-card{
+  width: 200px !important;
+  padding: 16px !important;
+  box-sizing: border-box !important;
+}
+.matrix-card strong{
+  font-size: 15px !important;
+  line-height: 1.2 !important;
+  overflow-wrap: anywhere !important;
+}
+.matrix-card span{
+  font-size: 13px !important;
+  line-height: 1.55 !important;
+  overflow-wrap: anywhere !important;
+}
+.matrix-label{
+  font-size: 11px !important;
+  letter-spacing: 0 !important;
+}
+.model-grid{
+  grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+  gap: 18px !important;
+}
+.model{
+  min-width: 0 !important;
+}
+.model-title{
+  font-family:'Inter', system-ui, sans-serif !important;
+  font-size: clamp(18px, 2.2vw, 24px) !important;
+  line-height: 1.12 !important;
+  overflow-wrap: anywhere !important;
+}
+.model-tag{
+  font-size: 10px !important;
+  line-height: 1.5 !important;
+  letter-spacing: 1.6px !important;
+}
+.model-body{
+  font-size: 14px !important;
+  line-height: 1.7 !important;
+}
+.model-risk{
+  font-size: 11px !important;
+  line-height: 1.6 !important;
+}
+.ins-grid{
+  grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+}
+.ins-title{
+  font-family:'Inter', system-ui, sans-serif !important;
+  font-size: 18px !important;
+  line-height: 1.22 !important;
+  letter-spacing: -0.02em !important;
+}
+.ins-body{
+  font-size: 14px !important;
+  line-height: 1.65 !important;
+}
+.meta-bar-row{
+  grid-template-columns: 190px minmax(0,1fr) 90px !important;
+}
+.heat-head, .heat-row{
+  grid-template-columns: 180px repeat(5, minmax(0,1fr)) !important;
+}
+.heat-head div, .heat-row div{
+  overflow-wrap:anywhere !important;
+}
+@media (max-width: 1100px){
+  .container{ width:min(var(--maxw), calc(100vw - 32px)) !important; }
+  .signal-grid{ grid-template-columns: 1fr !important; }
+}
+@media (max-width: 800px){
+  .header-stats{
+    grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+    gap: 16px !important;
+  }
+  .quote-box{ padding: 24px !important; }
+  .matrix{
+    height: 760px !important;
+  }
+  .matrix-card{
+    width: 165px !important;
+    padding: 12px !important;
+  }
+  .matrix-card strong{ font-size: 14px !important; }
+  .matrix-card span{ font-size: 12px !important; }
+  .model-grid, .ins-grid{
+    grid-template-columns: 1fr !important;
+  }
+}
+
+
+/* DESIGN ROUND + MOBILE FIXES */
+header h1{
+  font-size: clamp(26px, 4.4vw, 40px) !important;
+  max-width: 900px !important;
+}
+.subtitle{
+  max-width: 760px !important;
+}
+.stitle{
+  font-size: 15px !important;
+  letter-spacing: 4px !important;
+}
+.quote-box{
+  max-width: 920px;
+  margin: 0 auto;
+}
+.quote-box .q{
+  font-size: clamp(26px, 3.6vw, 38px) !important;
+  max-width: 860px !important;
+}
+
+/* cleaner desktop cards */
+.signal, .model, .ins-card{
+  background: linear-gradient(180deg, rgba(8,22,46,.92), rgba(6,18,38,.92)) !important;
+}
+.signal{
+  min-height: 0 !important;
+}
+.signal-title{
+  font-size: clamp(18px, 1.8vw, 22px) !important;
+}
+.model-title{
+  font-size: clamp(20px, 2vw, 28px) !important;
+}
+.model-top{
+  align-items: flex-start !important;
+}
+.model-tag{
+  max-width: 165px;
+  text-align: left;
+}
+.model-body{
+  color:#9cb1d4 !important;
+}
+.model-body strong,
+.signal-text strong,
+.ins-body strong{
+  color:#f1f5ff !important;
+}
+
+/* simpler matrix on desktop */
+.matrix{
+  border-color:#17345a !important;
+}
+.matrix-card{
+  border-width:1px !important;
+  border-radius:0 !important;
+  background:rgba(7,22,45,.96) !important;
+}
+.matrix-card strong{
+  font-size:16px !important;
+}
+
+/* heat table desktop tweaks */
+.heat-head div{
+  font-size:11px !important;
+}
+.heat-row div{
+  font-size:13px !important;
+  line-height:1.45 !important;
+}
+.meta-bar-note{
+  font-size:11px !important;
+}
+
+/* MOBILE */
+@media (max-width: 760px){
+  .container{
+    width: calc(100vw - 28px) !important;
+  }
+  header{
+    padding-top: 15px !important;
+  }
+  .label{
+    font-size: 11px !important;
+    letter-spacing: 2px !important;
+  }
+  header h1{
+    font-size: 38px !important;
+    line-height: 1.02 !important;
+    margin: 10px 0 14px !important;
+    max-width: 100% !important;
+  }
+  .subtitle{
+    font-size: 15px !important;
+    line-height: 1.45 !important;
+    max-width: 100% !important;
+    margin-bottom: 18px !important;
+  }
+  .header-stats{
+    grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+    gap: 14px !important;
+  }
+  .hstat-val{
+    font-size: 34px !important;
+  }
+  .hstat-lbl{
+    font-size: 10px !important;
+    line-height: 1.35 !important;
+  }
+  .stitle{
+    font-size: 11px !important;
+    letter-spacing: 3px !important;
+    line-height: 1.45 !important;
+  }
+
+  .quote-box{
+    padding: 18px !important;
+  }
+  .quote-box .q{
+    font-size: 22px !important;
+    line-height: 1.08 !important;
+    letter-spacing: -0.035em !important;
+  }
+  .quote-box .a{
+    font-size: 9px !important;
+    letter-spacing: 1.2px !important;
+  }
+
+  .signal-grid, .ins-grid, .model-grid{
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+  .signal, .ins-card, .model{
+    padding: 18px !important;
+  }
+  .signal-title{
+    font-size: 17px !important;
+    line-height: 1.16 !important;
+  }
+  .signal-text, .ins-body, .model-body{
+    font-size: 14px !important;
+    line-height: 1.58 !important;
+  }
+  .ins-title{
+    font-size: 17px !important;
+    line-height: 1.2 !important;
+  }
+  .model-title{
+    font-size: 17px !important;
+    line-height: 1.15 !important;
+    max-width: calc(100% - 120px);
+  }
+  .model-top{
+    gap: 12px !important;
+  }
+  .model-tag{
+    max-width: 112px !important;
+    font-size: 9px !important;
+    letter-spacing: 1.2px !important;
+    padding: 4px 6px !important;
+  }
+  .model-risk{
+    font-size: 10px !important;
+    line-height: 1.55 !important;
+  }
+
+  /* replace 2x2 matrix with stacked cards on mobile */
+  .matrix{
+    height: auto !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+    padding: 0 !important;
+    background: none !important;
+    border: 0 !important;
+  }
+  .matrix::before, .matrix::after{
+    display:none !important;
+  }
+  .matrix-label{
+    display:none !important;
+  }
+  .matrix-card{
+    position: static !important;
+    width: 100% !important;
+    padding: 16px !important;
+    min-height: 0 !important;
+  }
+  .matrix-card strong{
+    font-size: 17px !important;
+    line-height: 1.18 !important;
+  }
+  .matrix-card span{
+    font-size: 14px !important;
+    line-height: 1.58 !important;
+  }
+
+  /* hide heatmap on mobile and show simpler cards */
+  .heat{
+    display:none !important;
+  }
+  .mobile-advantages{
+    display:grid !important;
+    grid-template-columns:1fr !important;
+    gap:12px !important;
+  }
+  .mobile-adv{
+    background: linear-gradient(180deg, rgba(8,22,46,.92), rgba(6,18,38,.92));
+    border:1px solid var(--border);
+    padding:16px;
+  }
+  .mobile-adv h4{
+    margin:0 0 10px 0;
+    font-size:17px;
+    line-height:1.2;
+    color:var(--text-bright);
+  }
+  .mobile-adv p{
+    margin:6px 0;
+    font-size:14px;
+    line-height:1.55;
+    color:#9cb1d4;
+  }
+  .mobile-adv p strong{
+    color:#fff;
+  }
+
+  /* bars redesign mobile */
+  .meta-bars{
+    gap: 12px !important;
+  }
+  .meta-bar-row{
+    grid-template-columns: 1fr !important;
+    gap: 6px !important;
+    align-items: start !important;
+  }
+  .meta-bar-row .lbl{
+    text-align: left !important;
+    font-size: 13px !important;
+    line-height: 1.4 !important;
+    font-family:'Inter',system-ui,sans-serif !important;
+    color:#e8eef8 !important;
+  }
+  .meta-bar-wrap{
+    height: 42px !important;
+  }
+  .meta-bar-fill{
+    font-size: 11px !important;
+    line-height: 1.2 !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    white-space: normal !important;
+  }
+  .meta-bar-note{
+    font-size: 10px !important;
+    line-height: 1.3 !important;
+    font-family:'Inter',system-ui,sans-serif !important;
+    letter-spacing:0 !important;
+  }
+}
+
+
+.brandbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  margin:0 0 18px 0;
+  padding:0 0 8px 0;
+}
+.brand-left{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+.brand-mark{
+  color:var(--orange);
+  font-weight:900;
+  font-size:46px;
+  line-height:1;
+  letter-spacing:-0.08em;
+  font-family:'Inter',system-ui,sans-serif;
+}
+.brand-text{
+  color:var(--text-bright);
+  font-size:16px;
+  line-height:1.05;
+  font-weight:800;
+  font-family:'Inter',system-ui,sans-serif;
+}
+.brand-right{
+  color:var(--text-bright);
+  font-size:22px;
+  line-height:1;
+  font-weight:800;
+  font-family:'Inter',system-ui,sans-serif;
+}
+
+@media (max-width:760px){
+  .brandbar{
+    margin-bottom:14px !important;
+    gap:12px !important;
+  }
+  .brand-left{
+    gap:10px !important;
+  }
+  .brand-mark{
+    font-size:34px !important;
+  }
+  .brand-text{
+    font-size:11px !important;
+  }
+  .brand-right{
+    font-size:16px !important;
+  }
+}
+
+
+.mobile-advantages{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:16px;
+}
+.mobile-adv{
+  background: linear-gradient(180deg, rgba(8,22,46,.92), rgba(6,18,38,.92));
+  border:1px solid var(--border);
+  padding:18px;
+}
+.mobile-adv h4{
+  margin:0 0 12px 0;
+  font-size:20px;
+  line-height:1.15;
+  color:var(--text-bright);
+  font-family:'Inter',system-ui,sans-serif;
+  font-weight:800;
+}
+.mobile-adv p{
+  margin:7px 0;
+  font-size:14px;
+  line-height:1.55;
+  color:#9cb1d4;
+}
+.mobile-adv p strong{
+  color:#fff;
+}
+@media (max-width:760px){
+  .mobile-advantages{
+    grid-template-columns:1fr !important;
+    gap:12px !important;
+  }
+}
+
+
+/* v7 refinements */
+.brandbar{
+  display:flex !important;
+  align-items:flex-start !important;
+  justify-content:space-between !important;
+  gap:24px !important;
+  margin:0 0 18px 0 !important;
+  padding:0 !important;
+}
+.brand-left{
+  display:flex !important;
+  align-items:flex-start !important;
+  gap:0 !important;
+}
+.brand-logo-img{
+  height:30px;
+  width:auto;
+  display:block;
+  object-fit:contain;
+}
+.brand-toplabel{
+  font-family:'Space Mono', monospace;
+  font-size:11px;
+  letter-spacing:2.8px;
+  text-transform:uppercase;
+  color:var(--orange);
+  line-height:1.2;
+  padding-top:3px;
+  text-align:right;
+  white-space:nowrap;
+}
+.subtitle{
+  font-family:'Inter', system-ui, sans-serif !important;
+  font-size:17px !important;
+  line-height:1.45 !important;
+  color:#758caf !important;
+  letter-spacing:-0.01em !important;
+  margin-top:12px !important;
+  max-width:900px;
+}
+.matrix-label{display:none !important;}
+.matrix{
+  overflow:hidden;
+}
+.matrix-card{
+  background:rgba(8,22,46,.96) !important;
+}
+.stitle{
+  line-height:1.35 !important;
+}
+
+@media (max-width:760px){
+  .brandbar{
+    gap:12px !important;
+    margin-bottom:12px !important;
+  }
+  .brand-logo-img{
+    height:24px !important;
+  }
+  .brand-toplabel{
+    font-size:9px !important;
+    letter-spacing:2px !important;
+    padding-top:2px !important;
+  }
+  .subtitle{
+    font-size:13px !important;
+    line-height:1.5 !important;
+    max-width:none !important;
+  }
+}
+
+
+
+/* NEWSLETTER GATE */
+body.wm-gate-locked{overflow:hidden;}
+body.wm-gate-active .container{
+  filter: blur(6px);
+  pointer-events:none;
+  user-select:none;
+}
+#wm-newsletter-overlay{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  background:rgba(7,13,23,0.42);
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transition:opacity .28s ease, visibility .28s ease;
+  z-index:9999;
+}
+body.wm-gate-active #wm-newsletter-overlay{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+}
+.wm-newsletter-modal{
+  width:min(100%, 520px);
+  background:linear-gradient(180deg, rgba(12,21,37,.98), rgba(10,18,31,.98));
+  border:1px solid rgba(255,94,8,.28);
+  box-shadow:0 25px 90px rgba(0,0,0,.38);
+  padding:30px 28px 26px;
+  position:relative;
+}
+.wm-newsletter-kicker{
+  font-family:'Space Mono', monospace;
+  font-size:11px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--orange);
+  margin-bottom:14px;
+}
+.wm-newsletter-title{
+  font-size:clamp(24px, 3vw, 32px);
+  line-height:1.08;
+  letter-spacing:-.04em;
+  font-weight:800;
+  color:var(--text-bright);
+  margin-bottom:12px;
+}
+.wm-newsletter-text{
+  font-size:14px;
+  line-height:1.65;
+  color:#9cb1d4;
+  margin-bottom:22px;
+}
+.wm-newsletter-form{display:grid;gap:14px;}
+.wm-newsletter-input{
+  width:100%;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.02);
+  color:var(--text-bright);
+  padding:14px 15px;
+  font-size:15px;
+  outline:none;
+}
+.wm-newsletter-input:focus{border-color:var(--orange);}
+.wm-newsletter-consent{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  font-size:12px;
+  line-height:1.5;
+  color:#a8bbd8;
+}
+.wm-newsletter-consent input{
+  margin-top:3px;
+  accent-color:var(--orange);
+}
+.wm-newsletter-button{
+  border:0;
+  background:var(--orange);
+  color:#fff;
+  padding:14px 18px;
+  font-size:13px;
+  font-weight:800;
+  letter-spacing:1.2px;
+  text-transform:uppercase;
+  cursor:pointer;
+}
+.wm-newsletter-button:hover{background:var(--orange2);}
+.wm-newsletter-note,
+.wm-newsletter-error{
+  min-height:18px;
+  font-size:12px;
+  line-height:1.45;
+}
+.wm-newsletter-note{color:#89d4b0;}
+.wm-newsletter-error{color:#ff9c9c;}
+@media (max-width:760px){
+  #wm-newsletter-overlay{padding:16px;}
+  .wm-newsletter-modal{padding:24px 18px 20px;}
+}
+
+</style>
+</head>
+<body>
+
+
+
+<div class="container">
+<header>
+
+  
+<div class="brandbar">
+  <div class="brand-left">
+    <a href="https://www.wirtualnemedia.pl" target="_blank" rel="noopener noreferrer" aria-label="Wirtualne Media"><img class="brand-logo-img" src="data:image/png;base64,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" alt="Wirtualne Media"></a>
+  </div>
+  <div class="brand-toplabel">Analiza przekrojowa</div>
+</div>
+  <h1>Co naprawdę buduje <span>wpływ mediów</span> w sieci?</h1>
+  <p class="subtitle">Meta-wnioski z Wirtualnego Wskaźnika Wpływu · Wrzesień 2025 — Luty 2026</p>
+  
+  <div class="header-stats">
+    <div><div class="hstat-val">~130</div><div class="hstat-lbl">Marek medialnych</div></div>
+    <div><div class="hstat-val">600+</div><div class="hstat-lbl">Profili social media</div></div>
+    <div><div class="hstat-val">14</div><div class="hstat-lbl">Kategorii danych</div></div>
+    <div><div class="hstat-val">7</div><div class="hstat-lbl">Kategorii tematycznych</div></div>
+  </div>
+
+</header>
+
+<section id="wm-thesis-trigger">
+  <div class="stitle">Teza główna</div>
+  <div class="quote-box">
+    <div class="q">Nie wygrywa już <span>największy portal</span> ani <span>największy kanał socialowy</span>. Wygrywa marka, która potrafi połączyć portal, wideo, engagement i obecność opiniotwórczą w jeden system wpływu.</div>
+    <div class="a">Najważniejszy meta-wniosek z sześciu kolejnych edycji WWW</div>
+  </div>
+</section>
+
+<section>
+  <div class="stitle">Trzy wielkie trendy</div>
+  <div class="signal-grid">
+    <div class="signal">
+      <div class="signal-kicker">Trend 01</div>
+      <div class="signal-title">Portal nie umarł. Portal przestał wystarczać.</div>
+      <div class="signal-text">Onet, WP i Interia pozostają trzonem układu sił, ale ich przewaga nie wynika już wyłącznie z ruchu WWW. <strong>Baza portalowa daje stabilność</strong>, lecz o różnicach na szczycie coraz częściej decyduje to, kto lepiej domyka wideo, sociale i zasięg marki poza homepage’em.</div>
+    </div>
+    <div class="signal">
+      <div class="signal-kicker">Trend 02</div>
+      <div class="signal-title">Wideo stało się osobnym centrum ciężkości rynku.</div>
+      <div class="signal-text">TikTok, Facebook video, Instagram video i YouTube nie są dodatkiem do portalu. To już <strong>pełnoprawne źródło wpływu</strong>. Marki, które potrafią opakować redakcję w format feedowy, rosną szybciej niż te, które nadal myślą wyłącznie portalowo.</div>
+    </div>
+    <div class="signal">
+      <div class="signal-kicker">Trend 03</div>
+      <div class="signal-title">Rynek premiuje marki wyraziste i wyspecjalizowane.</div>
+      <div class="signal-text">Najmocniejsze skoki robią zwykle brandy z własnym tonem, lojalną społecznością albo wyraźnym use case’em: sport, lifestyle, social-first, telewizje ideowe. <strong>Szerokość daje skalę</strong>, ale tożsamość daje tempo wzrostu.</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="stitle">Mapa rynku: kto rośnie dzięki czemu</div>
+  <div class="matrix">
+<div class="matrix-card orange" style="left:58%; top:14%">
+      <strong>Portale z pełnym miksem</strong>
+      <span>Onet, WP, Interia. Najtrwalszy model: stabilna baza WWW + obecność w wielu kategoriach.</span>
+    </div>
+
+    <div class="matrix-card teal" style="left:10%; top:10%">
+      <strong>Social-first / creator-led</strong>
+      <span>Kanał Zero, Goniec, część brandów identity media. Czasem słabsza baza WWW, ale bardzo wysoka dynamika atencji.</span>
+    </div>
+
+    <div class="matrix-card gold" style="left:56%; top:63%">
+      <strong>Portalowi specjaliści</strong>
+      <span>Biznes, zdrowie, lokalne, niektóre newsowe subbrandy. Stabilni dzięki produktowi i intencji użytkownika.</span>
+    </div>
+
+    <div class="matrix-card purple" style="left:13%; top:60%">
+      <strong>Telewizje i marki feedowe</strong>
+      <span>TVP, TVN, Polsat, TV Republika, wPolsce24. Ramówka i formaty wideo zamieniane na socialową dystrybucję.</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="stitle">10 insightów, które robią największą różnicę</div>
+  <div class="ins-grid">
+    <div class="ins-card"><div class="ins-num">01</div><div class="ins-title">Lider rynku nie jest już permanentny.</div><div class="ins-body">Na szczycie widać nie hegemona, tylko <strong>pojedynek dwóch modeli</strong>. Onet częściej wygrywa siłą portalu, WP częściej odbiera przewagę lepszym domknięciem sociali i wideo.</div></div>
+    <div class="ins-card"><div class="ins-num">02</div><div class="ins-title">Interia jest mniej widowiskowa, ale bardzo strategiczna.</div><div class="ins-body">Przez większość okresu pozostaje blisko ścisłej czołówki. To marka o <strong>wysokiej trwałości</strong>, nawet jeśli rzadziej daje najbardziej nośne nagłówki.</div></div>
+    <div class="ins-card"><div class="ins-num">03</div><div class="ins-title">Kanał Zero potwierdził, że portal nie jest warunkiem wejścia do elity.</div><div class="ins-body">Najpierw wysoka pozycja bez własnego serwisu, potem wejście z Zero.pl bez fundamentalnej zmiany logiki wyniku. <strong>Marka powstała w socialu</strong>, a portal jest dobudową, nie źródłem siły.</div></div>
+    <div class="ins-card"><div class="ins-num">04</div><div class="ins-title">Telewizje nie znikają. One zmieniają formę dystrybucji.</div><div class="ins-body">TVP, TVN, Polsat czy Republika odzyskują wpływ wtedy, gdy potrafią zamienić liniową ramówkę w paliwo dla feedów. <strong>Telewizja staje się multiplatformową fabryką klipów</strong>.</div></div>
+    <div class="ins-card"><div class="ins-num">05</div><div class="ins-title">Sport to dziś najbardziej „płynna” kategoria uwagi.</div><div class="ins-body">Sport bardzo dobrze przenosi się między YouTube, TikTokiem, Instagramem i X. To kategoria o jednej z najwyższych zdolności konwersji zainteresowania na różne formaty.</div></div>
+    <div class="ins-card"><div class="ins-num">06</div><div class="ins-title">Lifestyle daje większą zmienność niż news.</div><div class="ins-body">Glamour, Elle i inne tytuły mogły w krótkim czasie mocno rosnąć lub spadać. To segment o <strong>dużej dźwigni socialowej</strong>, ale mniejszej przewidywalności niż newsowe fundamenty.</div></div>
+    <div class="ins-card"><div class="ins-num">07</div><div class="ins-title">News dalej daje ciężar systemowy.</div><div class="ins-body">To nie lifestyle ani rozrywka ustanawiają standard rynku. Fundament rankingu wciąż budują marki newsowe i portalowo-newsowe, choć najbardziej spektakularne ruchy dzieją się często gdzie indziej.</div></div>
+    <div class="ins-card"><div class="ins-num">08</div><div class="ins-title">Cytowania zwiększyły wagę prestiżu redakcyjnego.</div><div class="ins-body">Po rozszerzeniu metodologii bardziej zyskują te podmioty, które są nie tylko oglądane, ale też <strong>ustawiają agendę i są podchwytywane</strong> przez innych.</div></div>
+    <div class="ins-card"><div class="ins-num">09</div><div class="ins-title">Rynek przechodzi od chaosu do nowej stabilności.</div><div class="ins-body">Im dalej w serię, tym mniej przypadkowych wystrzałów, a więcej przewag wynikających z modelu dystrybucji i organizacji redakcji. <strong>Nowe reguły zaczynają się utrwalać</strong>.</div></div>
+    <div class="ins-card"><div class="ins-num">10</div><div class="ins-title">Reklamodawca nie może już patrzeć tylko na RU.</div><div class="ins-body">Niektóre brandy mają <strong>większy wpływ niż wynikałoby z samego ruchu WWW</strong>, bo ich przewaga siedzi w emocjonalnym engagementcie i sile wideo-shortform.</div></div>
+  </div>
+</section>
+
+<section>
+  <div class="stitle">Najmocniejsze logiki rynku</div>
+  <div class="meta-bars">
+    <div class="meta-bar-row">
+      <div class="lbl">Miks portal + social + wideo</div>
+      <div class="meta-bar-wrap"><div class="meta-bar-fill" style="width:96%">najtrwalsza przewaga</div></div>
+      <div class="meta-bar-note">model liderów</div>
+    </div>
+    <div class="meta-bar-row">
+      <div class="lbl">Social-first / personal brand</div>
+      <div class="meta-bar-wrap"><div class="meta-bar-fill alt1" style="width:82%">największa dynamika wzrostu</div></div>
+      <div class="meta-bar-note">motor awansów</div>
+    </div>
+    <div class="meta-bar-row">
+      <div class="lbl">Telewizja przepuszczona przez feed</div>
+      <div class="meta-bar-wrap"><div class="meta-bar-fill alt2" style="width:78%">coraz mocniejsza hybryda</div></div>
+      <div class="meta-bar-note">powrót legacy</div>
+    </div>
+    <div class="meta-bar-row">
+      <div class="lbl">Wertykalny specjalista</div>
+      <div class="meta-bar-wrap"><div class="meta-bar-fill alt3" style="width:70%">wysoka efektywność uwagi</div></div>
+      <div class="meta-bar-note">sport, biznes, lokalne</div>
+    </div>
+    <div class="meta-bar-row">
+      <div class="lbl">Lifestyle / rozrywka</div>
+      <div class="meta-bar-wrap"><div class="meta-bar-fill alt5" style="width:74%">największa zmienność</div></div>
+      <div class="meta-bar-note">duży upside</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="stitle">Cztery zwycięskie archetypy</div>
+  <div class="model-grid">
+    <div class="model">
+      <div class="model-top"><div class="model-title">Horyzontalny kombajn</div><div class="model-tag">skala + regularność</div></div>
+      <div class="model-body"><strong>Onet, WP, Interia.</strong> Ich przewaga bierze się z szerokiego portfolio, silnego ruchu własnego i zdolności do zbierania punktów w wielu kategoriach jednocześnie. To model najtrwalszy i najmniej wrażliwy na pojedyncze spadki platformowe.</div>
+      <div class="model-risk">Ryzyko: wolniejsze tempo wzrostu niż w brandach social-first.</div>
+    </div>
+    <div class="model">
+      <div class="model-top"><div class="model-title">Maszyna socialowa</div><div class="model-tag">tożsamość + feed</div></div>
+      <div class="model-body"><strong>Kanał Zero, Goniec, część brandów ideowych i creator-led.</strong> Wysoka dynamika, lojalna społeczność, silny format krótkiego wideo i mocne X/Facebook/YouTube. To model, który może rosnąć szybciej niż klasyczny portal.</div>
+      <div class="model-risk">Ryzyko: większa zależność od algorytmów i od osobowości marki.</div>
+    </div>
+    <div class="model">
+      <div class="model-top"><div class="model-title">Telewizja, która umie feed</div><div class="model-tag">ramówka → klip</div></div>
+      <div class="model-body"><strong>TVP, TVN, Polsat, TV Republika, wPolsce24.</strong> Nie wygrywają dlatego, że są telewizją, tylko dlatego, że potrafią przerobić telewizyjny content na serię formatów feedowych. To daje efekt skali i częstotliwości.</div>
+      <div class="model-risk">Ryzyko: bez dystrybucyjnej dyscypliny linearne zaplecze nie wystarczy.</div>
+    </div>
+    <div class="model">
+      <div class="model-top"><div class="model-title">Wertykalny specjalista</div><div class="model-tag">use case + jakość</div></div>
+      <div class="model-body"><strong>Sport, biznes, lokalne, część techu.</strong> Nie zawsze mają największą skalę, ale są wyjątkowo skuteczne w monetyzowaniu intencji użytkownika lub pasji społeczności. To model mniej widowiskowy, za to bardzo wartościowy biznesowo.</div>
+      <div class="model-risk">Ryzyko: ograniczona sufitowa skala bez rozszerzenia formatu lub dystrybucji.</div>
+    </div>
+  </div>
+</section>
+
+
+<section>
+  <div class="stitle">Gdzie które typy marek mają przewagę</div>
+  <div class="mobile-advantages" style="display:grid">
+    <div class="mobile-adv">
+      <h4>Portale horyzontalne</h4>
+      <p><strong>WWW / RU:</strong> bardzo wysoka</p>
+      <p><strong>Short video:</strong> średnia, ale rosnąca</p>
+      <p><strong>Social engagement:</strong> średni</p>
+      <p><strong>Cytowalność:</strong> wysoka</p>
+      <p><strong>Stabilność:</strong> bardzo wysoka</p>
+    </div>
+    <div class="mobile-adv">
+      <h4>Social-first</h4>
+      <p><strong>WWW / RU:</strong> często umiarkowana</p>
+      <p><strong>Short video:</strong> bardzo wysoka</p>
+      <p><strong>Social engagement:</strong> bardzo wysoki</p>
+      <p><strong>Cytowalność:</strong> zależna od marki</p>
+      <p><strong>Stabilność:</strong> średnia</p>
+    </div>
+    <div class="mobile-adv">
+      <h4>Telewizje hybrydowe</h4>
+      <p><strong>WWW / RU:</strong> średnia</p>
+      <p><strong>Short video:</strong> bardzo wysoka</p>
+      <p><strong>Social engagement:</strong> wysoki</p>
+      <p><strong>Cytowalność:</strong> wysoka</p>
+      <p><strong>Stabilność:</strong> rosnąca</p>
+    </div>
+    <div class="mobile-adv">
+      <h4>Wertykale</h4>
+      <p><strong>WWW / RU:</strong> wysoka jakościowo</p>
+      <p><strong>Short video:</strong> zależna od kategorii</p>
+      <p><strong>Social engagement:</strong> wysoki</p>
+      <p><strong>Cytowalność:</strong> szczególnie biznes i news</p>
+      <p><strong>Stabilność:</strong> wysoka</p>
+    </div>
+  </div>
+</section>
+
+
+<section>
+  <div class="stitle">Co to znaczy dla reklamodawców i domów mediowych</div>
+  <div class="ins-grid">
+    <div class="ins-card"><div class="ins-num">A</div><div class="ins-title">Planowanie po samym zasięgu portalowym będzie coraz bardziej ślepe.</div><div class="ins-body">Niektóre brandy mają realnie większy wpływ niż wynikałoby to z samego RU, bo ich treści żyją mocniej w feedach i generują większy engagement.</div></div>
+    <div class="ins-card"><div class="ins-num">B</div><div class="ins-title">Short video jest dziś nie tylko formatem reklamowym, ale też wskaźnikiem siły marki.</div><div class="ins-body">Marka, która regularnie wygrywa krótkim wideo, częściej będzie też wygrywać w walce o uwagę i częstotliwość kontaktu.</div></div>
+    <div class="ins-card"><div class="ins-num">C</div><div class="ins-title">Marki o silnej tożsamości mogą być lepszym środowiskiem niż “dużo, ale neutralnie”.</div><div class="ins-body">W części kategorii liczy się nie tylko liczba kontaktów, ale też jakość relacji i stopień przywiązania odbiorcy do brandu.</div></div>
+  </div>
+</section>
+
+<section>
+  <div class="stitle">Trzy pytania na kolejne edycje</div>
+  <div class="signal-grid">
+    <div class="signal">
+      <div class="signal-kicker">Pytanie 01</div>
+      <div class="signal-title">Czy WP utrzyma zdolność odbierania prowadzenia Onetowi?</div>
+      <div class="signal-text">Najciekawszy pojedynek rynku dotyczy już nie dominacji, tylko <strong>powtarzalności przewag</strong> między dwoma największymi graczami.</div>
+    </div>
+    <div class="signal">
+      <div class="signal-kicker">Pytanie 02</div>
+      <div class="signal-title">Które marki telewizyjne najszybciej zamienią ramówkę w trwały wpływ cyfrowy?</div>
+      <div class="signal-text">Wzrosty TVP, TVN, Polsatu czy wPolsce24 sugerują, że dopiero wchodzimy w fazę, w której <strong>telewizje uczą się grać feedem</strong>.</div>
+    </div>
+    <div class="signal">
+      <div class="signal-kicker">Pytanie 03</div>
+      <div class="signal-title">Czy sport pozostanie najbardziej „transferowalną” kategorią uwagi?</div>
+      <div class="signal-text">Na razie wszystko wskazuje, że właśnie sport najlepiej przenosi zainteresowanie między YouTube, TikTokiem, Instagramem i X.</div>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="stitle">O rankingu WWW</div>
+
+  <div class="qa-list">
+  <div class="qa-item">
+    <div class="qa-q">Czym jest Wirtualny Wskaźnik Wpływu (WWW)?</div>
+    <div class="qa-a">Autorski projekt serwisu Wirtualne Media, który mierzy skumulowaną cyfrową aktywność polskich wydawców. To swego rodzaju „power ranking" — nie bada pojedynczej metryki, lecz łączy <strong>14 kategorii danych</strong> w jeden syntetyczny wskaźnik. Analizowane jest wyłącznie to, co dzieje się w internecie.</div>
+  </div>
+
+  <div class="qa-item">
+    <div class="qa-q">Jakie dane składają się na wynik WWW?</div>
+    <div class="qa-a">Wskaźnik bazuje na 14 kategoriach z odpowiednimi wagami: <strong>realni użytkownicy strony</strong> (waga ×2), odsłony strony (×1), średnia dzienna liczba RU (×1), średni czas na stronie (×1), cytowania (×1), odsłony YouTube (×1,5), interakcje na Facebooku (×1), odsłony wideo FB (×0,5), interakcje na Instagramie (×1), odsłony wideo IG (×0,5), interakcje na TikToku (×1), odsłony wideo TikTok (×0,5), interakcje na X/Twitterze (×0,5) i odsłony postów na X (×0,5).</div>
+  </div>
+
+  <div class="qa-item">
+    <div class="qa-q">Jak jest wyliczany wynik końcowy?</div>
+    <div class="qa-a">Metodą benchmarku. W każdej kategorii lider (najwyższy wynik bezwzględny) otrzymuje <strong>100 punktów</strong>. Reszta jest przeliczana proporcjonalnie — np. połowa wyniku lidera = 50 pkt. Następnie wyniki wszystkich kategorii są sumowane z uwzględnieniem wag i dzielone przez liczbę kategorii (14), dając finalny wskaźnik WWW.</div>
+  </div>
+
+  <div class="qa-item">
+    <div class="qa-q">Skąd pochodzą dane?</div>
+    <div class="qa-a">Z czterech źródeł: <strong>Mediapanel</strong> (dane o ruchu na stronach), <strong>Social Blade</strong> (YouTube), <strong>Sotrender</strong> (Facebook, Instagram, TikTok, X/Twitter — ok. 600 profili) oraz <strong>Mediaboard</strong> (cytowalność mediów).</div>
+  </div>
+
+  <div class="qa-item">
+    <div class="qa-q">Ile marek jest analizowanych i jak często?</div>
+    <div class="qa-a">Ranking obejmuje ok. <strong>130 marek medialnych</strong> i ponad <strong>600 profili social media</strong>. Wyniki publikowane są <strong>co miesiąc</strong>. Jeśli medium ma kilka profili na danej platformie, ich wyniki się sumują — liczy się skumulowana aktywność marki.</div>
+  </div>
+
+  </div><!-- /qa-list -->
+
+  <div style="margin-top:32px;padding-top:24px;border-top:1px solid var(--border)">
+    <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:12px">Lista analizowanych marek</div>
+    <p style="font-size:12px;color:var(--muted);line-height:1.8">Android, Antyweb, Bankier, Benchmark, Bezprawnik, Biznes Info, Business Insider, Canal Plus Sport, Chip, Defence24, Dla Handlu, Do Rzeczy, Dobreprogramy, Donald, Dziennik Bałtycki, Dziennik Gazeta Prawna, Dziennik Zachodni, Dziennik Łódzki, Dziennik.pl, Elle Polska, Radio Eska, Eurosport Polska, Express Bydgoski, Express Ilustrowany, Fakt, Filmweb, Forbes, Forsal, Gazeta.pl, Gazeta Krakowska, Gazeta Pomorska, Gazeta Wrocławska, Gazeta Wyborcza, Glamour, Głos Koszaliński, Głos Szczeciński, Głos Wielkopolski, Gol24, Goniec, Gry Online, GSMmaniak, IT Hardware, Interia, Interia Sport, Infor.pl, Jastrząb Post, Kanał Sportowy, Kanał Zero, Kobieta.pl, Komputer Świat, Kozaczek, Krytyka Polityczna, Lubimy Czytać, Medonet, Medycyna Praktyczna, Meczyki, Miejski Reporter, Money, Na Ekranie, naTemat, Nasze Miasto, New Once, Newsweek, Niebezpiecznik, Niezależna, Nowiny24, Nowości.com.pl, O2, Ofeminin, OKO.press, Onet, Pacjenci, Party, Plejada, Plotek, Polityka, Polki, Polsat, Polsat News, Polsat Sport, Polskie Radio, Polskie Radio 24, Pomponik, Portal Samorządowy, PPE, Przegląd Sportowy, Pudelek, Puls Biznesu, Pyszności, Radio Zet, RMF FM, RMF24, Rzeczpospolita, Rynek Zdrowia, Smakosze, Spider's Web, Sport.pl, Super Express, Świat Gwiazd, Tabletowo, Telepolis, TOK FM, Transfery, Trójmiasto, TVN, TVN24, TVP, TVP Info, TVP Sport, TV Republika, Viva, Vogue Polska, Warszawa w Pigułce, Weszło, Wirtualnemedia, Wizaż, WNP, Wirtualna Polska, WP Sportowefakty, wPolityce, wPolsce24, Wprost, Wysokie Obcasy, Zwierciadło, XYZ.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-brand">META-ANALIZA WWW · WRZESIEŃ 2025 — LUTY 2026</div>
+  <div class="footer-source">ŹRÓDŁO: ANALIZA 6 EDYCJI WIRTUALNEGO WSKAŹNIKA WPŁYWU</div>
+</footer>
+</div>
+
+<div id="wm-newsletter-overlay" aria-hidden="true">
+  <div class="wm-newsletter-modal" role="dialog" aria-modal="true" aria-labelledby="wm-newsletter-title">
+    <div class="wm-newsletter-kicker">Dalsza część analizy</div>
+    <div class="wm-newsletter-title" id="wm-newsletter-title">Podaj e-mail, aby odblokować resztę materiału</div>
+    <div class="wm-newsletter-text">Popup pojawi się dopiero po minięciu sekcji z tezą główną. Po zapisaniu adresu i zaznaczeniu zgody odblokujesz pełną treść.</div>
+    <form class="wm-newsletter-form" id="wm-newsletter-form">
+      <input class="wm-newsletter-input" id="wm-newsletter-email" type="email" name="email" placeholder="Twój adres e-mail" required>
+      <label class="wm-newsletter-consent">
+        <input id="wm-newsletter-consent" type="checkbox" required>
+        <span>Wyrażam zgodę na kontakt newsletterowy zgodnie z polityką prywatności.</span>
+      </label>
+      <button class="wm-newsletter-button" type="submit">Odblokuj dostęp</button>
+      <div class="wm-newsletter-error" id="wm-newsletter-error"></div>
+      <div class="wm-newsletter-note" id="wm-newsletter-note"></div>
+    </form>
+  </div>
+</div>
+<script>
+const wmNewsletterConfig = {
+  storageKey: "wm_newsletter_leads_gs_v2",
+  accessKey: "wm_newsletter_access_granted_gs_v2",
+  googleSheetsEndpoint: "WKLEJ_TUTAJ_ENDPOINT_GOOGLE_APPS_SCRIPT" // <-- TU WKLEJ endpoint z Google Apps Script
+};
+
+(function(){
+  const body = document.body;
+  const overlay = document.getElementById('wm-newsletter-overlay');
+  const form = document.getElementById('wm-newsletter-form');
+  const emailInput = document.getElementById('wm-newsletter-email');
+  const consentInput = document.getElementById('wm-newsletter-consent');
+  const errorBox = document.getElementById('wm-newsletter-error');
+  const noteBox = document.getElementById('wm-newsletter-note');
+  const trigger = document.getElementById('wm-thesis-trigger');
+  let gateShown = false;
+
+  function setMessage(type, text){
+    errorBox.textContent = type === "error" ? text : "";
+    noteBox.textContent = type === "note" ? text : "";
+  }
+
+  function unlockGate(){
+    localStorage.setItem(wmNewsletterConfig.accessKey, "1");
+    body.classList.remove('wm-gate-active', 'wm-gate-locked');
+    overlay.setAttribute('aria-hidden', 'true');
+  }
+
+  function showGate(){
+    if (gateShown || localStorage.getItem(wmNewsletterConfig.accessKey) === "1") return;
+    gateShown = true;
+    body.classList.add('wm-gate-active', 'wm-gate-locked');
+    overlay.setAttribute('aria-hidden', 'false');
+    setTimeout(()=>emailInput.focus(), 60);
+  }
+
+  function storeLeadLocally(payload){
+    const existing = JSON.parse(localStorage.getItem(wmNewsletterConfig.storageKey) || "[]");
+    existing.push(payload);
+    localStorage.setItem(wmNewsletterConfig.storageKey, JSON.stringify(existing));
+  }
+
+  if (localStorage.getItem(wmNewsletterConfig.accessKey) !== "1" && trigger) {
+    const triggerObserver = new IntersectionObserver((entries)=>{
+      entries.forEach(entry => {
+        if (entry.target === trigger && entry.boundingClientRect.bottom < 0) {
+          showGate();
+          triggerObserver.disconnect();
+        }
+      });
+    }, { threshold: 0, rootMargin: "0px 0px 0px 0px" });
+    triggerObserver.observe(trigger);
+  }
+
+  form.addEventListener('submit', async (event)=>{
+    event.preventDefault();
+    setMessage("error", "");
+    setMessage("note", "");
+
+    const email = emailInput.value.trim();
+    const consent = !!consentInput.checked;
+    const payload = { email, consent, source: "wm_popup_after_thesis", date: new Date().toISOString() };
+
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setMessage("error", "Podaj poprawny adres e-mail.");
+      return;
+    }
+    if (!consent) {
+      setMessage("error", "Zaznacz zgodę, aby odblokować treść.");
+      return;
+    }
+
+    try {
+      const endpoint = wmNewsletterConfig.googleSheetsEndpoint;
+      if (!endpoint || endpoint.includes("WKLEJ_TUTAJ")) {
+        storeLeadLocally(payload);
+        setMessage("note", "Brak endpointu Google Sheets w kodzie — zapisano lokalnie jako backup.");
+        unlockGate();
+        return;
+      }
+
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) throw new Error("Błąd zapisu do Google Sheets");
+      storeLeadLocally(payload);
+      unlockGate();
+    } catch (error) {
+      storeLeadLocally(payload);
+      setMessage("note", "Nie udało się połączyć z Google Sheets — zapisano lokalnie jako backup i odblokowano stronę.");
+      unlockGate();
+    }
+  });
+})();
+
+document.querySelectorAll('.tab-nav').forEach(nav=>{nav.querySelectorAll('.tab-btn').forEach(btn=>{btn.addEventListener('click',()=>{nav.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');const section=nav.closest('section');section.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));const target=section.querySelector('#tab-'+btn.dataset.tab);if(target)target.classList.add('active');});});});const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';}})},{threshold:0.1});document.querySelectorAll('.ins-card,.pcard,.move-card,.cat-row,.qa-item,.highlight').forEach((el,i)=>{el.style.opacity='0';el.style.transform='translateY(16px)';el.style.transition=`opacity 0.5s ease ${i*0.03}s, transform 0.5s ease ${i*0.03}s`;obs.observe(el);});</script></body></html>
