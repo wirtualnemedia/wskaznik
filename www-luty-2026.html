@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wirtualny Wskaźnik Wpływu — Luty 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #09090f;
+    --surface: #111118;
+    --border: #1e1e2e;
+    --accent: #e8ff47;
+    --accent2: #ff6b35;
+    --accent3: #7b61ff;
+    --text: #f0f0f8;
+    --muted: #888899;
+    --gold: #ffd166;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(232,255,71,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232,255,71,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* HEADER */
+  header {
+    padding: 64px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 64px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::after {
+    content: 'WWW';
+    position: absolute;
+    right: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 180px;
+    font-weight: 800;
+    color: rgba(232,255,71,0.04);
+    pointer-events: none;
+    letter-spacing: -8px;
+    line-height: 1;
+  }
+
+  .label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  h1 {
+    font-size: clamp(32px, 6vw, 60px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -2px;
+    margin-bottom: 12px;
+  }
+
+  h1 span { color: var(--accent); }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 15px;
+    font-weight: 400;
+    margin-top: 16px;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+  }
+
+  /* SECTION HEADINGS */
+  .section-title {
+    font-size: 11px;
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-title::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  section { margin-bottom: 72px; }
+
+  /* TOP 3 PODIUM */
+  .podium {
+    display: grid;
+    grid-template-columns: 1fr 1.15fr 1fr;
+    gap: 12px;
+    align-items: end;
+    margin-bottom: 48px;
+  }
+
+  .podium-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 24px 20px;
+    position: relative;
+    overflow: hidden;
+    animation: fadeUp 0.6s ease both;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+    cursor: default;
+  }
+
+  .podium-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent);
+  }
+
+  .podium-card:nth-child(1) { animation-delay: 0.15s; }
+  .podium-card:nth-child(2) { animation-delay: 0s; }
+  .podium-card:nth-child(3) { animation-delay: 0.3s; }
+
+  .podium-card.first {
+    border-color: var(--accent);
+    background: linear-gradient(135deg, #111118, #141420);
+  }
+
+  .podium-card.first::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--accent);
+  }
+
+  .rank-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 16px;
+    opacity: 0.15;
+  }
+
+  .first .rank-badge { opacity: 1; color: var(--accent); font-size: 52px; }
+  .second .rank-badge { opacity: 0.5; color: var(--gold); }
+  .third .rank-badge { color: var(--accent2); }
+
+  .publisher-name {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: -0.5px;
+  }
+
+  .first .publisher-name { font-size: 22px; color: var(--accent); }
+
+  .publisher-meta {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .score-bar {
+    margin-top: 16px;
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .score-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: var(--accent);
+    width: 0;
+    animation: grow 1.2s ease 0.6s both;
+  }
+
+  .second .score-fill { background: var(--gold); }
+  .third .score-fill { background: var(--accent2); }
+
+  @keyframes grow {
+    to { width: var(--w); }
+  }
+
+  /* STORIES / INSIGHTS */
+  .insights-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  .insight-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 24px;
+    position: relative;
+    animation: fadeUp 0.5s ease both;
+    transition: border-color 0.2s ease;
+  }
+
+  .insight-card:hover { border-color: rgba(232,255,71,0.3); }
+
+  .insight-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    margin-bottom: 12px;
+    letter-spacing: 2px;
+  }
+
+  .insight-title {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 10px;
+    letter-spacing: -0.3px;
+  }
+
+  .insight-body {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.7;
+    font-weight: 400;
+  }
+
+  .insight-tag {
+    display: inline-block;
+    margin-top: 14px;
+    padding: 3px 10px;
+    font-size: 10px;
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+
+  .insight-card:nth-child(1) { animation-delay: 0.0s; }
+  .insight-card:nth-child(2) { animation-delay: 0.08s; }
+  .insight-card:nth-child(3) { animation-delay: 0.16s; }
+  .insight-card:nth-child(4) { animation-delay: 0.24s; }
+  .insight-card:nth-child(5) { animation-delay: 0.32s; }
+  .insight-card:nth-child(6) { animation-delay: 0.40s; }
+
+  /* CATEGORY BARS */
+  .cat-list { display: flex; flex-direction: column; gap: 12px; }
+
+  .cat-row {
+    display: grid;
+    grid-template-columns: 140px 1fr 60px;
+    align-items: center;
+    gap: 16px;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  .cat-row:nth-child(1) { animation-delay: 0.05s; }
+  .cat-row:nth-child(2) { animation-delay: 0.10s; }
+  .cat-row:nth-child(3) { animation-delay: 0.15s; }
+  .cat-row:nth-child(4) { animation-delay: 0.20s; }
+  .cat-row:nth-child(5) { animation-delay: 0.25s; }
+  .cat-row:nth-child(6) { animation-delay: 0.30s; }
+
+  .cat-name {
+    font-size: 12px;
+    font-family: 'Space Mono', monospace;
+    color: var(--muted);
+    text-align: right;
+    letter-spacing: 0.5px;
+  }
+
+  .cat-bar-wrap {
+    height: 28px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .cat-bar-fill {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-left: 12px;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+    width: 0;
+    animation: grow 1s ease 0.5s both;
+    color: var(--bg);
+    background: var(--accent);
+  }
+
+  .cat-bar-fill.c2 { background: var(--accent3); color: white; }
+  .cat-bar-fill.c3 { background: var(--accent2); color: white; }
+  .cat-bar-fill.c4 { background: var(--gold); color: var(--bg); }
+  .cat-bar-fill.c5 { background: #06d6a0; color: var(--bg); }
+  .cat-bar-fill.c6 { background: #ef476f; color: white; }
+
+  .cat-winner {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  /* EUROSPORT HIGHLIGHT */
+  .highlight-box {
+    background: linear-gradient(135deg, #0f1c06, #141420);
+    border: 1px solid var(--accent);
+    padding: 32px;
+    margin: 32px 0;
+    position: relative;
+    animation: fadeUp 0.5s ease 0.2s both;
+  }
+
+  .highlight-box::before {
+    content: '★ WYDARZENIE MIESIĄCA';
+    position: absolute;
+    top: -10px;
+    left: 24px;
+    background: var(--accent);
+    color: var(--bg);
+    font-size: 10px;
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 2px;
+    padding: 3px 12px;
+    font-weight: 700;
+  }
+
+  .highlight-score {
+    font-size: 64px;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+    letter-spacing: -3px;
+    margin-bottom: 8px;
+  }
+
+  .highlight-desc {
+    font-size: 14px;
+    color: var(--muted);
+    max-width: 480px;
+    line-height: 1.7;
+  }
+
+  .highlight-brand {
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 4px;
+    letter-spacing: -0.5px;
+  }
+
+  /* MOVEMENT TABLE */
+  .move-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+  }
+
+  .move-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    animation: fadeUp 0.4s ease both;
+    transition: border-color 0.2s;
+  }
+
+  .move-card:hover { border-color: rgba(255,107,53,0.4); }
+  .move-card:nth-child(1) { animation-delay: 0.0s; }
+  .move-card:nth-child(2) { animation-delay: 0.08s; }
+  .move-card:nth-child(3) { animation-delay: 0.16s; }
+  .move-card:nth-child(4) { animation-delay: 0.24s; }
+
+  .move-arrow {
+    font-size: 28px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .move-arrow.up { color: #06d6a0; }
+  .move-arrow.down { color: #ef476f; }
+
+  .move-info { flex: 1; }
+
+  .move-name {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .move-detail {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+  }
+
+  .move-delta {
+    font-family: 'Space Mono', monospace;
+    font-size: 16px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .move-delta.up { color: #06d6a0; }
+  .move-delta.down { color: #ef476f; }
+
+  /* GEO Q&A */
+  .geo-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 40px;
+    position: relative;
+  }
+
+  .geo-section::before {
+    content: 'GEO / AI-FRIENDLY';
+    position: absolute;
+    top: -10px;
+    left: 24px;
+    background: var(--accent3);
+    color: white;
+    font-size: 10px;
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 2px;
+    padding: 3px 12px;
+  }
+
+  .geo-section h2 {
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 32px;
+    letter-spacing: -0.5px;
+    color: var(--accent3);
+  }
+
+  .qa-item {
+    border-top: 1px solid var(--border);
+    padding: 20px 0;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  .qa-item:first-of-type { border-top: none; padding-top: 0; }
+  .qa-item:nth-child(1) { animation-delay: 0.0s; }
+  .qa-item:nth-child(2) { animation-delay: 0.06s; }
+  .qa-item:nth-child(3) { animation-delay: 0.12s; }
+  .qa-item:nth-child(4) { animation-delay: 0.18s; }
+  .qa-item:nth-child(5) { animation-delay: 0.24s; }
+  .qa-item:nth-child(6) { animation-delay: 0.30s; }
+  .qa-item:nth-child(7) { animation-delay: 0.36s; }
+  .qa-item:nth-child(8) { animation-delay: 0.42s; }
+  .qa-item:nth-child(9) { animation-delay: 0.48s; }
+  .qa-item:nth-child(10) { animation-delay: 0.54s; }
+
+  .qa-q {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .qa-q::before {
+    content: 'Q';
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    background: var(--accent3);
+    color: white;
+    font-size: 10px;
+    font-family: 'Space Mono', monospace;
+    border-radius: 3px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .qa-a {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.7;
+    padding-left: 30px;
+  }
+
+  .qa-a strong { color: var(--text); font-weight: 600; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 0 48px;
+    margin-top: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: gap;
+    gap: 16px;
+  }
+
+  .footer-brand {
+    font-size: 11px;
+    font-family: 'Space Mono', monospace;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+
+  .footer-source {
+    font-size: 10px;
+    font-family: 'Space Mono', monospace;
+    color: var(--border);
+    letter-spacing: 1px;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* TOP LIST */
+  .top-list {
+    counter-reset: rank;
+  }
+
+  .top-item {
+    display: grid;
+    grid-template-columns: 36px 1fr auto;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    margin-bottom: 6px;
+    background: var(--surface);
+    animation: fadeUp 0.4s ease both;
+    transition: background 0.2s, border-color 0.2s;
+    cursor: default;
+  }
+
+  .top-item:hover {
+    background: #141420;
+    border-color: rgba(232,255,71,0.2);
+  }
+
+  .top-item:nth-child(1) { border-color: rgba(232,255,71,0.4); animation-delay: 0.0s; }
+  .top-item:nth-child(2) { animation-delay: 0.04s; }
+  .top-item:nth-child(3) { animation-delay: 0.08s; }
+  .top-item:nth-child(4) { animation-delay: 0.12s; }
+  .top-item:nth-child(5) { animation-delay: 0.16s; }
+  .top-item:nth-child(6) { animation-delay: 0.20s; }
+  .top-item:nth-child(7) { animation-delay: 0.24s; }
+  .top-item:nth-child(8) { animation-delay: 0.28s; }
+  .top-item:nth-child(9) { animation-delay: 0.32s; }
+  .top-item:nth-child(10) { animation-delay: 0.36s; }
+
+  .rank-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .top-item:nth-child(1) .rank-num { color: var(--accent); font-weight: 700; font-size: 15px; }
+  .top-item:nth-child(2) .rank-num { color: var(--gold); font-weight: 700; }
+  .top-item:nth-child(3) .rank-num { color: var(--accent2); font-weight: 700; }
+
+  .item-name {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .top-item:nth-child(1) .item-name { font-size: 15px; font-weight: 700; }
+
+  .item-cat {
+    font-size: 10px;
+    font-family: 'Space Mono', monospace;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+
+  .item-badge {
+    font-size: 10px;
+    font-family: 'Space Mono', monospace;
+    padding: 3px 8px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .item-badge.new { border-color: #06d6a0; color: #06d6a0; }
+  .item-badge.up { border-color: var(--accent); color: var(--accent); }
+  .item-badge.top { border-color: var(--accent2); color: var(--accent2); }
+
+  @media (max-width: 640px) {
+    .podium { grid-template-columns: 1fr; align-items: stretch; }
+    .cat-row { grid-template-columns: 100px 1fr 48px; gap: 8px; }
+    .geo-section { padding: 28px 20px; }
+    footer { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <header>
+    <div class="label">Wirtualne Media · Raport Miesięczny</div>
+    <h1>Wirtualny<br>Wskaźnik <span>Wpływu</span></h1>
+    <div class="subtitle">// LUTY 2026 · ~130 MAREK MEDIALNYCH · 600+ PROFILI SOCIAL</div>
+  </header>
+
+  <!-- PODIUM -->
+  <section>
+    <div class="section-title">Podium ogólne — TOP 3</div>
+    <div class="podium">
+      <div class="podium-card second">
+        <div class="rank-badge">#2</div>
+        <div class="publisher-name">Onet</div>
+        <div class="publisher-meta">Ringier Axel Springer</div>
+        <div class="score-bar"><div class="score-fill" style="--w: 88%"></div></div>
+      </div>
+      <div class="podium-card first">
+        <div class="rank-badge">#1</div>
+        <div class="publisher-name">Wirtualna Polska</div>
+        <div class="publisher-meta">WP Media · zwycięzca lutego</div>
+        <div class="score-bar"><div class="score-fill" style="--w: 100%"></div></div>
+      </div>
+      <div class="podium-card third">
+        <div class="rank-badge">#3</div>
+        <div class="publisher-name">Gazeta.pl / Agora</div>
+        <div class="publisher-meta">Agora SA</div>
+        <div class="score-bar"><div class="score-fill" style="--w: 74%"></div></div>
+      </div>
+    </div>
+    <p style="font-size:12px; font-family:'Space Mono',monospace; color:var(--muted); text-align:center; margin-top:-12px;">
+      WP po raz pierwszy od dłuższego czasu wypchnęła Onet z pierwszego miejsca — o włos.
+    </p>
+  </section>
+
+  <!-- EUROSPORT HIGHLIGHT -->
+  <section>
+    <div class="section-title">Wydarzenie miesiąca — Igrzyska Olimpijskie</div>
+    <div class="highlight-box">
+      <div class="highlight-brand">Eurosport Polska</div>
+      <div class="highlight-score">31.59</div>
+      <div class="highlight-desc">
+        Rekordowy wynik WWW w kategorii Sport w historii rankingu. Eurosport transmitował Igrzyska szeroko — w kanałach TV i social media. Samodzielnie osiągnąłby <strong style="color:var(--accent)">4. miejsce w TOP50</strong>, gdyby nie był osadzony w domenie TVN24.pl.
+      </div>
+    </div>
+  </section>
+
+  <!-- CATEGORY WINNERS -->
+  <section>
+    <div class="section-title">Liderzy kategorii tematycznych</div>
+    <div class="cat-list">
+      <div class="cat-row">
+        <div class="cat-name">Sport</div>
+        <div class="cat-bar-wrap"><div class="cat-bar-fill" style="--w: 97%">Eurosport PL</div></div>
+        <div class="cat-winner">🏅 #1 nowy</div>
+      </div>
+      <div class="cat-row">
+        <div class="cat-name">Wiadomości</div>
+        <div class="cat-bar-wrap"><div class="cat-bar-fill c2" style="--w: 90%">Wirtualna Polska</div></div>
+        <div class="cat-winner">📰 utrzymał</div>
+      </div>
+      <div class="cat-row">
+        <div class="cat-name">Biznes</div>
+        <div class="cat-bar-wrap"><div class="cat-bar-fill c3" style="--w: 80%">Infor.pl</div></div>
+        <div class="cat-winner">💼 utrzymał</div>
+      </div>
+      <div class="cat-row">
+        <div class="cat-name">Rozrywka</div>
+        <div class="cat-bar-wrap"><div class="cat-bar-fill c4" style="--w: 75%">Top rozrywkowy</div></div>
+        <div class="cat-winner">🎭 stabilna</div>
+      </div>
+      <div class="cat-row">
+        <div class="cat-name">YouTube / Wideo</div>
+        <div class="cat-bar-wrap"><div class="cat-bar-fill c5" style="--w: 85%">Kanał Zero</div></div>
+        <div class="cat-winner">▶ debiut portalu</div>
+      </div>
+      <div class="cat-row">
+        <div class="cat-name">Prawica / News TV</div>
+        <div class="cat-bar-wrap"><div class="cat-bar-fill c6" style="--w: 55%">wPolska24</div></div>
+        <div class="cat-winner">📺 awans TOP50</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOP 10 LIST -->
+  <section>
+    <div class="section-title">Wybrane pozycje rankingu ogólnego</div>
+    <div class="top-list">
+      <div class="top-item">
+        <div class="rank-num">1</div>
+        <div>
+          <div class="item-name">Wirtualna Polska</div>
+          <div class="item-cat">Portal ogólny · Facebook #1 zaangażowanie</div>
+        </div>
+        <div class="item-badge up">▲ +1</div>
+      </div>
+      <div class="top-item">
+        <div class="rank-num">2</div>
+        <div>
+          <div class="item-name">Onet.pl</div>
+          <div class="item-cat">Portal ogólny · Ringier Axel Springer</div>
+        </div>
+        <div class="item-badge">▼ −1</div>
+      </div>
+      <div class="top-item">
+        <div class="rank-num">3</div>
+        <div>
+          <div class="item-name">TVN24.pl <span style="font-size:11px; color:var(--muted)">(+ Eurosport)</span></div>
+          <div class="item-cat">Wiadomości · Sport · TVN Warner Bros</div>
+        </div>
+        <div class="item-badge top">★ top</div>
+      </div>
+      <div class="top-item">
+        <div class="rank-num">4–6</div>
+        <div>
+          <div class="item-name">Interia / Gazeta / RMF</div>
+          <div class="item-cat">Portale ogólne i radiowe</div>
+        </div>
+        <div class="item-badge">= stały</div>
+      </div>
+      <div class="top-item">
+        <div class="rank-num">7</div>
+        <div>
+          <div class="item-name">Kanał Zero / Zero.pl</div>
+          <div class="item-cat">Pierwszy miesiąc z własnym portalem (~900k RU)</div>
+        </div>
+        <div class="item-badge new">★ debiut</div>
+      </div>
+      <div class="top-item">
+        <div class="rank-num">8–11</div>
+        <div>
+          <div class="item-name">Polsat News / TVP Info / Radio ZET</div>
+          <div class="item-cat">TV i radio informacyjne</div>
+        </div>
+        <div class="item-badge">≈ bez zmian</div>
+      </div>
+      <div class="top-item">
+        <div class="rank-num">~18</div>
+        <div>
+          <div class="item-name">TVN</div>
+          <div class="item-cat">Nowe ramówki · awans o +11 poz.</div>
+        </div>
+        <div class="item-badge up">▲ +11</div>
+      </div>
+      <div class="top-item">
+        <div class="rank-num">~20</div>
+        <div>
+          <div class="item-name">Polsat</div>
+          <div class="item-cat">Nowe ramówki · awans o +13 poz.</div>
+        </div>
+        <div class="item-badge up">▲ +13</div>
+      </div>
+      <div class="top-item">
+        <div class="rank-num">50</div>
+        <div>
+          <div class="item-name">wPolsce24</div>
+          <div class="item-cat">TV prawicowa · pierwszy raz w TOP50</div>
+        </div>
+        <div class="item-badge new">★ nowy</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MOVERS -->
+  <section>
+    <div class="section-title">Największe ruchy miesiąca</div>
+    <div class="move-grid">
+      <div class="move-card">
+        <div class="move-arrow up">↑</div>
+        <div class="move-info">
+          <div class="move-name">Polsat</div>
+          <div class="move-detail">Nowe ramówki · stacja TV</div>
+        </div>
+        <div class="move-delta up">+13</div>
+      </div>
+      <div class="move-card">
+        <div class="move-arrow up">↑</div>
+        <div class="move-info">
+          <div class="move-name">TVN</div>
+          <div class="move-detail">Nowe ramówki · stacja TV</div>
+        </div>
+        <div class="move-delta up">+11</div>
+      </div>
+      <div class="move-card">
+        <div class="move-arrow up">↑</div>
+        <div class="move-info">
+          <div class="move-name">wPolsce24</div>
+          <div class="move-detail">TV prawicowa · debiut TOP50</div>
+        </div>
+        <div class="move-delta up">+7</div>
+      </div>
+      <div class="move-card">
+        <div class="move-arrow down">↓</div>
+        <div class="move-info">
+          <div class="move-name">Świat Gwiazd</div>
+          <div class="move-detail">Rozrywka · lekki spadek</div>
+        </div>
+        <div class="move-delta down">−2</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GEO Q&A -->
+  <section>
+    <div class="geo-section">
+      <h2>Najczęstsze pytania o WWW — luty 2026</h2>
+
+      <div class="qa-item">
+        <div class="qa-q">Kto wygrał Wirtualny Wskaźnik Wpływu w lutym 2026?</div>
+        <div class="qa-a">W lutym 2026 najwyższe miejsce w rankingu ogólnym WWW zajęła <strong>Wirtualna Polska</strong>, wyprzedzając Onet o bardzo niewielki margines. Był to powrót WP na pierwsze miejsce po przerwie.</div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q">Jaki wpływ miały Igrzyska Olimpijskie na rankingi mediów w Polsce w lutym 2026?</div>
+        <div class="qa-a"><strong>Eurosport Polska</strong> odnotował historycznie najwyższy wynik WWW w kategorii Sport — <strong>31.59 pkt</strong>. Dzięki szerokim transmisjom online i aktywności w social media, Eurosport po raz pierwszy osiągnął 1. miejsce w swojej kategorii. Gdyby nie działał pod domeną TVN24.pl, samodzielnie znalazłby się na 4. miejscu całego rankingu TOP50.</div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q">Jak wypadło Zero.pl w pierwszym miesiącu działalności portalu?</div>
+        <div class="qa-a"><strong>Zero.pl</strong> — portal Kanału Zero — zadebiutował w lutym 2026 i w pierwszym miesiącu osiągnął blisko <strong>900 tysięcy realnych użytkowników</strong>. W rankingu WWW zajął 7. miejsce, co jest wynikiem porównywalnym do pozycji osiąganych przez Kanał Zero wcześniej — bez własnego portalu.</div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q">Czym jest Wirtualny Wskaźnik Wpływu (WWW)?</div>
+        <div class="qa-a">WWW to autorski wskaźnik serwisu Wirtualne Media, który mierzy i porządkuje aktywność polskich mediów w internecie. Syntetyczny wynik bazuje na kilkunastu kategoriach: odwiedzalności, cytowalnościach i aktywności w mediach społecznościowych. Obejmuje ok. <strong>130 marek medialnych</strong> i ponad <strong>600 profili social media</strong>.</div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q">Które stacje telewizyjne najbardziej awansowały w lutym 2026?</div>
+        <div class="qa-a">Największe awanse odnotowały stacje telewizyjne z nowymi ramówkami: <strong>Polsat</strong> przeskoczył o 13 pozycji, a <strong>TVN</strong> o 11 pozycji w górę względem stycznia 2026.</div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q">Jak radzi sobie wPolsce24 w rankingach mediów internetowych?</div>
+        <div class="qa-a"><strong>wPolsce24</strong> po raz pierwszy w historii awansowała do TOP50 rankingu WWW, lądując dokładnie na 50. miejscu — o 7 pozycji wyżej niż w styczniu 2026. Pomogły jej wyniki wideo na Facebooku oraz aktywność na X/Twitterze.</div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q">Która kategoria tematyczna była najbardziej stabilna w lutym 2026?</div>
+        <div class="qa-a">Kategorią o najniższej rotacji okazała się <strong>Rozrywka</strong> — niemal wszystkie marki utrzymały swoje miejsca; jedyna zmiana to spadek Świata Gwiazd o dwie pozycje.</div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q">Jak Wirtualna Polska pokonała Onet w lutym 2026?</div>
+        <div class="qa-a">WP wyprzedziła Onet dzięki solidnej odwiedzalności portalu, mocnej cytowalnościach oraz konsekwentnie wysokim wynikom na Facebooku — zarówno pod kątem zaangażowania, jak i odsłon wideo.</div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q">Jakie media osiągają wysokie wyniki w social mediach mimo mniejszej rozpoznawalności?</div>
+        <div class="qa-a">Według analizy szczegółowych danych social mediowych w TOP30 ze 130 badanych marek pojawiają się tytuły, które nie są największymi i najbardziej rozpoznawalnymi mediami w Polsce — co wskazuje, że skuteczna strategia w mediach społecznościowych może kompensować mniejszą odwiedzalność portalu.</div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q">Ile marek obejmuje ranking WWW i jak często jest publikowany?</div>
+        <div class="qa-a">Ranking WWW analizuje ok. <strong>130 marek medialnych</strong> i ponad <strong>600 profili społecznościowych</strong> należących do polskich wydawców. Wyniki publikowane są <strong>miesięcznie</strong> przez redakcję Wirtualne Media.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">WIRTUALNY WSKAŹNIK WPŁYWU · LUTY 2026</div>
+    <div class="footer-source">ŹRÓDŁO: WIRTUALNEMEDIA.PL · 24.03.2026</div>
+  </footer>
+
+</div>
+</body>
+</html>
