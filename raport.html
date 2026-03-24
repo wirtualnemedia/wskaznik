@@ -1535,7 +1535,7 @@ const wmNewsletterConfig = {
   if (localStorage.getItem(wmNewsletterConfig.accessKey) !== "1" && trigger) {
     const triggerObserver = new IntersectionObserver((entries)=>{
       entries.forEach(entry => {
-        if (entry.target === trigger && entry.boundingClientRect.bottom < 200) {
+        if (entry.target === trigger && entry.boundingClientRect.bottom < 300) {
           showGate();
           triggerObserver.disconnect();
         }
