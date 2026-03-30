@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kto kogo zjadł — 25 lat polskich mediów</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f4f0;--bg-white:#fff;--text:#1a1816;--text-mid:#4a4540;--text-light:#8a847a;--text-faint:#b5ada3;--acquire:#b06e1a;--acquire-light:#fdf3e4;--collapse:#a8342a;--collapse-light:#fde8e6;--launch:#1a7a5a;--launch-light:#e4f5ee;--border:#ddd6cc;--border-light:#eae5dc;--shadow:rgba(26,24,22,.06);--shadow-md:rgba(26,24,22,.1)}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:400;line-height:1.6;-webkit-font-smoothing:antialiased}
+
+.hero{padding:6rem 2rem 4rem;text-align:center;background:linear-gradient(180deg,var(--bg-white) 0%,var(--bg) 100%)}
+.hero-eyebrow{font-family:'Space Mono',monospace;font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;color:var(--text-light);margin-bottom:1.5rem}
+.hero h1{font-family:'DM Serif Display',serif;font-size:clamp(2.6rem,6.5vw,5rem);font-weight:400;line-height:1.1;margin-bottom:1.2rem}
+.hero h1 em{font-style:italic;color:var(--acquire)}
+.hero-sub{font-size:1.1rem;color:var(--text-mid);max-width:520px;margin:0 auto 2.5rem;font-weight:300}
+
+.hero-counters{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap}
+.counter{display:flex;align-items:center;gap:.6rem;padding:.6rem 1.2rem;border-radius:100px;border:1px solid var(--border);background:var(--bg-white);cursor:pointer;transition:all .3s;user-select:none}
+.counter:hover{box-shadow:0 2px 12px var(--shadow);transform:translateY(-1px)}
+.counter.active{border-width:2px}
+.counter[data-filter="all"].active{border-color:var(--text-mid)}
+.counter[data-filter="acquire"].active{border-color:var(--acquire);background:var(--acquire-light)}
+.counter[data-filter="collapse"].active{border-color:var(--collapse);background:var(--collapse-light)}
+.counter[data-filter="launch"].active{border-color:var(--launch);background:var(--launch-light)}
+.counter-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.counter[data-filter="all"] .counter-dot{background:var(--text-mid)}
+.counter[data-filter="acquire"] .counter-dot{background:var(--acquire)}
+.counter[data-filter="collapse"] .counter-dot{background:var(--collapse)}
+.counter[data-filter="launch"] .counter-dot{background:var(--launch)}
+.counter-num{font-family:'DM Serif Display',serif;font-size:1.3rem;line-height:1}
+.counter-label{font-size:.75rem;color:var(--text-light);font-weight:500;letter-spacing:.02em}
+
+.decade-nav{position:sticky;top:0;z-index:100;background:rgba(246,244,240,.9);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border-light);padding:0 2rem;display:flex;justify-content:center}
+.decade-btn{font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.08em;padding:1rem 1.5rem;background:0 0;border:none;color:var(--text-light);cursor:pointer;transition:all .3s;border-bottom:2px solid transparent}
+.decade-btn:hover{color:var(--text)}
+.decade-btn.active{color:var(--text);border-bottom-color:var(--acquire)}
+
+.timeline-wrap{max-width:1000px;margin:0 auto;padding:0 2rem 6rem}
+.decade-section{padding-top:3rem}
+.decade-header{display:flex;align-items:center;gap:1rem;margin-bottom:2rem;padding-bottom:.8rem;border-bottom:1px solid var(--border)}
+.decade-header h2{font-family:'DM Serif Display',serif;font-size:1.8rem;font-weight:400;white-space:nowrap}
+.decade-count{font-family:'Space Mono',monospace;font-size:.65rem;color:var(--text-faint);letter-spacing:.05em}
+
+.events-grid{display:grid;gap:.8rem}
+.event-item{background:var(--bg-white);border:1px solid var(--border-light);border-radius:8px;overflow:hidden;transition:all .35s cubic-bezier(.25,.46,.45,.94);cursor:pointer;opacity:0;transform:translateY(12px)}
+.event-item.visible{opacity:1;transform:translateY(0)}
+.event-item.filtered-out{display:none!important}
+.event-item:hover{box-shadow:0 4px 20px var(--shadow-md);transform:translateY(-2px);border-color:var(--border)}
+.event-item[data-type="acquire"]:hover{border-left:3px solid var(--acquire)}
+.event-item[data-type="collapse"]:hover{border-left:3px solid var(--collapse)}
+.event-item[data-type="launch"]:hover{border-left:3px solid var(--launch)}
+
+.event-header{display:flex;align-items:center;gap:1rem;padding:1rem 1.4rem}
+.event-year-badge{font-family:'Space Mono',monospace;font-size:.7rem;font-weight:700;padding:.3rem .7rem;border-radius:4px;flex-shrink:0;letter-spacing:.03em}
+.event-item[data-type="acquire"] .event-year-badge{background:var(--acquire-light);color:var(--acquire)}
+.event-item[data-type="collapse"] .event-year-badge{background:var(--collapse-light);color:var(--collapse)}
+.event-item[data-type="launch"] .event-year-badge{background:var(--launch-light);color:var(--launch)}
+
+.event-title-row{flex:1;min-width:0}
+.event-title-row h3{font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:600;line-height:1.3}
+.event-type-tag{font-size:.65rem;font-weight:500;text-transform:uppercase;letter-spacing:.1em;margin-top:.15rem}
+.event-item[data-type="acquire"] .event-type-tag{color:var(--acquire)}
+.event-item[data-type="collapse"] .event-type-tag{color:var(--collapse)}
+.event-item[data-type="launch"] .event-type-tag{color:var(--launch)}
+
+.event-expand-icon{width:24px;height:24px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .3s;color:var(--text-faint);font-size:.8rem}
+.event-item:hover .event-expand-icon{border-color:var(--text-light);color:var(--text-light)}
+.event-item.open .event-expand-icon{transform:rotate(45deg);background:var(--bg)}
+
+.event-body{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.25,.46,.45,.94)}
+.event-item.open .event-body{max-height:300px}
+.event-body-inner{padding:0 1.4rem 1.2rem}
+.event-desc{font-size:.88rem;color:var(--text-mid);line-height:1.65;font-weight:300;border-top:1px solid var(--border-light);padding-top:.8rem}
+
+.footer{text-align:center;padding:3rem 2rem;border-top:1px solid var(--border-light)}
+.footer p{font-size:.8rem;color:var(--text-light)}
+.footer a{color:var(--acquire);text-decoration:none}
+.footer a:hover{text-decoration:underline}
+
+@media(max-width:640px){
+  .hero{padding:4rem 1.5rem 3rem}
+  .hero-counters{gap:.6rem}
+  .counter{padding:.5rem .8rem;gap:.4rem}
+  .counter-num{font-size:1.1rem}
+  .counter-label{font-size:.65rem}
+  .decade-btn{padding:.8rem .8rem;font-size:.6rem}
+  .timeline-wrap{padding:0 1rem 4rem}
+  .event-header{padding:.8rem 1rem;gap:.7rem}
+  .event-body-inner{padding:0 1rem 1rem}
+}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-eyebrow">Wirtualne Media &#8212; 25-lecie</div>
+  <h1>Kto kogo <em>zjad&#322;</em></h1>
+  <p class="hero-sub">Mapa przej&#281;&#263;, fuzji i upadk&#243;w na polskim rynku medialnym. 25 lat historii w jednym miejscu.</p>
+  <div class="hero-counters" id="filters">
+    <div class="counter active" data-filter="all"><span class="counter-dot"></span><span class="counter-num">36</span><span class="counter-label">Wszystko</span></div>
+    <div class="counter" data-filter="acquire"><span class="counter-dot"></span><span class="counter-num">14</span><span class="counter-label">Przej&#281;cia</span></div>
+    <div class="counter" data-filter="collapse"><span class="counter-dot"></span><span class="counter-num">7</span><span class="counter-label">Upadki</span></div>
+    <div class="counter" data-filter="launch"><span class="counter-dot"></span><span class="counter-num">15</span><span class="counter-label">Prze&#322;omy</span></div>
+  </div>
+</section>
+
+<nav class="decade-nav" id="decadeNav">
+  <button class="decade-btn active" data-decade="2000">2000&#8211;2005</button>
+  <button class="decade-btn" data-decade="2006">2006&#8211;2010</button>
+  <button class="decade-btn" data-decade="2011">2011&#8211;2015</button>
+  <button class="decade-btn" data-decade="2016">2016&#8211;2020</button>
+  <button class="decade-btn" data-decade="2021">2021&#8211;2025</button>
+</nav>
+
+<div class="timeline-wrap" id="timelineWrap">
+
+<!-- ===== 2000-2005 ===== -->
+<div class="decade-section" id="decade-2000">
+  <div class="decade-header"><h2>2000&#8211;2005</h2><span class="decade-count">7 wydarze&#324;</span></div>
+  <div class="events-grid">
+
+    <div class="event-item" data-type="launch"><div class="event-header"><div class="event-year-badge">2001</div><div class="event-title-row"><h3>Start TVN24</h3><div class="event-type-tag">Prze&#322;om</div></div><div class="event-expand-icon">+</div></div><div class="event-body"><div class="event-body-inner"><p class="event-desc">Pierwszy polski kana&#322; informacyjny 24/7. Zmienia spos&#243;b konsumpcji news&#243;w &#8212; wiadomo&#347;ci przestaj&#261; czeka&#263; na prime time.</p></div></div></div>
+
+    <div class="event-item" data-type="launch"><div class="event-header"><div class="event-year-badge">2001</div><div class="event-title-row"><h3>Start Wirtualnemedia.pl</h3><div class="event-type-tag">Prze&#322;om</div></div><div class="event-expand-icon">+</div></div><div class="event-body"><div class="event-body-inner"><p class="event-desc">Rusza portal bran&#380;owy o mediach, reklamie i marketingu. Z czasem stanie si&#281; podstawowym &#378;r&#243;d&#322;em informacji dla ca&#322;ej bran&#380;y.</p></div></div></div>
+
+    <div class="event-item" data-type="acquire"><div class="event-header"><div class="event-year-badge">2001</div><div class="event-title-row"><h3>France T&#233;l&#233;com kupuje Wirtualn&#261; Polsk&#281;</h3><div class="event-type-tag">Przej&#281;cie</div></div><div class="event-expand-icon">+</div></div><div class="event-body"><div class="event-body-inner"><p class="event-desc">TP SA (kontrolowana przez France T&#233;l&#233;com) przejmuje portal WP. Pocz&#261;tek ery, w kt&#243;rej telekomy widz&#261; si&#281; jako w&#322;a&#347;ciciele medi&#243;w.</p></div></div></div>
+
+    <div class="event-item" data-type="collapse"><div class="event-header"><div class="event-year-badge">2001&#8211;02</div><div class="event-title-row"><h3>Krach na rynku reklamy</h3><div class="event-type-tag">Kryzys</div></div><div class="event-expand-icon">+</div></div><div class="event-body"><div class="event-body-inner"><p class="event-desc">Po rekordowym 2000 roku bud&#380;ety reklamowe gwa&#322;townie si&#281; kurcz&#261;. Fala zwolnie&#324;, ci&#281;cia w redakcjach, wojna rabatowa w mediach.</p></div></div></div>
+
+    <div class="event-item" data-type="launch"><div class="event-header"><div class="event-year-badge">2003</div><div class="event-title-row"><h3>Start &#8222;Faktu&#8221; (Axel Springer)</h3><div class="event-type-tag">Prze&#322;om</div></div><div class="event-expand-icon">+</div></div><div class="event-body"><div class="event-body-inner"><p class="event-desc">Tabloid, kt&#243;ry szybko staje si&#281; najlepiej sprzedaj&#261;cym si&#281; dziennikiem w Polsce. Zmienia krajobraz prasy drukowanej.</p></div></div></div>
+
+    <div class="event-item" data-type="acquire"><div class="event-header"><div class="event-year-badge">2003</div><div class="event-title-row"><h3>Agora buduje Grup&#281; Radiow&#261;</h3><div class="event-type-tag">Przej&#281;cie</div></div><div class="event-expand-icon">+</div></div><div class="event-body"><div class="event-body-inner"><p class="event-desc">Agora kupuje stacje radiowe i buduje Grup&#281; Radiow&#261; Agory z TOK FM na czele. Wydawca prasy wchodzi w radio.</p></div></div></div>
+
+    <div class="event-item" data-type="collapse"><div class="event-header"><div class="event-year-badge">2003</div><div class="event-title-row"><h3>Koniec dziennika &#8222;&#379;ycie&#8221;</h3><div class="event-type-tag">Zamkni&#281;cie</div></div><div class="event-expand-icon">+</div></div><div class="event-body"><div class="event-body-inner"><p class="event-desc">Jeden z wa&#380;niejszych dziennik&#243;w lat 90. nie wytrzymuje kryzysu reklamowego i spadku nak&#322;ad&#243;w. Znika z rynku.</p></div></div></div>
+
+  </div>
+</div>
+
+<!-- ===== 2006-2010 ===== -->
+<div class="decade-section" id="decade-2006">
+  <div class="decade-header"><h2>2006&#8211;2010</h2><span class="decade-count">8 wydarze&#324;</span></div>
+  <div class="events-grid">
+
+    <div class="event-item" data-type="acquire"><div class="event-header"><div class="event-year-badge">2006</div><div class="event-title-row"><h3>Ringier + Axel Springer &#8594; RASP</h3><div class="event-type-tag">Fuzja</div></div><div class="event-expand-icon">+</div></div><div class="event-body"><div class="event-body-inner"><p class="event-desc">Dwaj europejscy giganci &#322;&#261;cz&#261; polskie operacje. Powstaje Ringier Axel Springer Polska &#8212; wydawca &#8222;Faktu&#8221;, &#8222;Newsweeka&#8221;, Onetu.</p></div></div></div>
+
+    <div class="event-item" data-type="acquire"><div class="event-header"><div class="event-year-badge">2006</div><div class="event-title-row"><h3>TVN debiutuje na GPW</h3><div class="event-type-tag">IPO</div></div><div class="event-expand-icon">+</div></div><div class="event-body"><div class="event-body-inner"><p class="event-desc">Grupa TVN wchodzi na gie&#322;d&#281;. Jedna z najwa&#380;niejszych stacji komercyjnych staje si&#281; sp&#243;&#322;k&#261; publiczn&#261;.</p></div></div></div>
+
+    <div class="event-item" data-type="launch"><div class="event-header"><div class="event-year-badge">2006</div><div class="event-title-row"><h3>Start Nasza-Klasa.pl</h3><div class="event-type-tag">Prze&#322;om</div></div><div class="event-expand-icon">+</div></div><div class="event-body"><div class="event-body-inner"><p class="event-desc">Pierwszy polski fenomen social media. W szczytowym momencie ponad 10 mln u&#380;ytkownik&#243;w. Przegra z Facebookiem, ale otworzy er&#281;.</p></div></div></div>
+
+    <div class="event-item" data-type="collapse"><div class="event-header"><div class="event-year-badge">2007</div><div class="event-title-row"><h3>Koniec &#8222;Nowego Dnia&#8221;</h3><div class="event-type-tag">Zamkni&#281;cie</div></div><div class="event-expand-icon">+</div></div><div class="event-body"><div class="event-body-inner"><p class="event-desc">Axel Springer pr&#243;buje uruchomi&#263; drugi dziennik. Projekt upada po kilku miesi&#261;cach &#8212; rynek nie potrzebuje kolejnego tabloidu.</p></div></div></div>
+
+    <div class="event-item" data-type="launch"><div class="event-header"><div class="event-year-badge">2008</div><div class="event-title-row"><h3>Facebook dominuje w Polsce</h3><div class="event-type-tag">Prze&#322;om</div></div><div class="event-expand-icon">+</div></div><div class="event-body"><div class="event-body-inner"><p class="event-desc">Nasza Klasa traci u&#380;ytkownik&#243;w na rzecz Facebooka. Polacy masowo migruj&#261; &#8212; zaczyna si&#281; era social media.</p></div></div></div>
+
+    <div class="event-item" data-type="launch"><div class="event-header"><div class="event-year-badge">2008</div><div class="event-title-row"><h3>Start Polsat News</h3><div class="event-type-tag">Start</div></div><div class="event-expand-icon">+</div></div><div class="event-body"><div class="event-body-inner"><p class="event-desc">Polsat uruchamia w&#322;asny kana&#322; informacyjny 24/7. TVN24 traci monopol na ci&#261;g&#322;e wiadomo&#347;ci.</p></div></div></div>
+
+    <div class="event-item" data-type="collapse"><div class="event-header"><div class="event-year-badge">2009</div><div class="event-title-row"><h3>Koniec &#8222;Dziennika&#8221; &#8594; DGP</h3><div class="event-type-tag">Zamkni&#281;cie</div></div><div class="event-expand-icon">+</div></div><div class="event-body"><div class="event-body-inner"><p class="event-desc">&#8222;Dziennik&#8221; Axel Springera zostaje po&#322;&#261;czony z &#8222;Gazet&#261; Prawn&#261;&#8221;. Kolejny dziennik nie wytrzyma&#322; rynku.</p></div></div></div>
+
+    <div class="event-item" data-type="acquire"><div class="event-header"><div class="event-year-badge">2010</div><div class="event-title-row"><h3>Agora kupuje sie&#263; kin Helios</h3><div class="event-type-tag">Przej&#281;cie</div></div><div class="event-expand-icon">+</div></div><div class="event-body"><div class="event-body-inner"><p class="event-desc">Wydawca &#8222;Gazety Wyborczej&#8221; dywersyfikuje przychody &#8212; kupuje sie&#263; multipleks&#243;w. Kina stan&#261; si&#281; jednym z filar&#243;w grupy.</p></div></div></div>
+
+  </div>
+</div>
+
+<!-- ===== 2011-2015 ===== -->
+<div class="decade-section" id="decade-2011">
+  <div class="decade-header"><h2>2011&#8211;2015</h2><span class="decade-count">7 wydarze&#324;</span></div>
+  <div class="events-grid">
+
+    <div class="event-item" data-type="launch"><div class="event-header"><div class="event-year-badge">2011</div><div class="event-title-row"><h3>Start Spider&#39;s Web</h3><div class="event-type-tag">Start</div></div><div class="event-expand-icon">+</div></div><div class="event-body"><div class="event-body-inner"><p class="event-desc">Przemys&#322;aw Paj&#261;k uruchamia technologicznego bloga, kt&#243;ry wyro&#347;nie na jeden z najwi&#281;kszych niezale&#380;nych serwis&#243;w w Polsce. Nowy model: blog &#8594; grupa medialna.</p></div></div></div>
+
+    <div class="event-item" data-type="acquire"><div class="event-header"><div class="event-year-badge">2012</div><div class="event-title-row"><h3>Grupa o2 kupuje Wirtualn&#261; Polsk&#281;</h3><div class="event-type-tag">Przej&#281;cie</div></div><div class="event-expand-icon">+</div></div><div class="event-body"><div class="event-body-inner"><p class="event-desc">Jacek &#346;widerski i Grupa o2 przejmuj&#261; WP od TP SA. Powstaje Wirtualna Polska Holding &#8212; czo&#322;owy gracz polskiego internetu.</p></div></div></div>
+
+    <div class="event-item" data-type="launch"><div class="event-header"><div class="event-year-badge">2012</div><div class="event-title-row"><h3>Start NaTemat.pl</h3><div class="event-type-tag">Start</div></div><div class="event-expand-icon">+</div></div><div class="event-body"><div class="event-body-inner"><p class="event-desc">Tomasz Lis i Tomasz Macha&#322;a uruchamiaj&#261; portal &#322;&#261;cz&#261;cy redakcj&#281; z blogami. Milion u&#380;ytkownik&#243;w po p&#243;&#322; roku. Nowy model medi&#243;w.</p></div></div></div>
+
+    <div class="event-item" data-type="launch"><div class="event-header"><div class="event-year-badge">2012</div><div class="event-title-row"><h3>Pierwsze paywalle w polskich mediach</h3><div class="event-type-tag">Prze&#322;om</div></div><div class="event-expand-icon">+</div></div><div class="event-body"><div class="event-body-inner"><p class="event-desc">&#8222;Gazeta Wyborcza&#8221; i &#8222;Rzeczpospolita&#8221; stawiaj&#261; &#347;ciany p&#322;atno&#347;ci. Pocz&#261;tek trudnej drogi do modelu subskrypcyjnego.</p></div></div></div>
+
+    <div class="event-item" data-type="collapse"><div class="event-header"><div class="event-year-badge">2013</div><div class="event-title-row"><h3>Koniec &#8222;Przekroju&#8221;</h3><div class="event-type-tag">Zamkni&#281;cie</div></div><div class="event-expand-icon">+</div></div><div class="event-body"><div class="event-body-inner"><p class="event-desc">Legendarny tygodnik, wydawany od 1945 roku, zamyka si&#281; w dotychczasowej formie. P&#243;&#378;niej b&#281;dzie wskrzeszany, ale nigdy nie odzyska pozycji.</p></div></div></div>
+
+    <div class="event-item" data-type="acquire"><div class="event-header"><div class="event-year-badge">2014</div><div class="event-title-row"><h3>WP Holding na gie&#322;dzie</h3><div class="event-type-tag">IPO</div></div><div class="event-expand-icon">+</div></div><div class="event-body"><div class="event-body-inner"><p class="event-desc">Wirtualna Polska Holding debiutuje na GPW. Rozpoczyna seri&#281; akwizycji &#8212; e-commerce, turystyka, finanse.</p></div></div></div>
+
+    <div class="event-item" data-type="acquire"><div class="event-header"><div class="event-year-badge">2015</div><div class="event-title-row"><h3>Scripps/Discovery kupuje TVN</h3><div class="event-type-tag">Przej&#281;cie</div></div><div class="event-expand-icon">+</div></div><div class="event-body"><div class="event-body-inner"><p class="event-desc">Ameryka&#324;ski gigant przejmuje TVN od ITI i Canal+. Jedna z najwi&#281;kszych transakcji medialnych w historii Polski.</p></div></div></div>
+
+  </div>
+</div>
+
+<!-- ===== 2016-2020 ===== -->
+<div class="decade-section" id="decade-2016">
+  <div class="decade-header"><h2>2016&#8211;2020</h2><span class="decade-count">6 wydarze&#324;</span></div>
+  <div class="events-grid">
+
+    <div class="event-item" data-type="launch"><div class="event-header"><div class="event-year-badge">2016</div><div class="event-title-row"><h3>Netflix w Polsce</h3><div class="event-type-tag">Start</div></div><div class="event-expand-icon">+</div></div><div class="event-body"><div class="event-body-inner"><p class="event-desc">Platforma streamingowa uruchamia polsk&#261; wersj&#281;. Pocz&#261;tek erozji telewizji linearnej &#8212; widzowie odchodz&#261; od ram&#243;wek.</p></div></div></div>
+
+    <div class="event-item" data-type="launch"><div class="event-header"><div class="event-year-badge">2019</div><div class="event-title-row"><h3>Boom podcastowy</h3><div class="event-type-tag">Prze&#322;om</div></div><div class="event-expand-icon">+</div></div><div class="event-body"><div class="event-body-inner"><p class="event-desc">Newonce, TOK FM, Storytel, niezale&#380;ni tw&#243;rcy &#8212; podcasty staj&#261; si&#281; pe&#322;noprawnym medium. Reklama podcastowa wchodzi do media plan&#243;w.</p></div></div></div>
+
+    <div class="event-item" data-type="acquire"><div class="event-header"><div class="event-year-badge">2020</div><div class="event-title-row"><h3>PKN Orlen kupuje Polska Press</h3><div class="event-type-tag">Przej&#281;cie</div></div><div class="event-expand-icon">+</div></div><div class="event-body"><div class="event-body-inner"><p class="event-desc">Pa&#324;stwowa sp&#243;&#322;ka paliwowa przejmuje najwi&#281;kszego wydawc&#281; prasy regionalnej od niemieckiego Verlagsgruppe Passau. Kontrowersyjna transakcja.</p></div></div></div>
+
+    <div class="event-item" data-type="launch"><div class="event-header"><div class="event-year-badge">2020</div><div class="event-title-row"><h3>Start Radia Nowy &#346;wiat</h3><div class="event-type-tag">Start</div></div><div class="event-expand-icon">+</div></div><div class="event-body"><div class="event-body-inner"><p class="event-desc">Byli dziennikarze Tr&#243;jki zak&#322;adaj&#261; niezale&#380;ne radio finansowane ze sk&#322;adek s&#322;uchaczy. Crowdfunding jako model mediowy.</p></div></div></div>
+
+    <div class="event-item" data-type="collapse"><div class="event-header"><div class="event-year-badge">2020</div><div class="event-title-row"><h3>Pandemia: kryzys reklamy offline</h3><div class="event-type-tag">Kryzys</div></div><div class="event-expand-icon">+</div></div><div class="event-body"><div class="event-body-inner"><p class="event-desc">COVID-19 wywraca rynek. Reklama offline traci 15%+, internet jako jedyne medium nie spada. Prasa, kina i outdoor w g&#322;&#281;bokim kryzysie.</p></div></div></div>
+
+    <div class="event-item" data-type="launch"><div class="event-header"><div class="event-year-badge">2020</div><div class="event-title-row"><h3>Pandemia: eksplozja digitalu</h3><div class="event-type-tag">Prze&#322;om</div></div><div class="event-expand-icon">+</div></div><div class="event-body"><div class="event-body-inner"><p class="event-desc">Przyspieszenie digitalizacji o kilka lat. Subskrypcje rosn&#261;, e-commerce eksploduje, redakcje przenosz&#261; si&#281; na prac&#281; zdaln&#261;.</p></div></div></div>
+
+  </div>
+</div>
+
+<!-- ===== 2021-2025 ===== -->
+<div class="decade-section" id="decade-2021">
+  <div class="decade-header"><h2>2021&#8211;2025</h2><span class="decade-count">8 wydarze&#324;</span></div>
+  <div class="events-grid">
+
+    <div class="event-item" data-type="acquire"><div class="event-header"><div class="event-year-badge">2021</div><div class="event-title-row"><h3>Agora kupuje Eurozet (Radio Zet)</h3><div class="event-type-tag">Przej&#281;cie</div></div><div class="event-expand-icon">+</div></div><div class="event-body"><div class="event-body-inner"><p class="event-desc">Po d&#322;ugiej batalii z UOKiK Agora przejmuje Eurozet. Staje si&#281; jednym z najwi&#281;kszych graczy radiowych w Polsce.</p></div></div></div>
+
+    <div class="event-item" data-type="collapse"><div class="event-header"><div class="event-year-badge">2021</div><div class="event-title-row"><h3>Koniec Gadu-Gadu</h3><div class="event-type-tag">Zamkni&#281;cie</div></div><div class="event-expand-icon">+</div></div><div class="event-body"><div class="event-body-inner"><p class="event-desc">Komunikator, kt&#243;ry mia&#322; 7 mln u&#380;ytkownik&#243;w, zamyka si&#281; na dobre. Symbol polskiego internetu ery Web 1.0 odchodzi w zapomnienie.</p></div></div></div>
+
+    <div class="event-item" data-type="acquire"><div class="event-header"><div class="event-year-badge">2022</div><div class="event-title-row"><h3>Warner Bros. + Discovery &#8594; WBD</h3><div class="event-type-tag">Fuzja</div></div><div class="event-expand-icon">+</div></div><div class="event-body"><div class="event-body-inner"><p class="event-desc">Globalna fuzja zmienia w&#322;a&#347;ciciela TVN. Warner Bros. Discovery staje si&#281; nowym szyldem dla polskiej telewizji komercyjnej.</p></div></div></div>
+
+    <div class="event-item" data-type="acquire"><div class="event-header"><div class="event-year-badge">2022</div><div class="event-title-row"><h3>Play (Iliad) kupuje UPC Polska</h3><div class="event-type-tag">Przej&#281;cie</div></div><div class="event-expand-icon">+</div></div><div class="event-body"><div class="event-body-inner"><p class="event-desc">Francuski Iliad, w&#322;a&#347;ciciel Play, przejmuje najwi&#281;ksz&#261; telewizj&#281; kablow&#261; w kraju za 7 mld z&#322;. Telekomy konsoliduj&#261; infrastruktur&#281; medialn&#261;.</p></div></div></div>
+
+    <div class="event-item" data-type="launch"><div class="event-header"><div class="event-year-badge">2022</div><div class="event-title-row"><h3>ChatGPT &#8212; AI w mainstreamie</h3><div class="event-type-tag">Prze&#322;om</div></div><div class="event-expand-icon">+</div></div><div class="event-body"><div class="event-body-inner"><p class="event-desc">Premiera ChatGPT otwiera now&#261; er&#281;. Polskie redakcje zaczynaj&#261; eksperymentowa&#263; z AI w produkcji tre&#347;ci, SEO i analizie danych.</p></div></div></div>
+
+    <div class="event-item" data-type="launch"><div class="event-header"><div class="event-year-badge">2023</div><div class="event-title-row"><h3>Start Kana&#322;u Zero</h3><div class="event-type-tag">Start</div></div><div class="event-expand-icon">+</div></div><div class="event-body"><div class="event-body-inner"><p class="event-desc">Krzysztof Stanowski uruchamia kana&#322; informacyjno-publicystyczny na YouTube. Miliony subskrybent&#243;w w kilka miesi&#281;cy. YouTube jako platforma medialna.</p></div></div></div>
+
+    <div class="event-item" data-type="launch"><div class="event-header"><div class="event-year-badge">2023&#8211;24</div><div class="event-title-row"><h3>Iberion &#8212; media social-first</h3><div class="event-type-tag">Prze&#322;om</div></div><div class="event-expand-icon">+</div></div><div class="event-body"><div class="event-body-inner"><p class="event-desc">Albert W&#243;jcik buduje grup&#281; medialn&#261; opart&#261; o social i video. &#346;ci&#261;ga dziennikarzy (Schwertner, Kalczy&#324;ska, Baczy&#324;ski). Goniec najszybciej ro&#347;nie na YouTube.</p></div></div></div>
+
+    <div class="event-item" data-type="acquire"><div class="event-header"><div class="event-year-badge">2024</div><div class="event-title-row"><h3>Miszczak: z TVN do Polsatu</h3><div class="event-type-tag">Transfer</div></div><div class="event-expand-icon">+</div></div><div class="event-body"><div class="event-body-inner"><p class="event-desc">Edward Miszczak, wieloletni szef programowy TVN, przechodzi do Polsatu. Symboliczna zmiana warty w polskiej telewizji komercyjnej.</p></div></div></div>
+
+  </div>
+</div>
+
+</div>
+
+<footer class="footer">
+  <p>Opracowanie: redakcja <a href="https://www.wirtualnemedia.pl" target="_blank">Wirtualnemedia.pl</a> &#8212; 25-lecie, 2025</p>
+</footer>
+
+<script>
+// Expand/collapse cards
+document.querySelectorAll('.event-item').forEach(function(item) {
+  item.addEventListener('click', function() {
+    var wasOpen = item.classList.contains('open');
+    item.closest('.events-grid').querySelectorAll('.event-item.open').forEach(function(el) { el.classList.remove('open'); });
+    if (!wasOpen) item.classList.add('open');
+  });
+});
+
+// Filters
+document.querySelectorAll('.counter').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.counter').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    var filter = btn.getAttribute('data-filter');
+    document.querySelectorAll('.event-item').forEach(function(ev) {
+      if (filter === 'all' || ev.getAttribute('data-type') === filter) {
+        ev.classList.remove('filtered-out');
+      } else {
+        ev.classList.add('filtered-out');
+      }
+    });
+  });
+});
+
+// Decade nav scroll
+document.querySelectorAll('.decade-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.decade-btn').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    var target = document.getElementById('decade-' + btn.getAttribute('data-decade'));
+    if (target) {
+      var navH = document.getElementById('decadeNav').offsetHeight;
+      var y = target.getBoundingClientRect().top + window.scrollY - navH - 10;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  });
+});
+
+// Intersection observer for fade-in
+var obs = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      obs.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+
+document.querySelectorAll('.event-item').forEach(function(el) { obs.observe(el); });
+
+// Active decade on scroll
+var decadeSections = document.querySelectorAll('.decade-section');
+var decadeBtns = document.querySelectorAll('.decade-btn');
+
+var scrollObs = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      var id = entry.target.id.replace('decade-', '');
+      decadeBtns.forEach(function(b) {
+        if (b.getAttribute('data-decade') === id) { b.classList.add('active'); } else { b.classList.remove('active'); }
+      });
+    }
+  });
+}, { threshold: 0.2, rootMargin: '-80px 0px -60% 0px' });
+
+decadeSections.forEach(function(s) { scrollObs.observe(s); });
+</script>
+</body>
+</html>
