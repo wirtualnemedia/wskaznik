@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kto kogo zjad&#322; &#8212; 25 lat polskich medi&#243;w</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f6f4f0;
+  --bg-white: #ffffff;
+  --text: #1a1816;
+  --text-mid: #4a4540;
+  --text-light: #8a847a;
+  --text-faint: #b5ada3;
+  --acquire: #b06e1a;
+  --acquire-light: #fdf3e4;
+  --acquire-glow: rgba(176,110,26,0.15);
+  --collapse: #a8342a;
+  --collapse-light: #fde8e6;
+  --collapse-glow: rgba(168,52,42,0.15);
+  --launch: #1a7a5a;
+  --launch-light: #e4f5ee;
+  --launch-glow: rgba(26,122,90,0.15);
+  --border: #ddd6cc;
+  --border-light: #eae5dc;
+  --line-color: #d0c9be;
+  --shadow: rgba(26,24,22,0.07);
+  --shadow-lg: rgba(26,24,22,0.12);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* HERO */
+.hero {
+  padding: 5rem 2rem 3rem;
+  text-align: center;
+  background: linear-gradient(180deg, var(--bg-white) 0%, var(--bg) 100%);
+}
+.hero-eyebrow {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  margin-bottom: 1.2rem;
+}
+.hero h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(2.4rem, 6vw, 4.5rem);
+  font-weight: 400;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+.hero h1 em { font-style: italic; color: var(--acquire); }
+.hero-sub {
+  font-size: 1.05rem;
+  color: var(--text-mid);
+  max-width: 500px;
+  margin: 0 auto 2rem;
+  font-weight: 300;
+}
+
+/* FILTERS */
+.filters {
+  display: flex;
+  justify-content: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+.fbtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.1rem;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  background: var(--bg-white);
+  cursor: pointer;
+  transition: all 0.25s;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-mid);
+  user-select: none;
+}
+.fbtn:hover { box-shadow: 0 2px 10px var(--shadow); }
+.fbtn .dot { width: 8px; height: 8px; border-radius: 50%; }
+.fbtn[data-f="all"] .dot { background: var(--text-mid); }
+.fbtn[data-f="acquire"] .dot { background: var(--acquire); }
+.fbtn[data-f="collapse"] .dot { background: var(--collapse); }
+.fbtn[data-f="launch"] .dot { background: var(--launch); }
+.fbtn.on { border-width: 2px; }
+.fbtn[data-f="all"].on { border-color: var(--text-mid); }
+.fbtn[data-f="acquire"].on { border-color: var(--acquire); background: var(--acquire-light); }
+.fbtn[data-f="collapse"].on { border-color: var(--collapse); background: var(--collapse-light); }
+.fbtn[data-f="launch"].on { border-color: var(--launch); background: var(--launch-light); }
+
+/* LEGEND */
+.legend {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1.5rem 2rem 0;
+  flex-wrap: wrap;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.7rem;
+  color: var(--text-light);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+/* STICKY NAV */
+.dnav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(246,244,240,0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  justify-content: center;
+  padding: 0;
+}
+.dnav button {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  padding: 0.9rem 1.3rem;
+  background: none;
+  border: none;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.25s;
+  border-bottom: 2px solid transparent;
+}
+.dnav button:hover { color: var(--text); }
+.dnav button.on { color: var(--text); border-bottom-color: var(--acquire); }
+
+/* TIMELINE */
+.tl {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 0 2rem 5rem;
+  position: relative;
+}
+
+/* The vertical line */
+.tl-line {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, transparent 0%, var(--line-color) 2%, var(--line-color) 98%, transparent 100%);
+  transform: translateX(-50%);
+  z-index: 0;
+}
+
+/* Decade labels on the line */
+.tl-decade {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 2.5rem 0 1.5rem;
+}
+.tl-decade span {
+  display: inline-block;
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--text-light);
+  background: var(--bg);
+  padding: 0.3rem 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: 100px;
+}
+
+/* Event node */
+.node {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: flex-start;
+  padding: 0.6rem 0;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s, transform 0.5s;
+}
+.node.vis { opacity: 1; transform: translateY(0); }
+.node.hide { display: none !important; }
+
+/* Alternating sides */
+.node.left { flex-direction: row; }
+.node.right { flex-direction: row-reverse; }
+
+/* The bubble on the line */
+.bubble-wrap {
+  position: absolute;
+  left: 50%;
+  top: 0.9rem;
+  transform: translateX(-50%);
+  z-index: 3;
+  cursor: pointer;
+}
+.bubble {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 3px solid var(--bg);
+  transition: all 0.3s;
+  position: relative;
+}
+.bubble::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.node:hover .bubble::after, .node.open .bubble::after { opacity: 1; }
+.node[data-t="acquire"] .bubble { background: var(--acquire); }
+.node[data-t="acquire"] .bubble::after { background: var(--acquire-glow); }
+.node[data-t="collapse"] .bubble { background: var(--collapse); }
+.node[data-t="collapse"] .bubble::after { background: var(--collapse-glow); }
+.node[data-t="launch"] .bubble { background: var(--launch); }
+.node[data-t="launch"] .bubble::after { background: var(--launch-glow); }
+
+.node:hover .bubble, .node.open .bubble {
+  transform: scale(1.3);
+}
+
+/* Year label near bubble */
+.yr {
+  position: absolute;
+  left: 50%;
+  top: -0.1rem;
+  transform: translateX(-50%);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--text-faint);
+  white-space: nowrap;
+  pointer-events: none;
+  transition: color 0.3s;
+}
+.node.left .yr { left: calc(50% + 24px); transform: none; }
+.node.right .yr { left: auto; right: calc(50% + 24px); transform: none; text-align: right; }
+.node:hover .yr, .node.open .yr { color: var(--text-mid); }
+
+/* Card */
+.card {
+  width: calc(50% - 32px);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.node.left .card { margin-right: auto; padding-right: 12px; }
+.node.right .card { margin-left: auto; padding-left: 12px; }
+
+.card-inner {
+  background: var(--bg-white);
+  border: 1px solid var(--border-light);
+  border-radius: 10px;
+  padding: 0.9rem 1.1rem;
+  transition: all 0.3s;
+}
+.card-inner:hover {
+  box-shadow: 0 4px 20px var(--shadow);
+  border-color: var(--border);
+}
+.node.open .card-inner {
+  box-shadow: 0 6px 28px var(--shadow-lg);
+}
+.node[data-t="acquire"].open .card-inner { border-left: 3px solid var(--acquire); }
+.node[data-t="collapse"].open .card-inner { border-left: 3px solid var(--collapse); }
+.node[data-t="launch"].open .card-inner { border-left: 3px solid var(--launch); }
+
+.card-tag {
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.2rem;
+}
+.node[data-t="acquire"] .card-tag { color: var(--acquire); }
+.node[data-t="collapse"] .card-tag { color: var(--collapse); }
+.node[data-t="launch"] .card-tag { color: var(--launch); }
+
+.card-title {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--text);
+}
+
+.card-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.25,0.46,0.45,0.94), margin 0.3s;
+  margin-top: 0;
+}
+.node.open .card-body {
+  max-height: 200px;
+  margin-top: 0.6rem;
+}
+.card-desc {
+  font-size: 0.84rem;
+  color: var(--text-mid);
+  line-height: 1.6;
+  font-weight: 300;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border-light);
+}
+
+/* Connector line from bubble to card */
+.connector {
+  position: absolute;
+  top: 1.35rem;
+  height: 1px;
+  background: var(--line-color);
+  z-index: 1;
+  transition: background 0.3s;
+}
+.node.left .connector { left: calc(50% + 9px); right: calc(50% + 32px - 50% + 12px); width: 23px; }
+.node.right .connector { right: calc(50% + 9px); width: 23px; }
+
+.node:hover .connector, .node.open .connector { background: var(--border); }
+
+/* FOOTER */
+.footer {
+  text-align: center;
+  padding: 3rem 2rem;
+  border-top: 1px solid var(--border-light);
+}
+.footer p { font-size: 0.8rem; color: var(--text-light); }
+.footer a { color: var(--acquire); text-decoration: none; }
+
+/* RESPONSIVE */
+@media (max-width: 700px) {
+  .tl-line { left: 24px; }
+  .bubble-wrap { left: 24px; }
+  .node.left, .node.right { flex-direction: row; }
+  .node.left .card, .node.right .card {
+    width: calc(100% - 52px);
+    margin-left: auto;
+    margin-right: 0;
+    padding-left: 12px;
+    padding-right: 0;
+  }
+  .node.left .yr, .node.right .yr {
+    left: 44px;
+    right: auto;
+    transform: none;
+    text-align: left;
+  }
+  .connector { display: none; }
+  .hero { padding: 3.5rem 1.5rem 2rem; }
+  .tl { padding: 0 1rem 4rem; }
+  .dnav button { padding: 0.7rem 0.7rem; font-size: 0.6rem; }
+  .filters { gap: 0.4rem; }
+  .fbtn { padding: 0.4rem 0.8rem; font-size: 0.7rem; }
+}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-eyebrow">Wirtualne Media &#8212; 25-lecie</div>
+  <h1>Kto kogo <em>zjad&#322;</em></h1>
+  <p class="hero-sub">Mapa przej&#281;&#263;, fuzji i upadk&#243;w na polskim rynku medialnym. 25 lat w jednym miejscu.</p>
+  <div class="filters">
+    <div class="fbtn on" data-f="all"><span class="dot"></span> Wszystko</div>
+    <div class="fbtn" data-f="acquire"><span class="dot"></span> Przej&#281;cia</div>
+    <div class="fbtn" data-f="collapse"><span class="dot"></span> Upadki</div>
+    <div class="fbtn" data-f="launch"><span class="dot"></span> Prze&#322;omy</div>
+  </div>
+</section>
+
+<nav class="dnav" id="dnav">
+  <button class="on" data-d="2000">2000&#8211;05</button>
+  <button data-d="2006">2006&#8211;10</button>
+  <button data-d="2011">2011&#8211;15</button>
+  <button data-d="2016">2016&#8211;20</button>
+  <button data-d="2021">2021&#8211;25</button>
+</nav>
+
+<div class="tl">
+  <div class="tl-line"></div>
+
+  <!-- 2000-2005 -->
+  <div class="tl-decade" id="d-2000"><span>2000 &#8211; 2005</span></div>
+
+  <div class="node left" data-t="launch">
+    <div class="yr">2001</div>
+    <div class="bubble-wrap"><div class="bubble"></div></div>
+    <div class="connector"></div>
+    <div class="card"><div class="card-inner">
+      <div class="card-tag">Prze&#322;om</div>
+      <div class="card-title">Start TVN24</div>
+      <div class="card-body"><div class="card-desc">Pierwszy polski kana&#322; informacyjny 24/7. Zmienia spos&#243;b konsumpcji news&#243;w &#8212; wiadomo&#347;ci przestaj&#261; czeka&#263; na prime time.</div></div>
+    </div></div>
+  </div>
+
+  <div class="node right" data-t="launch">
+    <div class="yr">2001</div>
+    <div class="bubble-wrap"><div class="bubble"></div></div>
+    <div class="connector"></div>
+    <div class="card"><div class="card-inner">
+      <div class="card-tag">Start</div>
+      <div class="card-title">Start Wirtualnemedia.pl</div>
+      <div class="card-body"><div class="card-desc">Rusza portal bran&#380;owy o mediach, reklamie i marketingu. Z czasem stanie si&#281; podstawowym &#378;r&#243;d&#322;em informacji dla ca&#322;ej bran&#380;y.</div></div>
+    </div></div>
+  </div>
+
+  <div class="node left" data-t="acquire">
+    <div class="yr">2001</div>
+    <div class="bubble-wrap"><div class="bubble"></div></div>
+    <div class="connector"></div>
+    <div class="card"><div class="card-inner">
+      <div class="card-tag">Przej&#281;cie</div>
+      <div class="card-title">France T&#233;l&#233;com kupuje Wirtualn&#261; Polsk&#281;</div>
+      <div class="card-body"><div class="card-desc">TP SA (kontrolowana przez France T&#233;l&#233;com) przejmuje portal WP. Pocz&#261;tek ery, w kt&#243;rej telekomy widz&#261; si&#281; jako w&#322;a&#347;ciciele medi&#243;w.</div></div>
+    </div></div>
+  </div>
+
+  <div class="node right" data-t="collapse">
+    <div class="yr">2001&#8211;02</div>
+    <div class="bubble-wrap"><div class="bubble"></div></div>
+    <div class="connector"></div>
+    <div class="card"><div class="card-inner">
+      <div class="card-tag">Kryzys</div>
+      <div class="card-title">Krach na rynku reklamy</div>
+      <div class="card-body"><div class="card-desc">Po rekordowym 2000 roku bud&#380;ety reklamowe gwa&#322;townie si&#281; kurcz&#261;. Fala zwolnie&#324;, ci&#281;cia w redakcjach, wojna rabatowa.</div></div>
+    </div></div>
+  </div>
+
+  <div class="node left" data-t="launch">
+    <div class="yr">2003</div>
+    <div class="bubble-wrap"><div class="bubble"></div></div>
+    <div class="connector"></div>
+    <div class="card"><div class="card-inner">
+      <div class="card-tag">Prze&#322;om</div>
+      <div class="card-title">Start &#8222;Faktu&#8221;</div>
+      <div class="card-body"><div class="card-desc">Axel Springer wprowadza tabloid, kt&#243;ry szybko staje si&#281; najlepiej sprzedaj&#261;cym si&#281; dziennikiem w Polsce.</div></div>
+    </div></div>
+  </div>
+
+  <div class="node right" data-t="acquire">
+    <div class="yr">2003</div>
+    <div class="bubble-wrap"><div class="bubble"></div></div>
+    <div class="connector"></div>
+    <div class="card"><div class="card-inner">
+      <div class="card-tag">Przej&#281;cie</div>
+      <div class="card-title">Agora buduje Grup&#281; Radiow&#261;</div>
+      <div class="card-body"><div class="card-desc">Agora kupuje stacje radiowe i buduje Grup&#281; Radiow&#261; z TOK FM na czele. Wydawca prasy wchodzi w radio.</div></div>
+    </div></div>
+  </div>
+
+  <div class="node left" data-t="collapse">
+    <div class="yr">2003</div>
+    <div class="bubble-wrap"><div class="bubble"></div></div>
+    <div class="connector"></div>
+    <div class="card"><div class="card-inner">
+      <div class="card-tag">Zamkni&#281;cie</div>
+      <div class="card-title">Koniec dziennika &#8222;&#379;ycie&#8221;</div>
+      <div class="card-body"><div class="card-desc">Jeden z wa&#380;niejszych dziennik&#243;w lat 90. nie wytrzymuje kryzysu reklamowego i spadku nak&#322;ad&#243;w. Znika z rynku.</div></div>
+    </div></div>
+  </div>
+
+  <!-- 2006-2010 -->
+  <div class="tl-decade" id="d-2006"><span>2006 &#8211; 2010</span></div>
+
+  <div class="node right" data-t="acquire">
+    <div class="yr">2006</div><div class="bubble-wrap"><div class="bubble"></div></div><div class="connector"></div>
+    <div class="card"><div class="card-inner"><div class="card-tag">Fuzja</div><div class="card-title">Ringier + Axel Springer &#8594; RASP</div><div class="card-body"><div class="card-desc">Dwaj europejscy giganci &#322;&#261;cz&#261; polskie operacje. Powstaje RASP &#8212; wydawca &#8222;Faktu&#8221;, &#8222;Newsweeka&#8221;, Onetu.</div></div></div></div>
+  </div>
+
+  <div class="node left" data-t="acquire">
+    <div class="yr">2006</div><div class="bubble-wrap"><div class="bubble"></div></div><div class="connector"></div>
+    <div class="card"><div class="card-inner"><div class="card-tag">IPO</div><div class="card-title">TVN debiutuje na GPW</div><div class="card-body"><div class="card-desc">Grupa TVN wchodzi na gie&#322;d&#281;. Jedna z najwa&#380;niejszych stacji komercyjnych staje si&#281; sp&#243;&#322;k&#261; publiczn&#261;.</div></div></div></div>
+  </div>
+
+  <div class="node right" data-t="launch">
+    <div class="yr">2006</div><div class="bubble-wrap"><div class="bubble"></div></div><div class="connector"></div>
+    <div class="card"><div class="card-inner"><div class="card-tag">Start</div><div class="card-title">Start Nasza-Klasa.pl</div><div class="card-body"><div class="card-desc">Pierwszy polski fenomen social media. Ponad 10 mln u&#380;ytkownik&#243;w. Przegra z Facebookiem, ale otworzy er&#281;.</div></div></div></div>
+  </div>
+
+  <div class="node left" data-t="collapse">
+    <div class="yr">2007</div><div class="bubble-wrap"><div class="bubble"></div></div><div class="connector"></div>
+    <div class="card"><div class="card-inner"><div class="card-tag">Zamkni&#281;cie</div><div class="card-title">Koniec &#8222;Nowego Dnia&#8221;</div><div class="card-body"><div class="card-desc">Axel Springer pr&#243;buje uruchomi&#263; drugi dziennik. Projekt upada po kilku miesi&#261;cach.</div></div></div></div>
+  </div>
+
+  <div class="node right" data-t="launch">
+    <div class="yr">2008</div><div class="bubble-wrap"><div class="bubble"></div></div><div class="connector"></div>
+    <div class="card"><div class="card-inner"><div class="card-tag">Prze&#322;om</div><div class="card-title">Facebook dominuje w Polsce</div><div class="card-body"><div class="card-desc">Nasza Klasa traci u&#380;ytkownik&#243;w. Polacy masowo migruj&#261; na Facebooka &#8212; zaczyna si&#281; era social media.</div></div></div></div>
+  </div>
+
+  <div class="node left" data-t="launch">
+    <div class="yr">2008</div><div class="bubble-wrap"><div class="bubble"></div></div><div class="connector"></div>
+    <div class="card"><div class="card-inner"><div class="card-tag">Start</div><div class="card-title">Start Polsat News</div><div class="card-body"><div class="card-desc">Polsat uruchamia w&#322;asny kana&#322; informacyjny 24/7. TVN24 traci monopol na ci&#261;g&#322;e wiadomo&#347;ci.</div></div></div></div>
+  </div>
+
+  <div class="node right" data-t="collapse">
+    <div class="yr">2009</div><div class="bubble-wrap"><div class="bubble"></div></div><div class="connector"></div>
+    <div class="card"><div class="card-inner"><div class="card-tag">Zamkni&#281;cie</div><div class="card-title">Koniec &#8222;Dziennika&#8221; &#8594; DGP</div><div class="card-body"><div class="card-desc">&#8222;Dziennik&#8221; Axel Springera po&#322;&#261;czony z &#8222;Gazet&#261; Prawn&#261;&#8221;. Kolejny dziennik nie wytrzyma&#322; rynku.</div></div></div></div>
+  </div>
+
+  <div class="node left" data-t="acquire">
+    <div class="yr">2010</div><div class="bubble-wrap"><div class="bubble"></div></div><div class="connector"></div>
+    <div class="card"><div class="card-inner"><div class="card-tag">Przej&#281;cie</div><div class="card-title">Agora kupuje Helios</div><div class="card-body"><div class="card-desc">Wydawca GW dywersyfikuje przychody &#8212; kupuje sie&#263; multipleks&#243;w. Kina stan&#261; si&#281; filarem grupy.</div></div></div></div>
+  </div>
+
+  <!-- 2011-2015 -->
+  <div class="tl-decade" id="d-2011"><span>2011 &#8211; 2015</span></div>
+
+  <div class="node right" data-t="launch">
+    <div class="yr">2011</div><div class="bubble-wrap"><div class="bubble"></div></div><div class="connector"></div>
+    <div class="card"><div class="card-inner"><div class="card-tag">Start</div><div class="card-title">Start Spider&#39;s Web</div><div class="card-body"><div class="card-desc">Przemys&#322;aw Paj&#261;k uruchamia bloga tech, kt&#243;ry wyro&#347;nie na jeden z najwi&#281;kszych niezale&#380;nych serwis&#243;w. Blog &#8594; grupa medialna.</div></div></div></div>
+  </div>
+
+  <div class="node left" data-t="acquire">
+    <div class="yr">2012</div><div class="bubble-wrap"><div class="bubble"></div></div><div class="connector"></div>
+    <div class="card"><div class="card-inner"><div class="card-tag">Przej&#281;cie</div><div class="card-title">Grupa o2 kupuje Wirtualn&#261; Polsk&#281;</div><div class="card-body"><div class="card-desc">Jacek &#346;widerski przejmuje WP od TP SA. Powstaje WP Holding &#8212; czo&#322;owy gracz polskiego internetu.</div></div></div></div>
+  </div>
+
+  <div class="node right" data-t="launch">
+    <div class="yr">2012</div><div class="bubble-wrap"><div class="bubble"></div></div><div class="connector"></div>
+    <div class="card"><div class="card-inner"><div class="card-tag">Start</div><div class="card-title">Start NaTemat.pl</div><div class="card-body"><div class="card-desc">Tomasz Lis i Tomasz Macha&#322;a uruchamiaj&#261; portal &#322;&#261;cz&#261;cy redakcj&#281; z blogami. Milion user&#243;w po p&#243;&#322; roku.</div></div></div></div>
+  </div>
+
+  <div class="node left" data-t="launch">
+    <div class="yr">2012</div><div class="bubble-wrap"><div class="bubble"></div></div><div class="connector"></div>
+    <div class="card"><div class="card-inner"><div class="card-tag">Prze&#322;om</div><div class="card-title">Pierwsze paywalle</div><div class="card-body"><div class="card-desc">GW i Rzeczpospolita stawiaj&#261; &#347;ciany p&#322;atno&#347;ci. Pocz&#261;tek trudnej drogi do modelu subskrypcyjnego.</div></div></div></div>
+  </div>
+
+  <div class="node right" data-t="collapse">
+    <div class="yr">2013</div><div class="bubble-wrap"><div class="bubble"></div></div><div class="connector"></div>
+    <div class="card"><div class="card-inner"><div class="card-tag">Zamkni&#281;cie</div><div class="card-title">Koniec &#8222;Przekroju&#8221;</div><div class="card-body"><div class="card-desc">Legendarny tygodnik (od 1945) zamyka si&#281; w dotychczasowej formie. B&#281;dzie wskrzeszany, ale nie odzyska pozycji.</div></div></div></div>
+  </div>
+
+  <div class="node left" data-t="acquire">
+    <div class="yr">2014</div><div class="bubble-wrap"><div class="bubble"></div></div><div class="connector"></div>
+    <div class="card"><div class="card-inner"><div class="card-tag">IPO</div><div class="card-title">WP Holding na gie&#322;dzie</div><div class="card-body"><div class="card-desc">Wirtualna Polska Holding debiutuje na GPW. Rozpoczyna seri&#281; akwizycji: e-commerce, turystyka, finanse.</div></div></div></div>
+  </div>
+
+  <div class="node right" data-t="acquire">
+    <div class="yr">2015</div><div class="bubble-wrap"><div class="bubble"></div></div><div class="connector"></div>
+    <div class="card"><div class="card-inner"><div class="card-tag">Przej&#281;cie</div><div class="card-title">Discovery kupuje TVN</div><div class="card-body"><div class="card-desc">Ameryka&#324;ski gigant przejmuje TVN od ITI i Canal+. Jedna z najwi&#281;kszych transakcji medialnych w Polsce.</div></div></div></div>
+  </div>
+
+  <!-- 2016-2020 -->
+  <div class="tl-decade" id="d-2016"><span>2016 &#8211; 2020</span></div>
+
+  <div class="node left" data-t="launch">
+    <div class="yr">2016</div><div class="bubble-wrap"><div class="bubble"></div></div><div class="connector"></div>
+    <div class="card"><div class="card-inner"><div class="card-tag">Start</div><div class="card-title">Netflix w Polsce</div><div class="card-body"><div class="card-desc">Platforma streamingowa startuje w Polsce. Pocz&#261;tek erozji TV linearnej &#8212; widzowie odchodz&#261; od ram&#243;wek.</div></div></div></div>
+  </div>
+
+  <div class="node right" data-t="launch">
+    <div class="yr">2019</div><div class="bubble-wrap"><div class="bubble"></div></div><div class="connector"></div>
+    <div class="card"><div class="card-inner"><div class="card-tag">Prze&#322;om</div><div class="card-title">Boom podcastowy</div><div class="card-body"><div class="card-desc">Newonce, TOK FM, Storytel, niezale&#380;ni tw&#243;rcy &#8212; podcasty staj&#261; si&#281; pe&#322;noprawnym medium.</div></div></div></div>
+  </div>
+
+  <div class="node left" data-t="acquire">
+    <div class="yr">2020</div><div class="bubble-wrap"><div class="bubble"></div></div><div class="connector"></div>
+    <div class="card"><div class="card-inner"><div class="card-tag">Przej&#281;cie</div><div class="card-title">Orlen kupuje Polska Press</div><div class="card-body"><div class="card-desc">Pa&#324;stwowa sp&#243;&#322;ka przejmuje najwi&#281;kszego wydawc&#281; prasy regionalnej. Kontrowersyjna transakcja.</div></div></div></div>
+  </div>
+
+  <div class="node right" data-t="launch">
+    <div class="yr">2020</div><div class="bubble-wrap"><div class="bubble"></div></div><div class="connector"></div>
+    <div class="card"><div class="card-inner"><div class="card-tag">Start</div><div class="card-title">Radio Nowy &#346;wiat</div><div class="card-body"><div class="card-desc">Byli dziennikarze Tr&#243;jki zak&#322;adaj&#261; niezale&#380;ne radio ze sk&#322;adek s&#322;uchaczy. Crowdfunding jako model mediowy.</div></div></div></div>
+  </div>
+
+  <div class="node left" data-t="collapse">
+    <div class="yr">2020</div><div class="bubble-wrap"><div class="bubble"></div></div><div class="connector"></div>
+    <div class="card"><div class="card-inner"><div class="card-tag">Kryzys</div><div class="card-title">Pandemia: reklama offline -15%</div><div class="card-body"><div class="card-desc">COVID-19 wywraca rynek. Internet jako jedyne medium nie spada. Prasa, kina i outdoor w g&#322;&#281;bokim kryzysie.</div></div></div></div>
+  </div>
+
+  <div class="node right" data-t="launch">
+    <div class="yr">2020</div><div class="bubble-wrap"><div class="bubble"></div></div><div class="connector"></div>
+    <div class="card"><div class="card-inner"><div class="card-tag">Prze&#322;om</div><div class="card-title">Eksplozja digitalu</div><div class="card-body"><div class="card-desc">Przyspieszenie digitalizacji o kilka lat. Subskrypcje rosn&#261;, e-commerce eksploduje, redakcje id&#261; w remote.</div></div></div></div>
+  </div>
+
+  <!-- 2021-2025 -->
+  <div class="tl-decade" id="d-2021"><span>2021 &#8211; 2025</span></div>
+
+  <div class="node left" data-t="acquire">
+    <div class="yr">2021</div><div class="bubble-wrap"><div class="bubble"></div></div><div class="connector"></div>
+    <div class="card"><div class="card-inner"><div class="card-tag">Przej&#281;cie</div><div class="card-title">Agora kupuje Eurozet</div><div class="card-body"><div class="card-desc">Po batalii z UOKiK Agora przejmuje Radio Zet. Staje si&#281; jednym z najwi&#281;kszych graczy radiowych.</div></div></div></div>
+  </div>
+
+  <div class="node right" data-t="collapse">
+    <div class="yr">2021</div><div class="bubble-wrap"><div class="bubble"></div></div><div class="connector"></div>
+    <div class="card"><div class="card-inner"><div class="card-tag">Zamkni&#281;cie</div><div class="card-title">Koniec Gadu-Gadu</div><div class="card-body"><div class="card-desc">Komunikator z 7 mln user&#243;w zamyka si&#281;. Symbol Web 1.0 odchodzi w zapomnienie.</div></div></div></div>
+  </div>
+
+  <div class="node left" data-t="acquire">
+    <div class="yr">2022</div><div class="bubble-wrap"><div class="bubble"></div></div><div class="connector"></div>
+    <div class="card"><div class="card-inner"><div class="card-tag">Fuzja</div><div class="card-title">Warner Bros. + Discovery &#8594; WBD</div><div class="card-body"><div class="card-desc">Globalna fuzja zmienia w&#322;a&#347;ciciela TVN. WBD nowym szyldem polskiej TV komercyjnej.</div></div></div></div>
+  </div>
+
+  <div class="node right" data-t="acquire">
+    <div class="yr">2022</div><div class="bubble-wrap"><div class="bubble"></div></div><div class="connector"></div>
+    <div class="card"><div class="card-inner"><div class="card-tag">Przej&#281;cie</div><div class="card-title">Play kupuje UPC Polska</div><div class="card-body"><div class="card-desc">Iliad przejmuje najwi&#281;ksz&#261; TV kablow&#261; w kraju za 7 mld z&#322;. Telekomy konsoliduj&#261; infrastruktur&#281;.</div></div></div></div>
+  </div>
+
+  <div class="node left" data-t="launch">
+    <div class="yr">2022</div><div class="bubble-wrap"><div class="bubble"></div></div><div class="connector"></div>
+    <div class="card"><div class="card-inner"><div class="card-tag">Prze&#322;om</div><div class="card-title">ChatGPT &#8212; AI w mainstreamie</div><div class="card-body"><div class="card-desc">Premiera ChatGPT otwiera now&#261; er&#281;. Redakcje eksperymentuj&#261; z AI w produkcji tre&#347;ci i analizie.</div></div></div></div>
+  </div>
+
+  <div class="node right" data-t="launch">
+    <div class="yr">2023</div><div class="bubble-wrap"><div class="bubble"></div></div><div class="connector"></div>
+    <div class="card"><div class="card-inner"><div class="card-tag">Start</div><div class="card-title">Start Kana&#322;u Zero</div><div class="card-body"><div class="card-desc">Stanowski uruchamia kana&#322; na YouTube. Miliony subskrybent&#243;w w kilka miesi&#281;cy. YouTube = platforma medialna.</div></div></div></div>
+  </div>
+
+  <div class="node left" data-t="launch">
+    <div class="yr">2023&#8211;24</div><div class="bubble-wrap"><div class="bubble"></div></div><div class="connector"></div>
+    <div class="card"><div class="card-inner"><div class="card-tag">Prze&#322;om</div><div class="card-title">Iberion &#8212; media social-first</div><div class="card-body"><div class="card-desc">W&#243;jcik buduje grup&#281; opart&#261; o social i video. &#346;ci&#261;ga Schwertnera, Kalczy&#324;sk&#261;, Baczy&#324;skiego. Goniec ro&#347;nie najszybciej.</div></div></div></div>
+  </div>
+
+  <div class="node right" data-t="acquire">
+    <div class="yr">2024</div><div class="bubble-wrap"><div class="bubble"></div></div><div class="connector"></div>
+    <div class="card"><div class="card-inner"><div class="card-tag">Transfer</div><div class="card-title">Miszczak: TVN &#8594; Polsat</div><div class="card-body"><div class="card-desc">Wieloletni szef programowy TVN przechodzi do Polsatu. Symboliczna zmiana warty w polskiej TV komercyjnej.</div></div></div></div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>Opracowanie: redakcja <a href="https://www.wirtualnemedia.pl" target="_blank">Wirtualnemedia.pl</a> &#8212; 25-lecie, 2025</p>
+</footer>
+
+<script>
+// Open/close nodes
+document.querySelectorAll('.node').forEach(function(n) {
+  n.addEventListener('click', function() {
+    var wasOpen = n.classList.contains('open');
+    document.querySelectorAll('.node.open').forEach(function(o) { o.classList.remove('open'); });
+    if (!wasOpen) n.classList.add('open');
+  });
+});
+
+// Filters
+document.querySelectorAll('.fbtn').forEach(function(b) {
+  b.addEventListener('click', function() {
+    document.querySelectorAll('.fbtn').forEach(function(x) { x.classList.remove('on'); });
+    b.classList.add('on');
+    var f = b.getAttribute('data-f');
+    document.querySelectorAll('.node').forEach(function(n) {
+      if (f === 'all' || n.getAttribute('data-t') === f) {
+        n.classList.remove('hide');
+      } else {
+        n.classList.add('hide');
+      }
+    });
+  });
+});
+
+// Decade nav
+document.querySelectorAll('.dnav button').forEach(function(b) {
+  b.addEventListener('click', function() {
+    document.querySelectorAll('.dnav button').forEach(function(x) { x.classList.remove('on'); });
+    b.classList.add('on');
+    var el = document.getElementById('d-' + b.getAttribute('data-d'));
+    if (el) {
+      var off = document.getElementById('dnav').offsetHeight;
+      window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - off - 10, behavior: 'smooth' });
+    }
+  });
+});
+
+// Fade in on scroll
+var io = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) {
+    if (e.isIntersecting) { e.target.classList.add('vis'); io.unobserve(e.target); }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.node').forEach(function(n) { io.observe(n); });
+
+// Active decade on scroll
+var sio = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) {
+    if (e.isIntersecting) {
+      var id = e.target.id.replace('d-', '');
+      document.querySelectorAll('.dnav button').forEach(function(b) {
+        if (b.getAttribute('data-d') === id) { b.classList.add('on'); } else { b.classList.remove('on'); }
+      });
+    }
+  });
+}, { threshold: 0.3, rootMargin: '-80px 0px -50% 0px' });
+document.querySelectorAll('.tl-decade').forEach(function(d) { sio.observe(d); });
+</script>
+</body>
+</html>
