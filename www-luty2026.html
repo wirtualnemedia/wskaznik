@@ -391,14 +391,14 @@ footer{padding:32px 0 48px;display:flex;align-items:center;justify-content:space
   <div class="stitle">Pełne wyniki — Luty 2026</div>
 
   <div class="tab-nav" id="mainTabs">
-    <button class="tab-btn active" data-tab="top50">TOP50</button>
-    <button class="tab-btn" data-tab="informacje">Informacje</button>
-    <button class="tab-btn" data-tab="sport">Sport</button>
-    <button class="tab-btn" data-tab="biznes">Biznes</button>
-    <button class="tab-btn" data-tab="rozrywka">Rozrywka</button>
-    <button class="tab-btn" data-tab="lokalne">Lokalne</button>
-    <button class="tab-btn" data-tab="tech">Tech</button>
-    <button class="tab-btn" data-tab="lifestyle">Lifestyle</button>
+    <button class="tab-btn active" onclick="switchTab(this,'top50')" data-tab="top50">TOP50</button>
+    <button class="tab-btn" onclick="switchTab(this,'informacje')" data-tab="informacje">Informacje</button>
+    <button class="tab-btn" onclick="switchTab(this,'sport')" data-tab="sport">Sport</button>
+    <button class="tab-btn" onclick="switchTab(this,'biznes')" data-tab="biznes">Biznes</button>
+    <button class="tab-btn" onclick="switchTab(this,'rozrywka')" data-tab="rozrywka">Rozrywka</button>
+    <button class="tab-btn" onclick="switchTab(this,'lokalne')" data-tab="lokalne">Lokalne</button>
+    <button class="tab-btn" onclick="switchTab(this,'tech')" data-tab="tech">Tech</button>
+    <button class="tab-btn" onclick="switchTab(this,'lifestyle')" data-tab="lifestyle">Lifestyle</button>
   </div>
 
   <!-- TOP50 -->
@@ -456,7 +456,7 @@ footer{padding:32px 0 48px;display:flex;align-items:center;justify-content:space
   </tbody></table></div>
 
   <!-- INFORMACJE -->
-  <div class="tab-panel" id="tab-informacje"><table class="rtable"><thead><tr><th>#</th><th>Wydawca</th><th class="tc">Zmiana</th><th style="text-align:right">WWW</th></tr></thead><tbody>
+  <div class="tab-panel" id="tab-informacje" style="display:none"><table class="rtable"><thead><tr><th>#</th><th>Wydawca</th><th class="tc">Zmiana</th><th style="text-align:right">WWW</th></tr></thead><tbody>
   <tr><td class="rk">1</td><td class="nm">Wirtualna Polska</td><td class="ch up">+1</td><td class="sc">49.32</td></tr>
   <tr><td class="rk">2</td><td class="nm">Onet</td><td class="ch down">-1</td><td class="sc">48.52</td></tr>
   <tr><td class="rk">3</td><td class="nm">Interia</td><td class="ch same">–</td><td class="sc">37.41</td></tr>
@@ -470,7 +470,7 @@ footer{padding:32px 0 48px;display:flex;align-items:center;justify-content:space
   </tbody></table></div>
 
   <!-- SPORT -->
-  <div class="tab-panel" id="tab-sport"><table class="rtable"><thead><tr><th>#</th><th>Wydawca</th><th class="tc">Zmiana</th><th style="text-align:right">WWW</th></tr></thead><tbody>
+  <div class="tab-panel" id="tab-sport" style="display:none"><table class="rtable"><thead><tr><th>#</th><th>Wydawca</th><th class="tc">Zmiana</th><th style="text-align:right">WWW</th></tr></thead><tbody>
   <tr><td class="rk">1</td><td class="nm">Eurosport Polska</td><td class="ch up">+1</td><td class="sc">31.59</td></tr>
   <tr><td class="rk">2</td><td class="nm">TVP Sport</td><td class="ch down">-1</td><td class="sc">24.23</td></tr>
   <tr><td class="rk">3</td><td class="nm">Przegląd Sportowy</td><td class="ch up">+1</td><td class="sc">16.70</td></tr>
@@ -484,7 +484,7 @@ footer{padding:32px 0 48px;display:flex;align-items:center;justify-content:space
   </tbody></table></div>
 
   <!-- BIZNES -->
-  <div class="tab-panel" id="tab-biznes"><table class="rtable"><thead><tr><th>#</th><th>Wydawca</th><th class="tc">Zmiana</th><th style="text-align:right">WWW</th></tr></thead><tbody>
+  <div class="tab-panel" id="tab-biznes" style="display:none"><table class="rtable"><thead><tr><th>#</th><th>Wydawca</th><th class="tc">Zmiana</th><th style="text-align:right">WWW</th></tr></thead><tbody>
   <tr><td class="rk">1</td><td class="nm">Business Insider</td><td class="ch up">+1</td><td class="sc">12.69</td></tr>
   <tr><td class="rk">2</td><td class="nm">Money</td><td class="ch up">+1</td><td class="sc">11.16</td></tr>
   <tr><td class="rk">3</td><td class="nm">Infor</td><td class="ch down">-2</td><td class="sc">11.06</td></tr>
@@ -498,7 +498,7 @@ footer{padding:32px 0 48px;display:flex;align-items:center;justify-content:space
   </tbody></table></div>
 
   <!-- ROZRYWKA -->
-  <div class="tab-panel" id="tab-rozrywka"><table class="rtable"><thead><tr><th>#</th><th>Wydawca</th><th class="tc">Zmiana</th><th style="text-align:right">WWW</th></tr></thead><tbody>
+  <div class="tab-panel" id="tab-rozrywka" style="display:none"><table class="rtable"><thead><tr><th>#</th><th>Wydawca</th><th class="tc">Zmiana</th><th style="text-align:right">WWW</th></tr></thead><tbody>
   <tr><td class="rk">1</td><td class="nm">Filmweb</td><td class="ch same">–</td><td class="sc">14.30</td></tr>
   <tr><td class="rk">2</td><td class="nm">Kozaczek</td><td class="ch same">–</td><td class="sc">11.31</td></tr>
   <tr><td class="rk">3</td><td class="nm">Pudelek</td><td class="ch up">+1</td><td class="sc">10.62</td></tr>
@@ -512,7 +512,7 @@ footer{padding:32px 0 48px;display:flex;align-items:center;justify-content:space
   </tbody></table></div>
 
   <!-- LOKALNE -->
-  <div class="tab-panel" id="tab-lokalne"><table class="rtable"><thead><tr><th>#</th><th>Wydawca</th><th class="tc">Zmiana</th><th style="text-align:right">WWW</th></tr></thead><tbody>
+  <div class="tab-panel" id="tab-lokalne" style="display:none"><table class="rtable"><thead><tr><th>#</th><th>Wydawca</th><th class="tc">Zmiana</th><th style="text-align:right">WWW</th></tr></thead><tbody>
   <tr><td class="rk">1</td><td class="nm">Nasze Miasto</td><td class="ch same">–</td><td class="sc">9.63</td></tr>
   <tr><td class="rk">2</td><td class="nm">Trójmiasto.pl</td><td class="ch same">–</td><td class="sc">6.63</td></tr>
   <tr><td class="rk">3</td><td class="nm">Gazeta Pomorska</td><td class="ch same">–</td><td class="sc">6.03</td></tr>
@@ -526,7 +526,7 @@ footer{padding:32px 0 48px;display:flex;align-items:center;justify-content:space
   </tbody></table></div>
 
   <!-- TECH -->
-  <div class="tab-panel" id="tab-tech"><table class="rtable"><thead><tr><th>#</th><th>Wydawca</th><th class="tc">Zmiana</th><th style="text-align:right">WWW</th></tr></thead><tbody>
+  <div class="tab-panel" id="tab-tech" style="display:none"><table class="rtable"><thead><tr><th>#</th><th>Wydawca</th><th class="tc">Zmiana</th><th style="text-align:right">WWW</th></tr></thead><tbody>
   <tr><td class="rk">1</td><td class="nm">Spiders Web</td><td class="ch same">–</td><td class="sc">6.44</td></tr>
   <tr><td class="rk">2</td><td class="nm">Gry Online</td><td class="ch up">+2</td><td class="sc">5.51</td></tr>
   <tr><td class="rk">3</td><td class="nm">Telepolis</td><td class="ch down">-1</td><td class="sc">5.47</td></tr>
@@ -540,7 +540,7 @@ footer{padding:32px 0 48px;display:flex;align-items:center;justify-content:space
   </tbody></table></div>
 
   <!-- LIFESTYLE -->
-  <div class="tab-panel" id="tab-lifestyle"><table class="rtable"><thead><tr><th>#</th><th>Wydawca</th><th class="tc">Zmiana</th><th style="text-align:right">WWW</th></tr></thead><tbody>
+  <div class="tab-panel" id="tab-lifestyle" style="display:none"><table class="rtable"><thead><tr><th>#</th><th>Wydawca</th><th class="tc">Zmiana</th><th style="text-align:right">WWW</th></tr></thead><tbody>
   <tr><td class="rk">1</td><td class="nm">Elle Polska</td><td class="ch same">–</td><td class="sc">11.42</td></tr>
   <tr><td class="rk">2</td><td class="nm">Polki</td><td class="ch same">–</td><td class="sc">6.91</td></tr>
   <tr><td class="rk">3</td><td class="nm">Glamour</td><td class="ch up">+6</td><td class="sc">6.57</td></tr>
@@ -559,20 +559,20 @@ footer{padding:32px 0 48px;display:flex;align-items:center;justify-content:space
   <div class="stitle">Wyniki szczegółowe — TOP 30 poszczególnych kategorii</div>
 
   <div class="tab-nav" id="detailTabs">
-    <button class="tab-btn active" data-tab="d-ru">Realni użytkownicy</button>
-    <button class="tab-btn" data-tab="d-dru">Śr. dzienna RU</button>
-    <button class="tab-btn" data-tab="d-pv">Odsłony WWW</button>
-    <button class="tab-btn" data-tab="d-time">Śr. czas na stronie</button>
-    <button class="tab-btn" data-tab="d-cyt">Cytowania</button>
-    <button class="tab-btn" data-tab="d-yt">YouTube odsłony</button>
-    <button class="tab-btn" data-tab="d-fbint">FB interakcje</button>
-    <button class="tab-btn" data-tab="d-fbvid">FB wideo</button>
-    <button class="tab-btn" data-tab="d-igint">IG interakcje</button>
-    <button class="tab-btn" data-tab="d-igvid">IG wideo</button>
-    <button class="tab-btn" data-tab="d-ttint">TikTok interakcje</button>
-    <button class="tab-btn" data-tab="d-ttvid">TikTok wideo</button>
-    <button class="tab-btn" data-tab="d-xint">X interakcje</button>
-    <button class="tab-btn" data-tab="d-xvw">X odsłony</button>
+    <button class="tab-btn active" onclick="switchTab(this,'d-ru')" data-tab="d-ru">Realni użytkownicy</button>
+    <button class="tab-btn" onclick="switchTab(this,'d-dru')" data-tab="d-dru">Śr. dzienna RU</button>
+    <button class="tab-btn" onclick="switchTab(this,'d-pv')" data-tab="d-pv">Odsłony WWW</button>
+    <button class="tab-btn" onclick="switchTab(this,'d-time')" data-tab="d-time">Śr. czas na stronie</button>
+    <button class="tab-btn" onclick="switchTab(this,'d-cyt')" data-tab="d-cyt">Cytowania</button>
+    <button class="tab-btn" onclick="switchTab(this,'d-yt')" data-tab="d-yt">YouTube odsłony</button>
+    <button class="tab-btn" onclick="switchTab(this,'d-fbint')" data-tab="d-fbint">FB interakcje</button>
+    <button class="tab-btn" onclick="switchTab(this,'d-fbvid')" data-tab="d-fbvid">FB wideo</button>
+    <button class="tab-btn" onclick="switchTab(this,'d-igint')" data-tab="d-igint">IG interakcje</button>
+    <button class="tab-btn" onclick="switchTab(this,'d-igvid')" data-tab="d-igvid">IG wideo</button>
+    <button class="tab-btn" onclick="switchTab(this,'d-ttint')" data-tab="d-ttint">TikTok interakcje</button>
+    <button class="tab-btn" onclick="switchTab(this,'d-ttvid')" data-tab="d-ttvid">TikTok wideo</button>
+    <button class="tab-btn" onclick="switchTab(this,'d-xint')" data-tab="d-xint">X interakcje</button>
+    <button class="tab-btn" onclick="switchTab(this,'d-xvw')" data-tab="d-xvw">X odsłony</button>
   </div>
 
   <!-- Realni użytkownicy -->
@@ -610,19 +610,19 @@ footer{padding:32px 0 48px;display:flex;align-items:center;justify-content:space
   </tbody></table><p style="font-size:10px;font-family:'Space Mono',monospace;color:var(--muted);margin-top:8px;text-align:right">Dane: Mediapanel, luty 2026</p></div>
 
   <!-- Remaining detail tabs - generated via JS for brevity -->
-  <div class="tab-panel" id="tab-d-dru"></div>
-  <div class="tab-panel" id="tab-d-pv"></div>
-  <div class="tab-panel" id="tab-d-time"></div>
-  <div class="tab-panel" id="tab-d-cyt"></div>
-  <div class="tab-panel" id="tab-d-yt"></div>
-  <div class="tab-panel" id="tab-d-fbint"></div>
-  <div class="tab-panel" id="tab-d-fbvid"></div>
-  <div class="tab-panel" id="tab-d-igint"></div>
-  <div class="tab-panel" id="tab-d-igvid"></div>
-  <div class="tab-panel" id="tab-d-ttint"></div>
-  <div class="tab-panel" id="tab-d-ttvid"></div>
-  <div class="tab-panel" id="tab-d-xint"></div>
-  <div class="tab-panel" id="tab-d-xvw"></div>
+  <div class="tab-panel" id="tab-d-dru" style="display:none"></div>
+  <div class="tab-panel" id="tab-d-pv" style="display:none"></div>
+  <div class="tab-panel" id="tab-d-time" style="display:none"></div>
+  <div class="tab-panel" id="tab-d-cyt" style="display:none"></div>
+  <div class="tab-panel" id="tab-d-yt" style="display:none"></div>
+  <div class="tab-panel" id="tab-d-fbint" style="display:none"></div>
+  <div class="tab-panel" id="tab-d-fbvid" style="display:none"></div>
+  <div class="tab-panel" id="tab-d-igint" style="display:none"></div>
+  <div class="tab-panel" id="tab-d-igvid" style="display:none"></div>
+  <div class="tab-panel" id="tab-d-ttint" style="display:none"></div>
+  <div class="tab-panel" id="tab-d-ttvid" style="display:none"></div>
+  <div class="tab-panel" id="tab-d-xint" style="display:none"></div>
+  <div class="tab-panel" id="tab-d-xvw" style="display:none"></div>
 </section>
 
 <!-- Q&A -->
@@ -671,22 +671,18 @@ footer{padding:32px 0 48px;display:flex;align-items:center;justify-content:space
 </div>
 
 <script>
-// Tab switching for both tab groups
-document.querySelectorAll('.tab-nav').forEach(nav => {
-  nav.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      nav.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      // Find parent section, then toggle panels
-      const section = nav.closest('section');
-      section.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-      const target = section.querySelector('#tab-' + btn.dataset.tab);
-      if(target) target.classList.add('active');
-    });
-  });
-});
-
-// Populate detail tables from data
+function switchTab(btn, tabId) {
+  var nav = btn.parentElement;
+  var container = nav.parentElement;
+  var btns = nav.getElementsByClassName('tab-btn');
+  for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
+  btn.classList.add('active');
+  var panels = container.getElementsByClassName('tab-panel');
+  for (var i = 0; i < panels.length; i++) panels[i].style.display = 'none';
+  var target = document.getElementById('tab-' + tabId);
+  if (target) target.style.display = 'block';
+  btn.scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
+}
 const detailData = {
   'd-dru': {title:'Średnia dzienna liczba RU', source:'Mediapanel', rows:[
     ['Interia','4 586 937','100.00'],['Wirtualna Polska','4 208 054','91.74'],['Onet','4 429 595','96.57'],['O2','','34.50'],['Gazeta.pl','','34.29'],['TVN24','','29.16'],['Fakt','','25.61'],['Business Insider','','21.69'],['Gazeta Wyborcza','','21.23'],['RMF24','','20.14'],['Sport.pl','','18.83'],['Filmweb','','17.48'],['Dziennik','','17.07'],['TVP','','16.94'],['Infor','','16.28'],['RMF FM','','16.02'],['Money','','15.89'],['Pomponik','','15.12'],['Super Express','','13.63'],['Pudelek','','13.60'],['Wprost','','12.96'],['Polskie Radio24','','12.91'],['Polsat News','','11.65'],['Portal Samorządowy','','11.40'],['Goniec','','11.26'],['Nasze Miasto','','10.90'],['Forsal','','10.66'],['Medonet','','10.17'],['Rynek Zdrowia','','9.96'],['WNP','','9.87']]},
