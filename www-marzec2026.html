@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wirtualny Wskaźnik Wpływu — Marzec 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#070d17;--s:#0c1525;--s2:#101d32;--bd:#182d4a;--bdd:#142540;--or:#ff5e08;--or2:#ff8438;--tx:#e4eaf2;--mu:#5e83a8;--gn:#34d399;--gnd:rgba(52,211,153,.12);--rd:#f87171;--rdd:rgba(248,113,113,.12);--gd:#fbbf24}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font-family:'Syne',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(19,43,70,.4) 0%,transparent 60%);pointer-events:none;z-index:0}
+.container{max-width:660px;margin:0 auto;padding:0 20px;position:relative;z-index:1}
+header{padding:64px 0 48px;border-bottom:1px solid var(--bd);position:relative;overflow:hidden}
+header::after{content:'WWW';position:absolute;right:-20px;top:50%;transform:translateY(-50%);font-size:200px;font-weight:800;color:rgba(255,94,8,.03);pointer-events:none;letter-spacing:-8px;line-height:1}
+.label{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--or)}
+h1{font-size:clamp(32px,6vw,56px);font-weight:800;line-height:1.05;letter-spacing:-2px;margin-bottom:12px}
+h1 span{color:var(--or)}
+.ht{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:28px}
+.hl{flex:0 0 auto}.hl img{height:26px;display:block;object-fit:contain}
+.hr{flex:1 1 auto;text-align:right;white-space:nowrap}
+.hs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-top:28px;padding-top:20px;border-top:1px solid var(--bd)}
+.hv{font-family:'Space Mono',monospace;font-size:20px;font-weight:700;color:var(--or)}
+.hlb{font-size:11px;color:var(--mu);margin-top:2px;line-height:1.35}
+section{padding:56px 0;border-bottom:1px solid var(--bd)}
+.stitle{font-family:'Space Mono',monospace;font-size:13px;letter-spacing:2.5px;text-transform:uppercase;color:var(--mu);margin-bottom:24px;display:flex;align-items:center;gap:10px}
+.stitle::before{content:'';width:6px;height:6px;background:var(--or);border-radius:50%;flex-shrink:0}
+.podium{display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:12px;align-items:end}
+.pc{background:var(--s);border:1px solid var(--bd);padding:24px 20px;text-align:center;transition:transform .25s,border-color .25s;cursor:default;position:relative}
+.pc:hover{transform:translateY(-4px);border-color:var(--or)}
+.pc.first{border-color:var(--or);background:linear-gradient(135deg,#0c1525,#101d32);padding:32px 20px}
+.pc.first::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--or)}
+.pr{font-family:'Space Mono',monospace;font-size:40px;font-weight:700;line-height:1;margin-bottom:12px;opacity:.15}
+.first .pr{opacity:1;color:var(--or);font-size:48px}.second .pr{opacity:.5;color:var(--gd)}.third .pr{color:var(--or2);opacity:.4}
+.pn{font-size:18px;font-weight:700;margin-bottom:4px;letter-spacing:-.3px}
+.first .pn{font-size:22px;color:var(--or);white-space:nowrap}.second .pn{font-size:15px}
+.pm{font-family:'Space Mono',monospace;font-size:10px;color:var(--mu);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px}
+.ps{font-family:'Space Mono',monospace;font-size:26px;font-weight:700}
+.first .ps{font-size:34px;color:var(--or)}
+.pb{margin-top:12px;height:3px;background:var(--bd);border-radius:2px;overflow:hidden}
+.pbf{height:100%;border-radius:2px;background:var(--or)}.second .pbf{background:var(--gd)}.third .pbf{background:var(--or2)}
+.pch{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;margin-top:10px;display:inline-block;padding:2px 8px;border-radius:3px}
+.pch.up{color:var(--gn);background:var(--gnd)}.pch.down{color:var(--rd);background:var(--rdd)}.pch.same{color:var(--mu)}
+.hl2{background:linear-gradient(135deg,#0c1525,#162032);border:1px solid var(--or);padding:32px;position:relative}
+.hl2::before{content:'★ WYDARZENIE MIESIĄCA';position:absolute;top:-10px;left:24px;background:var(--or);color:#fff;font-size:10px;font-family:'Space Mono',monospace;letter-spacing:2px;padding:3px 12px;font-weight:700}
+.hg{display:grid;grid-template-columns:auto 1fr;gap:32px;align-items:center}
+.hsc{font-family:'Space Mono',monospace;font-size:64px;font-weight:700;color:var(--or);line-height:1}
+.hscs{font-size:10px;color:var(--mu);font-family:'Space Mono',monospace;text-align:center;margin-top:4px}
+.hbn{font-size:20px;font-weight:800;margin-bottom:4px}
+.hd{font-size:13px;color:var(--mu);line-height:1.7}.hd strong{color:var(--or);font-weight:600}
+.ig{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.ic{background:var(--s);border:1px solid var(--bd);padding:24px;transition:border-color .2s}
+.ic:hover{border-color:rgba(255,94,8,.3)}
+.in{font-family:'Space Mono',monospace;font-size:11px;color:var(--or);margin-bottom:10px;letter-spacing:2px}
+.it{font-size:16px;font-weight:700;line-height:1.3;margin-bottom:8px;letter-spacing:-.3px}
+.ib{font-size:13px;color:var(--mu);line-height:1.7}.ib strong{color:var(--tx);font-weight:600}
+.cl{display:flex;flex-direction:column;gap:10px}
+.cr{display:grid;grid-template-columns:110px 1fr 110px;align-items:center;gap:14px}
+.cn{font-size:11px;font-family:'Space Mono',monospace;color:var(--mu);text-align:right;letter-spacing:.5px}
+.cw{height:28px;background:var(--s);border:1px solid var(--bd);overflow:hidden}
+.cf{height:100%;display:flex;align-items:center;padding-left:12px;font-size:12px;font-weight:700;white-space:nowrap;background:var(--or);color:#fff}
+.cf.c2{background:#7b61ff}.cf.c3{background:var(--or2)}.cf.c4{background:var(--gd);color:#fff}
+.cf.c5{background:#c084fc}.cf.c6{background:#fb923c}.cf.c7{background:#818cf8}
+.cb{font-size:10px;font-weight:600;color:var(--tx);line-height:1.3}
+.mg{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.mct{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;padding-bottom:8px;border-bottom:2px solid var(--bd)}
+.mct.up{color:var(--gn);border-color:var(--gn)}.mct.down{color:var(--rd);border-color:var(--rd)}
+.mc{background:var(--s);border:1px solid var(--bd);padding:12px 16px;display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.md{font-family:'Space Mono',monospace;font-size:14px;font-weight:700;min-width:36px;text-align:center}
+.md.up{color:var(--gn)}.md.down{color:var(--rd)}
+.mn{font-size:13px;font-weight:700}.mdt{font-size:10px;color:var(--mu);font-family:'Space Mono',monospace}
+.mp{margin-left:auto;font-family:'Space Mono',monospace;font-size:11px;color:var(--mu)}
+/* ── TABS ── */
+.tnav{display:flex;overflow-x:auto;gap:4px;padding-bottom:6px;margin-bottom:16px;-webkit-overflow-scrolling:touch;scroll-behavior:smooth;scrollbar-width:none}
+.tnav::-webkit-scrollbar{display:none}
+.tb{font-family:'Space Mono',monospace;font-size:11px;padding:8px 14px;border:1px solid var(--bd);background:var(--s);color:var(--mu);cursor:pointer;white-space:nowrap;letter-spacing:.5px;flex-shrink:0;transition:background .15s,color .15s,border-color .15s}
+.tb:hover{border-color:var(--mu);color:var(--tx)}
+.tb.active{background:var(--or);color:#fff;border-color:var(--or)}
+/* ── TABLES ── */
+.ts{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.rt{width:100%;border-collapse:separate;border-spacing:0;background:var(--s);border:1px solid var(--bd);min-width:380px}
+.rt th{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mu);padding:10px 12px;text-align:left;background:var(--s2);border-bottom:2px solid var(--bd)}
+.rt th:last-child{text-align:right}.rt th.tc{text-align:center}
+.rt td{padding:8px 12px;font-size:13px;border-bottom:1px solid var(--bdd)}
+.rt tr:last-child td{border-bottom:none}
+.rt tr:hover td{background:rgba(255,94,8,.04)}
+.rk{font-family:'Space Mono',monospace;font-weight:700;color:var(--mu);width:36px}
+.rt tr:nth-child(1) .rk{color:var(--or)}.rt tr:nth-child(2) .rk{color:var(--gd)}.rt tr:nth-child(3) .rk{color:var(--or2)}
+.nm{font-weight:600;color:var(--tx)}.rt tr:nth-child(1) .nm{font-weight:700}
+.sc{font-family:'Space Mono',monospace;font-weight:600;text-align:right;color:var(--tx)}
+.ch{font-family:'Space Mono',monospace;font-size:11px;font-weight:600;text-align:center;width:48px}
+.ch.up{color:var(--gn)}.ch.down{color:var(--rd)}.ch.same{color:var(--mu)}
+.lb{font-family:'Space Mono',monospace;font-size:12px;text-align:right;color:var(--mu)}
+.src{font-size:10px;font-family:'Space Mono',monospace;color:var(--mu);margin-top:8px;text-align:right}
+/* Q&A */
+.qa{counter-reset:qa}
+.qi{border-top:1px solid var(--bd);padding:20px 0}
+.qi:first-child{border-top:none;padding-top:0}
+.qq{font-size:14px;font-weight:700;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px}
+.qq::before{counter-increment:qa;content:counter(qa);display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;background:var(--or);color:#fff;font-size:10px;font-family:'Space Mono',monospace;border-radius:3px;flex-shrink:0;margin-top:1px}
+.qa2{font-size:13px;color:var(--mu);line-height:1.7;padding-left:32px}.qa2 strong{color:var(--tx)}
+footer{padding:32px 0 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.fb{font-size:11px;font-family:'Space Mono',monospace;color:var(--mu);letter-spacing:1px}
+.fs{font-size:10px;font-family:'Space Mono',monospace;color:var(--bd);letter-spacing:1px}
+@media(max-width:700px){
+  .podium{grid-template-columns:1fr}.pc.first{order:-1}
+  .cr{grid-template-columns:70px 1fr 80px;gap:6px}.cn{font-size:9px}.cf{font-size:10px;padding-left:8px}
+  .mg{grid-template-columns:1fr}.hg{grid-template-columns:1fr;text-align:center}.hsc{font-size:48px}
+  footer{flex-direction:column;text-align:center}
+  .ht{align-items:flex-start;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+  .hl{max-width:52%}.hl img{height:auto;max-height:24px}
+  .hr{flex:1 1 40%;min-width:0;text-align:right;white-space:normal;font-size:10px;letter-spacing:2px}
+  .hs{grid-template-columns:repeat(4,minmax(0,1fr));gap:10px 8px}.hv{font-size:17px}.hlb{font-size:9px}
+  .ig{grid-template-columns:1fr}
+  h1{font-size:28px;letter-spacing:-1px}.container{padding:0 16px}
+  header{padding:44px 0 36px}section{padding:40px 0}
+  .pr{font-size:28px}.first .pr{font-size:36px}.pn{font-size:15px}.first .pn{font-size:18px}.second .pn{font-size:13px}
+  .ps{font-size:20px}.first .ps{font-size:28px}.stitle{font-size:10px;letter-spacing:2px}
+  .ic{padding:18px}.it{font-size:14px}.ib{font-size:12px}
+  .mc{padding:10px 12px}.mn{font-size:12px}.hl2{padding:24px 16px}.hbn{font-size:16px}.hd{font-size:12px}
+  .tb{font-size:10px;padding:6px 10px}
+  .rt td{padding:7px 8px;font-size:12px}.rt th{padding:8px;font-size:9px}
+  .rk{width:24px;font-size:11px}.ch{width:36px;font-size:10px}.sc{font-size:12px}.nm{font-size:12px}
+}
+@media(max-width:420px){
+  .ht{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:10px;row-gap:10px}
+  .hr{font-size:9px;letter-spacing:1.6px;max-width:140px;justify-self:end}
+  .hs{gap:10px 6px}.hv{font-size:16px}.hlb{font-size:8px}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <div class="ht">
+    <a class="hl" href="https://www.wirtualnemedia.pl" target="_blank" rel="noopener" style="display:block;opacity:.7;transition:opacity .2s" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=.7">
+      <img src="data:image/png;base64,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" alt="Wirtualne Media">
+    </a>
+    <div class="label hr" style="margin-bottom:0">Raport Miesięczny · Marzec 2026</div>
+  </div>
+  <h1>Wirtualny<br>Wskaźnik <span>Wpływu</span></h1>
+  <div class="hs">
+    <div><div class="hv">~130</div><div class="hlb">Marek medialnych</div></div>
+    <div><div class="hv">600+</div><div class="hlb">Profili social media</div></div>
+    <div><div class="hv">14</div><div class="hlb">Kategorii danych</div></div>
+    <div><div class="hv">7</div><div class="hlb">Kategorii tematycznych</div></div>
+  </div>
+</header>
+
+<section>
+  <div class="stitle">Podium ogólne — TOP 3</div>
+  <div class="podium">
+    <div class="pc second"><div class="pr">#2</div><div class="pn">Wirtualna Polska</div><div class="pm">Wirtualna Polska Holding</div><div class="ps">48.13</div><div class="pb"><div class="pbf" style="width:99%"></div></div><div class="pch down">▼ -1</div></div>
+    <div class="pc first"><div class="pr">#1</div><div class="pn">Onet</div><div class="pm">Ringier Axel Springer Polska</div><div class="ps">48.59</div><div class="pb"><div class="pbf" style="width:100%"></div></div><div class="pch up">▲ +1</div></div>
+    <div class="pc third"><div class="pr">#3</div><div class="pn">Interia</div><div class="pm">Grupa Polsat Plus</div><div class="ps">35.49</div><div class="pb"><div class="pbf" style="width:73%"></div></div><div class="pch same">–</div></div>
+  </div>
+  <p style="font-size:12px;font-family:'Space Mono',monospace;color:var(--or2);text-align:center;margin-top:16px;opacity:.85">Onet odzyskał prowadzenie — zaledwie 0,46 pkt różnicy. Kolejny miesiąc, gdy ta dwójka jest nierozłączna.</p>
+</section>
+
+<section>
+  <div class="hl2">
+    <div class="hg">
+      <div><div class="hsc">1 266M</div><div class="hscs">odsłony FB wideo · wszystkie marki</div></div>
+      <div><div class="hbn">Facebook Video bije YouTube</div><div class="hd">Wbrew globalnym trendom wskazującym na dominację YouTube i TikToka, w Polsce Facebook pozostaje dominującą platformą wideo dla mediów. Łączne wyświetlenia wideo wszystkich marek w zestawieniu na Facebooku wyniosły w marcu <strong>1 265,6 mln na Facebooku — wobec 821,2 mln na TikToku i 602,0 mln na YouTube</strong>. Wideo na Facebooku nie jest niszą, lecz głównym kanałem dystrybucji wideo polskich mediów.</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="stitle">Kluczowe wątki marca</div>
+    <div class="ig">
+    <div class="ic"><div class="in">01</div><div class="it">Onet wraca na miejsce nr 1</div><div class="ib">Onet wrócił na prowadzenie, wyprzedzając WP o zaledwie <strong>0,46 punktu</strong>. WP ma więcej RU (14,7 mln vs. 14,0 mln) i cytowań (2386 vs. 1444), a YouTube generuje czterokrotnie więcej wyświetleń. Onet odpowiada rekordem pageviewsów — <strong>1,525 mld odsłon miesięcznie</strong> — i dłuższym czasem na stronie. Dwa portale, dwie strategie, praktycznie ten sam wynik.</div></div>
+    <div class="ic"><div class="in">02</div><div class="it">Eurosport: efekt olimpijski i twarde lądowanie</div><div class="ib">Najbardziej spektakularny ruch zestawienia. W lutym Eurosport notował <strong>31,59 pkt</strong> — astronomiczne wyniki m.in. na Facebooku i Instagramie. W marcu wynik spadł do <strong>9,34 pkt</strong>. Eurosport był nadawcą zimowych igrzysk. Marcowe dane to powrót do normalnego poziomu. Wskaźnik WWW mierzy rzeczywistą aktywność w danym miesiącu, nie wartość marki.</div></div>
+    <div class="ic"><div class="in">03</div><div class="it">Kanał Zero i TV Republika</div><div class="ib">Można notować mocne wyniki i właściwie nie mieć portalu. Kanał Zero generuje <strong>533 tys. RU</strong> miesięcznie, TV Republika — 597 tys. Silnikiem jest wideo: Kanał Zero zebrał <strong>114 mln wyświetleń na YouTube</strong>, 123 mln na Facebooku i 97 mln na Instagramie. To nowa kategoria medium — dystrybucja platformowa bez tradycyjnego portalu. Trwała zmiana struktury rynku.</div></div>
+    <div class="ic"><div class="in">04</div><div class="it">Interia ma więcej użytkowników niż ktokolwiek inny. I na tym koniec</div><div class="ib">Interia jest liderem RU — <strong>15,1 mln miesięcznie</strong>, więcej niż Onet i WP. W rankingu dopiero 3. miejsce, z wynikiem o ponad <strong>13 pkt niższym niż Onet</strong>. Przyczyna jasna: praktycznie nie istnieje w social mediach — 390 tys. wyświetleń na YouTube, 431 tys. interakcji na Facebooku, 5 tys. na Instagramie. Zero TikToka. Sama skala odwiedzin przestała wystarczać.</div></div>
+    <div class="ic"><div class="in">05</div><div class="it">Goniec jest maszyną TikTokową, ale...</div><div class="ib"><strong>5,28 mln interakcji na TikToku</strong> i 135 mln wyświetleń wideo miesięcznie — wyników nie osiąga żaden inny wydawca w Polsce. Goniec wyprzedza Polsat (5,0 mln) i TVN (3,0 mln). Zaskakuje jednak słabszy wynik na Facebooku, gdzie Iberion zawsze był mocny, a ruch na portalu od paru miesięcy spada. Pytanie o lojalność i monetyzację pozostaje otwarte.</div></div>
+    <div class="ic"><div class="in">06</div><div class="it">Elle: krach w socialach</div><div class="ib">W lutym Elle zajmowało <strong>28. miejsce z wynikiem 11,42 pkt</strong> — zbudowane na Instagramie (1,03 mln interakcji) i TikToku (877 tys.). W marcu: odpowiednio <strong>225 tys. i 11 tys.</strong> Wynik: 5,53 pkt, 69. miejsce, spadek o 41 pozycji. Pokazuje, jak socialowe "wystrzały" potrafią wywindować medium — i jak szybko efekt znika.</div></div>
+    <div class="ic"><div class="in">07</div><div class="it">Sport rządzi w mediach społecznościowych</div><div class="ib">Czołówka najbardziej zaangażowanych kont na Instagramie należy do mediów sportowych. Treść sportowa ma naturalną przewagę: wyniki, skróty, transfery, kontrowersje — to formaty, które generują reakcje organicznie. Media sportowe korzystają z tego <strong>nieporównywalnie efektywniej</strong> niż informacyjne.</div></div>
+    <div class="ic"><div class="in">08</div><div class="it">Portal wciąż ma znaczenie, ale wyjątki są coraz głośniejsze</div><div class="ib">Portal pozostaje fundamentem siły mediowej, jednak Kanał Zero z <strong>533 tys. użytkowników</strong> wyprzedza Gazetę Wyborczą (6 mln) i Radio ZET (2,7 mln). Model, w którym zasięg portalu był warunkiem koniecznym istnienia w mediowym mainstreamie, ulega erozji. Marki ze silną obecnością platformową bez portalu mogą śmiało konkurować z "dawnymi" mediami.</div></div>
+  </div>
+
+</section>
+
+<section>
+  <div class="stitle">Liderzy kategorii tematycznych</div>
+  <div class="cl">
+    <div class="cr"><div class="cn">Informacje</div><div class="cw"><div class="cf" style="width:100%">Onet · 48.59</div></div><div class="cb">▲ +1</div></div>
+    <div class="cr"><div class="cn">Sport</div><div class="cw"><div class="cf c2" style="width:55%">TVP Sport · 26.71</div></div><div class="cb">▲ +1</div></div>
+    <div class="cr"><div class="cn">Rozrywka</div><div class="cw"><div class="cf c3" style="width:27%">Filmweb · 13.20</div></div><div class="cb">–</div></div>
+    <div class="cr"><div class="cn">Biznes</div><div class="cw"><div class="cf c4" style="width:26%">Business Insider · 12.65</div></div><div class="cb">–</div></div>
+    <div class="cr"><div class="cn">Lifestyle</div><div class="cw"><div class="cf c5" style="width:16%">Polki · 7.60</div></div><div class="cb">▲ +1</div></div>
+    <div class="cr"><div class="cn">Lokalne</div><div class="cw"><div class="cf c6" style="width:19%">Nasze Miasto · 9.35</div></div><div class="cb">–</div></div>
+    <div class="cr"><div class="cn">Tech</div><div class="cw"><div class="cf c7" style="width:12%">Spiders Web · 6.04</div></div><div class="cb">–</div></div>
+  </div>
+</section>
+
+<section>
+  <div class="stitle">Istotne ruchy miesiąca</div>
+  <div class="mg">
+    <div>
+      <div class="mct up">▲ Awanse</div>
+      <div class="mc"><div class="md up">+7</div><div><div class="mn">Świat Gwiazd</div><div class="mdt">Rozrywka</div></div><div class="mp">→37.</div></div>
+      <div class="mc"><div class="md up">+7</div><div><div class="mn">Bankier</div><div class="mdt">Biznes</div></div><div class="mp">→39.</div></div>
+      <div class="mc"><div class="md up">+6</div><div><div class="mn">Wprost</div><div class="mdt">Informacje</div></div><div class="mp">→30.</div></div>
+      <div class="mc"><div class="md up">+6</div><div><div class="mn">Forsal</div><div class="mdt">Biznes</div></div><div class="mp">→32.</div></div>
+      <div class="mc"><div class="md up">+6</div><div><div class="mn">Kanał Sportowy</div><div class="mdt">Sport</div></div><div class="mp">→43.</div></div>
+      <div class="mc"><div class="md up">+6</div><div><div class="mn">naTemat</div><div class="mdt">Informacje</div></div><div class="mp">→48.</div></div>
+    </div>
+    <div>
+      <div class="mct down">▼ Spadki</div>
+      <div class="mc"><div class="md down">-41</div><div><div class="mn">Elle</div><div class="mdt">Lifestyle</div></div><div class="mp">→69.</div></div>
+      <div class="mc"><div class="md down">-16</div><div><div class="mn">Kozaczek</div><div class="mdt">Rozrywka</div></div><div class="mp">→45.</div></div>
+      <div class="mc"><div class="md down">-8</div><div><div class="mn">Sport.pl</div><div class="mdt">Sport</div></div><div class="mp">→35.</div></div>
+      <div class="mc"><div class="md down">-7</div><div><div class="mn">Polsat Sport</div><div class="mdt">Sport</div></div><div class="mp">→29.</div></div>
+      <div class="mc"><div class="md down">-7</div><div><div class="mn">Polskie Radio24</div><div class="mdt">Informacje</div></div><div class="mp">→40.</div></div>
+      <div class="mc"><div class="md down">-7</div><div><div class="mn">WNP</div><div class="mdt">Biznes</div></div><div class="mp">→47.</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="tabele">
+  <div class="stitle">Pełne wyniki — Marzec 2026</div>
+  <div class="tnav" id="tabele-nav"><button class="tb active" onclick="switchTab(this,'top50')">TOP Ogólny</button><button class="tb" onclick="switchTab(this,'informacje')">Informacje</button><button class="tb" onclick="switchTab(this,'sport')">Sport</button><button class="tb" onclick="switchTab(this,'biznes')">Biznes</button><button class="tb" onclick="switchTab(this,'rozrywka')">Rozrywka</button><button class="tb" onclick="switchTab(this,'lokalne')">Lokalne</button><button class="tb" onclick="switchTab(this,'tech')">Tech</button><button class="tb" onclick="switchTab(this,'lifestyle')">Lifestyle</button></div>
+  <div class="tpwrap"><div class="tp" id="tp-top50" ><div class="ts"><table class="rt"><thead><tr><th>#</th><th>Wydawca</th><th class="tc">Zm.</th><th style="text-align:right">WWW</th></tr></thead><tbody>
+<tr><td class="rk">1</td><td class="nm">Onet</td><td class="ch up">+1</td><td class="sc">48.59</td></tr>
+<tr><td class="rk">2</td><td class="nm">Wirtualna Polska</td><td class="ch down">-1</td><td class="sc">48.13</td></tr>
+<tr><td class="rk">3</td><td class="nm">Interia</td><td class="ch same">–</td><td class="sc">35.49</td></tr>
+<tr><td class="rk">4</td><td class="nm">TVP</td><td class="ch up">+1</td><td class="sc">26.29</td></tr>
+<tr><td class="rk">5</td><td class="nm">TVN24</td><td class="ch down">-1</td><td class="sc">25.67</td></tr>
+<tr><td class="rk">6</td><td class="nm">Super Express</td><td class="ch same">–</td><td class="sc">21.79</td></tr>
+<tr><td class="rk">7</td><td class="nm">Goniec</td><td class="ch up">+1</td><td class="sc">21.47</td></tr>
+<tr><td class="rk">8</td><td class="nm">Kanał Zero</td><td class="ch down">-1</td><td class="sc">20.97</td></tr>
+<tr><td class="rk">9</td><td class="nm">Polsat</td><td class="ch up">+2</td><td class="sc">19.23</td></tr>
+<tr><td class="rk">10</td><td class="nm">Fakt</td><td class="ch up">+5</td><td class="sc">17.69</td></tr>
+<tr><td class="rk">11</td><td class="nm">Gazeta.pl</td><td class="ch down">-2</td><td class="sc">17.25</td></tr>
+<tr><td class="rk">12</td><td class="nm">RMF FM</td><td class="ch same">–</td><td class="sc">16.96</td></tr>
+<tr><td class="rk">13</td><td class="nm">Polsat News</td><td class="ch same">–</td><td class="sc">16.87</td></tr>
+<tr><td class="rk">14</td><td class="nm">TVN</td><td class="ch down">-4</td><td class="sc">16.71</td></tr>
+<tr><td class="rk">15</td><td class="nm">Meczyki</td><td class="ch up">+2</td><td class="sc">16.58</td></tr>
+<tr><td class="rk">16</td><td class="nm">Gazeta Wyborcza</td><td class="ch same">–</td><td class="sc">15.23</td></tr>
+<tr><td class="rk">17</td><td class="nm">O2</td><td class="ch up">+1</td><td class="sc">14.69</td></tr>
+<tr><td class="rk">18</td><td class="nm">TV Republika</td><td class="ch down">-4</td><td class="sc">14.48</td></tr>
+<tr><td class="rk">19</td><td class="nm">TVP Info</td><td class="ch up">+5</td><td class="sc">13.48</td></tr>
+<tr><td class="rk">20</td><td class="nm">Radio Eska</td><td class="ch up">+1</td><td class="sc">13.45</td></tr>
+<tr><td class="rk">21</td><td class="nm">RMF24</td><td class="ch up">+4</td><td class="sc">13.35</td></tr>
+<tr><td class="rk">22</td><td class="nm">Filmweb</td><td class="ch down">-2</td><td class="sc">13.20</td></tr>
+<tr><td class="rk">23</td><td class="nm">Rzeczpospolita</td><td class="ch up">+3</td><td class="sc">12.74</td></tr>
+<tr><td class="rk">24</td><td class="nm">Business Insider</td><td class="ch down">-1</td><td class="sc">12.65</td></tr>
+<tr><td class="rk">25</td><td class="nm">Radio Zet</td><td class="ch down">-6</td><td class="sc">12.14</td></tr>
+<tr><td class="rk">26</td><td class="nm">Infor</td><td class="ch up">+5</td><td class="sc">11.06</td></tr>
+<tr><td class="rk">27</td><td class="nm">Money</td><td class="ch up">+3</td><td class="sc">10.76</td></tr>
+<tr><td class="rk">28</td><td class="nm">Pudelek</td><td class="ch up">+4</td><td class="sc">10.36</td></tr>
+<tr><td class="rk">29</td><td class="nm">Polsat Sport</td><td class="ch down">-7</td><td class="sc">10.25</td></tr>
+<tr><td class="rk">30</td><td class="nm">Wprost</td><td class="ch up">+6</td><td class="sc">9.86</td></tr>
+<tr><td class="rk">31</td><td class="nm">Pomponik</td><td class="ch up">+4</td><td class="sc">9.67</td></tr>
+<tr><td class="rk">32</td><td class="nm">Forsal</td><td class="ch up">+6</td><td class="sc">9.48</td></tr>
+<tr><td class="rk">33</td><td class="nm">Nasze Miasto</td><td class="ch up">+4</td><td class="sc">9.35</td></tr>
+<tr><td class="rk">34</td><td class="nm">Dziennik.pl</td><td class="ch same">–</td><td class="sc">9.27</td></tr>
+<tr><td class="rk">35</td><td class="nm">Sport.pl</td><td class="ch down">-8</td><td class="sc">9.26</td></tr>
+<tr><td class="rk">36</td><td class="nm">Rynek Zdrowia</td><td class="ch up">+5</td><td class="sc">9.10</td></tr>
+<tr><td class="rk">37</td><td class="nm">Świat Gwiazd</td><td class="ch up">+7</td><td class="sc">8.91</td></tr>
+<tr><td class="rk">38</td><td class="nm">Portal Samorządowy</td><td class="ch up">+1</td><td class="sc">8.81</td></tr>
+<tr><td class="rk">39</td><td class="nm">Bankier</td><td class="ch up">+7</td><td class="sc">8.63</td></tr>
+<tr><td class="rk">40</td><td class="nm">Polskie Radio24</td><td class="ch down">-7</td><td class="sc">8.59</td></tr>
+<tr><td class="rk">41</td><td class="nm">Plejada</td><td class="ch up">+4</td><td class="sc">8.04</td></tr>
+<tr><td class="rk">42</td><td class="nm">Medonet</td><td class="ch same">–</td><td class="sc">7.95</td></tr>
+<tr><td class="rk">43</td><td class="nm">Kanał Sportowy</td><td class="ch up">+6</td><td class="sc">7.84</td></tr>
+<tr><td class="rk">44</td><td class="nm">TOK FM</td><td class="ch up">+3</td><td class="sc">7.70</td></tr>
+<tr><td class="rk">45</td><td class="nm">Kozaczek</td><td class="ch down">-16</td><td class="sc">7.69</td></tr>
+<tr><td class="rk">46</td><td class="nm">Polki</td><td class="ch up">+5</td><td class="sc">7.60</td></tr>
+<tr><td class="rk">47</td><td class="nm">WNP</td><td class="ch down">-7</td><td class="sc">7.37</td></tr>
+<tr><td class="rk">48</td><td class="nm">naTemat</td><td class="ch up">+6</td><td class="sc">7.29</td></tr>
+<tr><td class="rk">49</td><td class="nm">Dziennik Gazeta Prawna</td><td class="ch down">-6</td><td class="sc">7.27</td></tr>
+<tr><td class="rk">50</td><td class="nm">Plotek</td><td class="ch down">-2</td><td class="sc">7.09</td></tr>
+<tr><td class="rk">51</td><td class="nm">Polskie Radio</td><td class="ch up">+7</td><td class="sc">6.81</td></tr>
+<tr><td class="rk">52</td><td class="nm">Jastrząb Post</td><td class="ch up">+7</td><td class="sc">6.78</td></tr>
+<tr><td class="rk">53</td><td class="nm">Pyszności</td><td class="ch down">-1</td><td class="sc">6.38</td></tr>
+<tr><td class="rk">54</td><td class="nm">Party</td><td class="ch up">+13</td><td class="sc">6.36</td></tr>
+<tr><td class="rk">55</td><td class="nm">Ofeminin</td><td class="ch up">+7</td><td class="sc">6.33</td></tr>
+<tr><td class="rk">56</td><td class="nm">Do Rzeczy</td><td class="ch up">+1</td><td class="sc">6.23</td></tr>
+<tr><td class="rk">57</td><td class="nm">Spiders Web</td><td class="ch up">+3</td><td class="sc">6.04</td></tr>
+<tr><td class="rk">58</td><td class="nm">Gazeta Pomorska</td><td class="ch up">+5</td><td class="sc">5.99</td></tr>
+<tr><td class="rk">59</td><td class="nm">Dziennik Zachodni</td><td class="ch up">+5</td><td class="sc">5.95</td></tr>
+<tr><td class="rk">60</td><td class="nm">wPolsce24</td><td class="ch down">-10</td><td class="sc">5.91</td></tr>
+<tr><td class="rk">61</td><td class="nm">Newsweek</td><td class="ch down">-8</td><td class="sc">5.80</td></tr>
+<tr><td class="rk">62</td><td class="nm">OKO.press</td><td class="ch down">-1</td><td class="sc">5.77</td></tr>
+<tr><td class="rk">63</td><td class="nm">Komputer Świat</td><td class="ch up">+6</td><td class="sc">5.76</td></tr>
+<tr><td class="rk">64</td><td class="nm">Trójmiasto.pl</td><td class="ch down">-9</td><td class="sc">5.73</td></tr>
+<tr><td class="rk">65</td><td class="nm">Vogue Polska</td><td class="ch up">+11</td><td class="sc">5.73</td></tr>
+<tr><td class="rk">66</td><td class="nm">Niezależna</td><td class="ch up">+2</td><td class="sc">5.65</td></tr>
+<tr><td class="rk">67</td><td class="nm">Gry Online</td><td class="ch up">+5</td><td class="sc">5.57</td></tr>
+<tr><td class="rk">68</td><td class="nm">Weszło</td><td class="ch up">+3</td><td class="sc">5.56</td></tr>
+<tr><td class="rk">69</td><td class="nm">Elle</td><td class="ch down">-41</td><td class="sc">5.53</td></tr>
+<tr><td class="rk">70</td><td class="nm">Wirtualnemedia</td><td class="ch same">–</td><td class="sc">5.46</td></tr>
+<tr><td class="rk">71</td><td class="nm">Kobieta.pl</td><td class="ch up">+8</td><td class="sc">5.43</td></tr>
+<tr><td class="rk">72</td><td class="nm">Viva</td><td class="ch down">-7</td><td class="sc">5.42</td></tr>
+<tr><td class="rk">73</td><td class="nm">Biznes Info</td><td class="ch down">-7</td><td class="sc">5.40</td></tr>
+<tr><td class="rk">74</td><td class="nm">Telepolis</td><td class="ch down">-1</td><td class="sc">5.37</td></tr>
+<tr><td class="rk">75</td><td class="nm">Transfery</td><td class="ch up">+15</td><td class="sc">5.32</td></tr>
+<tr><td class="rk">76</td><td class="nm">Glamour</td><td class="ch down">-20</td><td class="sc">5.26</td></tr>
+<tr><td class="rk">77</td><td class="nm">Gazeta Wrocławska</td><td class="ch up">+1</td><td class="sc">5.26</td></tr>
+<tr><td class="rk">78</td><td class="nm">Zwierciadło</td><td class="ch down">-4</td><td class="sc">5.23</td></tr>
+<tr><td class="rk">79</td><td class="nm">Wizaż</td><td class="ch down">-2</td><td class="sc">5.14</td></tr>
+<tr><td class="rk">80</td><td class="nm">Dla Handlu</td><td class="ch down">-5</td><td class="sc">5.03</td></tr>
+<tr><td class="rk">81</td><td class="nm">Medycyna Praktyczna</td><td class="ch up">+1</td><td class="sc">5.00</td></tr>
+<tr><td class="rk">82</td><td class="nm">Gazeta Krakowska</td><td class="ch down">-2</td><td class="sc">4.93</td></tr>
+<tr><td class="rk">83</td><td class="nm">Głos Wielkopolski</td><td class="ch up">+1</td><td class="sc">4.87</td></tr>
+<tr><td class="rk">84</td><td class="nm">Defence24</td><td class="ch up">+3</td><td class="sc">4.76</td></tr>
+<tr><td class="rk">85</td><td class="nm">Forbes</td><td class="ch down">-4</td><td class="sc">4.73</td></tr>
+<tr><td class="rk">86</td><td class="nm">wPolityce</td><td class="ch up">+2</td><td class="sc">4.70</td></tr>
+<tr><td class="rk">87</td><td class="nm">Dziennik Bałtycki</td><td class="ch up">+6</td><td class="sc">4.59</td></tr>
+<tr><td class="rk">88</td><td class="nm">Puls Biznesu</td><td class="ch up">+10</td><td class="sc">4.58</td></tr>
+<tr><td class="rk">89</td><td class="nm">PPE</td><td class="ch down">-3</td><td class="sc">4.57</td></tr>
+<tr><td class="rk">90</td><td class="nm">ePoznań</td><td class="ch up">+6</td><td class="sc">4.56</td></tr>
+<tr><td class="rk">91</td><td class="nm">Lubimy Czytać</td><td class="ch down">-2</td><td class="sc">4.56</td></tr>
+<tr><td class="rk">92</td><td class="nm">Wysokie Obcasy</td><td class="ch up">+5</td><td class="sc">4.53</td></tr>
+<tr><td class="rk">93</td><td class="nm">Dobreprogramy</td><td class="ch down">-2</td><td class="sc">4.50</td></tr>
+<tr><td class="rk">94</td><td class="nm">Nowości.com.pl</td><td class="ch up">+5</td><td class="sc">4.41</td></tr>
+<tr><td class="rk">95</td><td class="nm">Na Ekranie</td><td class="ch down">-10</td><td class="sc">4.34</td></tr>
+<tr><td class="rk">96</td><td class="nm">Express Bydgoski</td><td class="ch down">-2</td><td class="sc">4.34</td></tr>
+<tr><td class="rk">97</td><td class="nm">Głos Szczeciński</td><td class="ch down">-2</td><td class="sc">4.31</td></tr>
+<tr><td class="rk">98</td><td class="nm">Warszawa w Pigułce</td><td class="ch down">-15</td><td class="sc">4.28</td></tr>
+<tr><td class="rk">99</td><td class="nm">Nowiny24</td><td class="ch up">+2</td><td class="sc">4.25</td></tr>
+<tr><td class="rk">100</td><td class="nm">Android.com.pl</td><td class="ch up">+6</td><td class="sc">4.24</td></tr>
+<tr><td class="rk">101</td><td class="nm">Gol24</td><td class="ch up">+2</td><td class="sc">4.22</td></tr>
+<tr><td class="rk">102</td><td class="nm">Miejski Reporter</td><td class="ch same">–</td><td class="sc">4.18</td></tr>
+<tr><td class="rk">103</td><td class="nm">Antyweb</td><td class="ch down">-3</td><td class="sc">4.15</td></tr>
+<tr><td class="rk">104</td><td class="nm">Donald</td><td class="ch down">-12</td><td class="sc">4.12</td></tr>
+<tr><td class="rk">105</td><td class="nm">90minut</td><td class="ch up">+5</td><td class="sc">4.09</td></tr>
+<tr><td class="rk">106</td><td class="nm">Głos Koszaliński</td><td class="ch down">-2</td><td class="sc">4.03</td></tr>
+<tr><td class="rk">107</td><td class="nm">Polityka</td><td class="ch up">+2</td><td class="sc">3.98</td></tr>
+<tr><td class="rk">108</td><td class="nm">Dziennik Łódzki</td><td class="ch same">–</td><td class="sc">3.94</td></tr>
+<tr><td class="rk">109</td><td class="nm">Benchmark</td><td class="ch up">+6</td><td class="sc">3.83</td></tr>
+<tr><td class="rk">110</td><td class="nm">Express Ilustrowany</td><td class="ch up">+3</td><td class="sc">3.82</td></tr>
+<tr><td class="rk">111</td><td class="nm">GSMmaniak</td><td class="ch down">-6</td><td class="sc">3.80</td></tr>
+<tr><td class="rk">112</td><td class="nm">IT Hardware</td><td class="ch up">+5</td><td class="sc">3.67</td></tr>
+<tr><td class="rk">113</td><td class="nm">Bezprawnik</td><td class="ch up">+5</td><td class="sc">3.56</td></tr>
+<tr><td class="rk">114</td><td class="nm">Pacjenci</td><td class="ch same">–</td><td class="sc">3.50</td></tr>
+<tr><td class="rk">115</td><td class="nm">Smakosze</td><td class="ch down">-4</td><td class="sc">3.47</td></tr>
+<tr><td class="rk">116</td><td class="nm">Krytyka Polityczna</td><td class="ch same">–</td><td class="sc">3.46</td></tr>
+<tr><td class="rk">117</td><td class="nm">Tabletowo</td><td class="ch down">-5</td><td class="sc">3.41</td></tr>
+<tr><td class="rk">118</td><td class="nm">Chip</td><td class="ch up">+1</td><td class="sc">3.23</td></tr>
+<tr><td class="rk">119</td><td class="nm">newonce</td><td class="ch down">-12</td><td class="sc">3.18</td></tr>
+<tr><td class="rk">120</td><td class="nm">XYZ</td><td class="ch up">+1</td><td class="sc">3.09</td></tr>
+<tr><td class="rk">121</td><td class="nm">Parkiet</td><td class="ch down">-1</td><td class="sc">3.06</td></tr>
+<tr><td class="rk">122</td><td class="nm">Niebezpiecznik</td><td class="ch same">–</td><td class="sc">2.96</td></tr>
+</tbody></table></div>
+</div>
+<div class="tp" id="tp-informacje" style="display:none"><div class="ts"><table class="rt"><thead><tr><th>#</th><th>Wydawca</th><th class="tc">Zm.</th><th style="text-align:right">WWW</th></tr></thead><tbody><tr><td class="rk">1</td><td class="nm">Onet</td><td class="ch up">+1</td><td class="sc">48.59</td></tr><tr><td class="rk">2</td><td class="nm">Wirtualna Polska</td><td class="ch down">-1</td><td class="sc">48.13</td></tr><tr><td class="rk">3</td><td class="nm">Interia</td><td class="ch same">–</td><td class="sc">35.49</td></tr><tr><td class="rk">4</td><td class="nm">TVN24</td><td class="ch same">–</td><td class="sc">25.67</td></tr><tr><td class="rk">5</td><td class="nm">Super Express</td><td class="ch same">–</td><td class="sc">21.79</td></tr><tr><td class="rk">6</td><td class="nm">Goniec</td><td class="ch up">+1</td><td class="sc">21.47</td></tr><tr><td class="rk">7</td><td class="nm">Kanał Zero</td><td class="ch down">-1</td><td class="sc">20.97</td></tr><tr><td class="rk">8</td><td class="nm">Fakt</td><td class="ch up">+6</td><td class="sc">17.69</td></tr><tr><td class="rk">9</td><td class="nm">Gazeta.pl</td><td class="ch down">-1</td><td class="sc">17.25</td></tr><tr><td class="rk">10</td><td class="nm">RMF FM</td><td class="ch down">-1</td><td class="sc">16.96</td></tr></tbody></table></div></div><div class="tp" id="tp-sport" style="display:none"><div class="ts"><table class="rt"><thead><tr><th>#</th><th>Wydawca</th><th class="tc">Zm.</th><th style="text-align:right">WWW</th></tr></thead><tbody><tr><td class="rk">1</td><td class="nm">TVP Sport</td><td class="ch up">+1</td><td class="sc">26.71</td></tr><tr><td class="rk">2</td><td class="nm">Meczyki</td><td class="ch up">+2</td><td class="sc">16.58</td></tr><tr><td class="rk">3</td><td class="nm">Przegląd Sportowy</td><td class="ch same">–</td><td class="sc">15.26</td></tr><tr><td class="rk">4</td><td class="nm">WP SportoweFakty</td><td class="ch up">+4</td><td class="sc">10.70</td></tr><tr><td class="rk">5</td><td class="nm">Polsat Sport</td><td class="ch same">–</td><td class="sc">10.25</td></tr><tr><td class="rk">6</td><td class="nm">Interia Sport</td><td class="ch up">+1</td><td class="sc">9.68</td></tr><tr><td class="rk">7</td><td class="nm">Eurosport Polska</td><td class="ch down">-6</td><td class="sc">9.34</td></tr><tr><td class="rk">8</td><td class="nm">Sport.pl</td><td class="ch down">-2</td><td class="sc">9.26</td></tr><tr><td class="rk">9</td><td class="nm">Kanał Sportowy</td><td class="ch up">+1</td><td class="sc">7.84</td></tr><tr><td class="rk">10</td><td class="nm">Canal+ Sport</td><td class="ch down">-1</td><td class="sc">6.98</td></tr></tbody></table></div></div><div class="tp" id="tp-biznes" style="display:none"><div class="ts"><table class="rt"><thead><tr><th>#</th><th>Wydawca</th><th class="tc">Zm.</th><th style="text-align:right">WWW</th></tr></thead><tbody><tr><td class="rk">1</td><td class="nm">Business Insider</td><td class="ch same">–</td><td class="sc">12.65</td></tr><tr><td class="rk">2</td><td class="nm">Infor</td><td class="ch up">+1</td><td class="sc">11.06</td></tr><tr><td class="rk">3</td><td class="nm">Money</td><td class="ch down">-1</td><td class="sc">10.76</td></tr><tr><td class="rk">4</td><td class="nm">Forsal</td><td class="ch same">–</td><td class="sc">9.48</td></tr><tr><td class="rk">5</td><td class="nm">Bankier</td><td class="ch up">+2</td><td class="sc">8.63</td></tr><tr><td class="rk">6</td><td class="nm">WNP</td><td class="ch same">–</td><td class="sc">7.37</td></tr><tr><td class="rk">7</td><td class="nm">Dziennik Gazeta Prawna</td><td class="ch down">-1</td><td class="sc">7.27</td></tr><tr><td class="rk">8</td><td class="nm">Wirtualnemedia</td><td class="ch up">+1</td><td class="sc">5.46</td></tr><tr><td class="rk">9</td><td class="nm">Biznes Info</td><td class="ch down">-1</td><td class="sc">5.40</td></tr><tr><td class="rk">10</td><td class="nm">Dla Handlu</td><td class="ch same">–</td><td class="sc">5.03</td></tr></tbody></table></div></div><div class="tp" id="tp-rozrywka" style="display:none"><div class="ts"><table class="rt"><thead><tr><th>#</th><th>Wydawca</th><th class="tc">Zm.</th><th style="text-align:right">WWW</th></tr></thead><tbody><tr><td class="rk">1</td><td class="nm">Filmweb</td><td class="ch same">–</td><td class="sc">13.20</td></tr><tr><td class="rk">2</td><td class="nm">Pudelek</td><td class="ch up">+1</td><td class="sc">10.36</td></tr><tr><td class="rk">3</td><td class="nm">Pomponik</td><td class="ch up">+1</td><td class="sc">9.67</td></tr><tr><td class="rk">4</td><td class="nm">Świat Gwiazd</td><td class="ch up">+1</td><td class="sc">8.91</td></tr><tr><td class="rk">5</td><td class="nm">Plejada</td><td class="ch up">+1</td><td class="sc">8.04</td></tr><tr><td class="rk">6</td><td class="nm">Kozaczek</td><td class="ch down">-4</td><td class="sc">7.69</td></tr><tr><td class="rk">7</td><td class="nm">Plotek</td><td class="ch same">–</td><td class="sc">7.09</td></tr><tr><td class="rk">8</td><td class="nm">Jastrząb Post</td><td class="ch same">–</td><td class="sc">6.78</td></tr><tr><td class="rk">9</td><td class="nm">Party</td><td class="ch same">–</td><td class="sc">6.36</td></tr><tr><td class="rk">10</td><td class="nm">Lubimy Czytać</td><td class="ch up">+1</td><td class="sc">4.56</td></tr></tbody></table></div></div><div class="tp" id="tp-lokalne" style="display:none"><div class="ts"><table class="rt"><thead><tr><th>#</th><th>Wydawca</th><th class="tc">Zm.</th><th style="text-align:right">WWW</th></tr></thead><tbody><tr><td class="rk">1</td><td class="nm">Nasze Miasto</td><td class="ch same">–</td><td class="sc">9.35</td></tr><tr><td class="rk">2</td><td class="nm">Gazeta Pomorska</td><td class="ch up">+1</td><td class="sc">5.99</td></tr><tr><td class="rk">3</td><td class="nm">Dziennik Zachodni</td><td class="ch up">+1</td><td class="sc">5.95</td></tr><tr><td class="rk">4</td><td class="nm">Trójmiasto.pl</td><td class="ch down">-2</td><td class="sc">5.73</td></tr><tr><td class="rk">5</td><td class="nm">Gazeta Wrocławska</td><td class="ch same">–</td><td class="sc">5.26</td></tr><tr><td class="rk">6</td><td class="nm">Gazeta Krakowska</td><td class="ch same">–</td><td class="sc">4.93</td></tr><tr><td class="rk">7</td><td class="nm">Głos Wielkopolski</td><td class="ch up">+1</td><td class="sc">4.87</td></tr><tr><td class="rk">8</td><td class="nm">Dziennik Bałtycki</td><td class="ch up">+1</td><td class="sc">4.59</td></tr><tr><td class="rk">9</td><td class="nm">ePoznań</td><td class="ch up">+3</td><td class="sc">4.56</td></tr><tr><td class="rk">10</td><td class="nm">Nowości.com.pl</td><td class="ch up">+3</td><td class="sc">4.41</td></tr></tbody></table></div></div><div class="tp" id="tp-tech" style="display:none"><div class="ts"><table class="rt"><thead><tr><th>#</th><th>Wydawca</th><th class="tc">Zm.</th><th style="text-align:right">WWW</th></tr></thead><tbody><tr><td class="rk">1</td><td class="nm">Spiders Web</td><td class="ch same">–</td><td class="sc">6.04</td></tr><tr><td class="rk">2</td><td class="nm">Komputer Świat</td><td class="ch same">–</td><td class="sc">5.76</td></tr><tr><td class="rk">3</td><td class="nm">Gry Online</td><td class="ch same">–</td><td class="sc">5.57</td></tr><tr><td class="rk">4</td><td class="nm">Telepolis</td><td class="ch same">–</td><td class="sc">5.37</td></tr><tr><td class="rk">5</td><td class="nm">PPE</td><td class="ch same">–</td><td class="sc">4.57</td></tr><tr><td class="rk">6</td><td class="nm">Dobreprogramy</td><td class="ch same">–</td><td class="sc">4.50</td></tr><tr><td class="rk">7</td><td class="nm">Android.com.pl</td><td class="ch up">+2</td><td class="sc">4.24</td></tr><tr><td class="rk">8</td><td class="nm">Antyweb</td><td class="ch down">-1</td><td class="sc">4.15</td></tr><tr><td class="rk">9</td><td class="nm">Benchmark</td><td class="ch up">+2</td><td class="sc">3.83</td></tr><tr><td class="rk">10</td><td class="nm">GSMmaniak</td><td class="ch down">-2</td><td class="sc">3.80</td></tr></tbody></table></div></div><div class="tp" id="tp-lifestyle" style="display:none"><div class="ts"><table class="rt"><thead><tr><th>#</th><th>Wydawca</th><th class="tc">Zm.</th><th style="text-align:right">WWW</th></tr></thead><tbody><tr><td class="rk">1</td><td class="nm">Polki</td><td class="ch up">+1</td><td class="sc">7.60</td></tr><tr><td class="rk">2</td><td class="nm">Ofeminin</td><td class="ch up">+2</td><td class="sc">6.33</td></tr><tr><td class="rk">3</td><td class="nm">Vogue Polska</td><td class="ch up">+4</td><td class="sc">5.73</td></tr><tr><td class="rk">4</td><td class="nm">Elle Polska</td><td class="ch down">-3</td><td class="sc">5.53</td></tr><tr><td class="rk">5</td><td class="nm">Kobieta.pl</td><td class="ch up">+4</td><td class="sc">5.43</td></tr><tr><td class="rk">6</td><td class="nm">Viva</td><td class="ch down">-1</td><td class="sc">5.42</td></tr><tr><td class="rk">7</td><td class="nm">Glamour</td><td class="ch down">-4</td><td class="sc">5.26</td></tr><tr><td class="rk">8</td><td class="nm">Zwierciadło</td><td class="ch down">-2</td><td class="sc">5.23</td></tr><tr><td class="rk">9</td><td class="nm">Wizaż</td><td class="ch down">-1</td><td class="sc">5.14</td></tr><tr><td class="rk">10</td><td class="nm">Wysokie Obcasy</td><td class="ch same">–</td><td class="sc">4.53</td></tr></tbody></table></div></div></div>
+</section>
+<section id="szczegolowe">
+  <div class="stitle">Wyniki szczegółowe — TOP 30</div>
+  <div class="tnav" id="szczegolowe-nav"><button class="tb active" onclick="switchTab(this,'d-ru')">Realni użytkownicy</button><button class="tb" onclick="switchTab(this,'d-dru')">Śr. dzienna RU</button><button class="tb" onclick="switchTab(this,'d-pv')">Odsłony WWW</button><button class="tb" onclick="switchTab(this,'d-time')">Śr. czas</button><button class="tb" onclick="switchTab(this,'d-cyt')">Cytowania</button><button class="tb" onclick="switchTab(this,'d-yt')">YouTube</button><button class="tb" onclick="switchTab(this,'d-fbint')">FB interakcje</button><button class="tb" onclick="switchTab(this,'d-fbvid')">FB wideo</button><button class="tb" onclick="switchTab(this,'d-igint')">IG interakcje</button><button class="tb" onclick="switchTab(this,'d-igvid')">IG wideo</button><button class="tb" onclick="switchTab(this,'d-ttint')">TikTok interakcje</button><button class="tb" onclick="switchTab(this,'d-ttvid')">TikTok wideo</button><button class="tb" onclick="switchTab(this,'d-xint')">X interakcje</button><button class="tb" onclick="switchTab(this,'d-xvw')">X odsłony</button></div>
+  <div class="tpwrap"><div class="tp" id="tp-d-ru" ><div class="ts"><table class="rt"><thead><tr><th>#</th><th>Realni użytkownicy</th><th style="text-align:right">Liczba</th><th style="text-align:right">%</th></tr></thead><tbody>
+<tr><td class="rk">1</td><td class="nm">Interia</td><td class="sc">15 125 940</td><td class="lb">100.00</td></tr>
+<tr><td class="rk">2</td><td class="nm">Wirtualna Polska</td><td class="sc">14 717 052</td><td class="lb">97.30</td></tr>
+<tr><td class="rk">3</td><td class="nm">Onet</td><td class="sc">14 049 612</td><td class="lb">92.88</td></tr>
+<tr><td class="rk">4</td><td class="nm">Gazeta.pl</td><td class="sc"></td><td class="lb">56.35</td></tr>
+<tr><td class="rk">5</td><td class="nm">Fakt</td><td class="sc"></td><td class="lb">50.52</td></tr>
+<tr><td class="rk">6</td><td class="nm">TVN24</td><td class="sc"></td><td class="lb">48.75</td></tr>
+<tr><td class="rk">7</td><td class="nm">Filmweb</td><td class="sc"></td><td class="lb">47.67</td></tr>
+<tr><td class="rk">8</td><td class="nm">Infor</td><td class="sc"></td><td class="lb">46.63</td></tr>
+<tr><td class="rk">9</td><td class="nm">TVP</td><td class="sc"></td><td class="lb">46.20</td></tr>
+<tr><td class="rk">10</td><td class="nm">O2</td><td class="sc"></td><td class="lb">46.01</td></tr>
+<tr><td class="rk">11</td><td class="nm">Super Express</td><td class="sc"></td><td class="lb">42.64</td></tr>
+<tr><td class="rk">12</td><td class="nm">Business Insider</td><td class="sc"></td><td class="lb">41.96</td></tr>
+<tr><td class="rk">13</td><td class="nm">Gazeta Wyborcza</td><td class="sc"></td><td class="lb">40.13</td></tr>
+<tr><td class="rk">14</td><td class="nm">Forsal</td><td class="sc"></td><td class="lb">39.56</td></tr>
+<tr><td class="rk">15</td><td class="nm">RMF24</td><td class="sc"></td><td class="lb">39.08</td></tr>
+<tr><td class="rk">16</td><td class="nm">Nasze Miasto</td><td class="sc"></td><td class="lb">39.00</td></tr>
+<tr><td class="rk">17</td><td class="nm">RMF FM</td><td class="sc"></td><td class="lb">38.89</td></tr>
+<tr><td class="rk">18</td><td class="nm">Wprost</td><td class="sc"></td><td class="lb">37.13</td></tr>
+<tr><td class="rk">19</td><td class="nm">Dziennik.pl</td><td class="sc"></td><td class="lb">36.27</td></tr>
+<tr><td class="rk">20</td><td class="nm">Rynek Zdrowia</td><td class="sc"></td><td class="lb">34.58</td></tr>
+<tr><td class="rk">21</td><td class="nm">Portal Samorządowy</td><td class="sc"></td><td class="lb">34.12</td></tr>
+<tr><td class="rk">22</td><td class="nm">Money</td><td class="sc"></td><td class="lb">33.87</td></tr>
+<tr><td class="rk">23</td><td class="nm">Polsat News</td><td class="sc"></td><td class="lb">33.24</td></tr>
+<tr><td class="rk">24</td><td class="nm">Pomponik</td><td class="sc"></td><td class="lb">30.49</td></tr>
+<tr><td class="rk">25</td><td class="nm">Radio Eska</td><td class="sc"></td><td class="lb">29.77</td></tr>
+<tr><td class="rk">26</td><td class="nm">Rzeczpospolita</td><td class="sc"></td><td class="lb">29.33</td></tr>
+<tr><td class="rk">27</td><td class="nm">Medonet</td><td class="sc"></td><td class="lb">28.02</td></tr>
+<tr><td class="rk">28</td><td class="nm">Pudelek</td><td class="sc"></td><td class="lb">27.68</td></tr>
+<tr><td class="rk">29</td><td class="nm">Bankier</td><td class="sc"></td><td class="lb">26.14</td></tr>
+<tr><td class="rk">30</td><td class="nm">Sport.pl</td><td class="sc"></td><td class="lb">26.10</td></tr>
+</tbody></table></div><p class="src">Dane: Mediapanel, marzec 2026</p>
+</div><div class="tp" id="tp-d-dru" style="display:none"><div class="ts"><table class="rt"><thead><tr><th>#</th><th>Śr. dzienna RU</th><th style="text-align:right">Liczba</th><th style="text-align:right">%</th></tr></thead><tbody>
+<tr><td class="rk">1</td><td class="nm">Onet</td><td class="sc">4 334 096</td><td class="lb">100.00</td></tr>
+<tr><td class="rk">2</td><td class="nm">Interia</td><td class="sc">4 186 566</td><td class="lb">96.60</td></tr>
+<tr><td class="rk">3</td><td class="nm">Wirtualna Polska</td><td class="sc">3 968 247</td><td class="lb">91.56</td></tr>
+<tr><td class="rk">4</td><td class="nm">O2</td><td class="sc"></td><td class="lb">32.95</td></tr>
+<tr><td class="rk">5</td><td class="nm">Gazeta.pl</td><td class="sc"></td><td class="lb">30.22</td></tr>
+<tr><td class="rk">6</td><td class="nm">TVN24</td><td class="sc"></td><td class="lb">28.23</td></tr>
+<tr><td class="rk">7</td><td class="nm">Business Insider</td><td class="sc"></td><td class="lb">24.84</td></tr>
+<tr><td class="rk">8</td><td class="nm">Fakt</td><td class="sc"></td><td class="lb">23.80</td></tr>
+<tr><td class="rk">9</td><td class="nm">RMF24</td><td class="sc"></td><td class="lb">20.51</td></tr>
+<tr><td class="rk">10</td><td class="nm">Gazeta Wyborcza</td><td class="sc"></td><td class="lb">19.95</td></tr>
+<tr><td class="rk">11</td><td class="nm">TVP</td><td class="sc"></td><td class="lb">19.21</td></tr>
+<tr><td class="rk">12</td><td class="nm">Money</td><td class="sc"></td><td class="lb">17.83</td></tr>
+<tr><td class="rk">13</td><td class="nm">Filmweb</td><td class="sc"></td><td class="lb">15.79</td></tr>
+<tr><td class="rk">14</td><td class="nm">Infor</td><td class="sc"></td><td class="lb">15.61</td></tr>
+<tr><td class="rk">15</td><td class="nm">Wprost</td><td class="sc"></td><td class="lb">14.07</td></tr>
+<tr><td class="rk">16</td><td class="nm">Pudelek</td><td class="sc"></td><td class="lb">13.90</td></tr>
+<tr><td class="rk">17</td><td class="nm">Polsat News</td><td class="sc"></td><td class="lb">13.69</td></tr>
+<tr><td class="rk">18</td><td class="nm">Super Express</td><td class="sc"></td><td class="lb">13.56</td></tr>
+<tr><td class="rk">19</td><td class="nm">RMF FM</td><td class="sc"></td><td class="lb">13.55</td></tr>
+<tr><td class="rk">20</td><td class="nm">Pomponik</td><td class="sc"></td><td class="lb">13.30</td></tr>
+<tr><td class="rk">21</td><td class="nm">Sport.pl</td><td class="sc"></td><td class="lb">13.22</td></tr>
+<tr><td class="rk">22</td><td class="nm">Dziennik.pl</td><td class="sc"></td><td class="lb">12.17</td></tr>
+<tr><td class="rk">23</td><td class="nm">Rynek Zdrowia</td><td class="sc"></td><td class="lb">11.47</td></tr>
+<tr><td class="rk">24</td><td class="nm">Portal Samorządowy</td><td class="sc"></td><td class="lb">11.05</td></tr>
+<tr><td class="rk">25</td><td class="nm">Bankier</td><td class="sc"></td><td class="lb">10.85</td></tr>
+<tr><td class="rk">26</td><td class="nm">Forsal</td><td class="sc"></td><td class="lb">10.60</td></tr>
+<tr><td class="rk">27</td><td class="nm">Goniec</td><td class="sc"></td><td class="lb">10.52</td></tr>
+<tr><td class="rk">28</td><td class="nm">Nasze Miasto</td><td class="sc"></td><td class="lb">10.23</td></tr>
+<tr><td class="rk">29</td><td class="nm">Medonet</td><td class="sc"></td><td class="lb">8.45</td></tr>
+<tr><td class="rk">30</td><td class="nm">Rzeczpospolita</td><td class="sc"></td><td class="lb">8.09</td></tr>
+</tbody></table></div><p class="src">Dane: Mediapanel, marzec 2026</p>
+</div><div class="tp" id="tp-d-pv" style="display:none"><div class="ts"><table class="rt"><thead><tr><th>#</th><th>Odsłony WWW</th><th style="text-align:right">Liczba</th><th style="text-align:right">%</th></tr></thead><tbody>
+<tr><td class="rk">1</td><td class="nm">Onet</td><td class="sc">1 525 295 983</td><td class="lb">100.00</td></tr>
+<tr><td class="rk">2</td><td class="nm">Interia</td><td class="sc">1 148 827 557</td><td class="lb">75.32</td></tr>
+<tr><td class="rk">3</td><td class="nm">Wirtualna Polska</td><td class="sc">948 956 634</td><td class="lb">62.21</td></tr>
+<tr><td class="rk">4</td><td class="nm">O2</td><td class="sc"></td><td class="lb">13.72</td></tr>
+<tr><td class="rk">5</td><td class="nm">Gazeta.pl</td><td class="sc"></td><td class="lb">12.43</td></tr>
+<tr><td class="rk">6</td><td class="nm">Filmweb</td><td class="sc"></td><td class="lb">10.83</td></tr>
+<tr><td class="rk">7</td><td class="nm">TVP</td><td class="sc"></td><td class="lb">8.25</td></tr>
+<tr><td class="rk">8</td><td class="nm">TVN24</td><td class="sc"></td><td class="lb">7.33</td></tr>
+<tr><td class="rk">9</td><td class="nm">Fakt</td><td class="sc"></td><td class="lb">4.86</td></tr>
+<tr><td class="rk">10</td><td class="nm">Pudelek</td><td class="sc"></td><td class="lb">4.44</td></tr>
+<tr><td class="rk">11</td><td class="nm">RMF24</td><td class="sc"></td><td class="lb">4.34</td></tr>
+<tr><td class="rk">12</td><td class="nm">Business Insider</td><td class="sc"></td><td class="lb">4.18</td></tr>
+<tr><td class="rk">13</td><td class="nm">Super Express</td><td class="sc"></td><td class="lb">3.97</td></tr>
+<tr><td class="rk">14</td><td class="nm">Bankier</td><td class="sc"></td><td class="lb">3.70</td></tr>
+<tr><td class="rk">15</td><td class="nm">Nasze Miasto</td><td class="sc"></td><td class="lb">3.68</td></tr>
+<tr><td class="rk">16</td><td class="nm">Gazeta Wyborcza</td><td class="sc"></td><td class="lb">3.55</td></tr>
+<tr><td class="rk">17</td><td class="nm">Polsat News</td><td class="sc"></td><td class="lb">3.42</td></tr>
+<tr><td class="rk">18</td><td class="nm">Dziennik.pl</td><td class="sc"></td><td class="lb">3.32</td></tr>
+<tr><td class="rk">19</td><td class="nm">Money</td><td class="sc"></td><td class="lb">3.32</td></tr>
+<tr><td class="rk">20</td><td class="nm">Sport.pl</td><td class="sc"></td><td class="lb">2.99</td></tr>
+<tr><td class="rk">21</td><td class="nm">Wprost</td><td class="sc"></td><td class="lb">2.33</td></tr>
+<tr><td class="rk">22</td><td class="nm">Infor</td><td class="sc"></td><td class="lb">2.06</td></tr>
+<tr><td class="rk">23</td><td class="nm">Pomponik</td><td class="sc"></td><td class="lb">2.04</td></tr>
+<tr><td class="rk">24</td><td class="nm">RMF FM</td><td class="sc"></td><td class="lb">1.96</td></tr>
+<tr><td class="rk">25</td><td class="nm">Trójmiasto.pl</td><td class="sc"></td><td class="lb">1.92</td></tr>
+<tr><td class="rk">26</td><td class="nm">Radio Eska</td><td class="sc"></td><td class="lb">1.85</td></tr>
+<tr><td class="rk">27</td><td class="nm">Niezależna</td><td class="sc"></td><td class="lb">1.81</td></tr>
+<tr><td class="rk">28</td><td class="nm">Do Rzeczy</td><td class="sc"></td><td class="lb">1.68</td></tr>
+<tr><td class="rk">29</td><td class="nm">Goniec</td><td class="sc"></td><td class="lb">1.68</td></tr>
+<tr><td class="rk">30</td><td class="nm">Plotek</td><td class="sc"></td><td class="lb">1.62</td></tr>
+</tbody></table></div><p class="src">Dane: Mediapanel, marzec 2026</p>
+</div><div class="tp" id="tp-d-time" style="display:none"><div class="ts"><table class="rt"><thead><tr><th>#</th><th>Śr. czas na stronie</th><th style="text-align:right">Liczba</th><th style="text-align:right">%</th></tr></thead><tbody>
+<tr><td class="rk">1</td><td class="nm">TVP</td><td class="sc">7 619</td><td class="lb">100.00</td></tr>
+<tr><td class="rk">2</td><td class="nm">Onet</td><td class="sc">6 201</td><td class="lb">81.39</td></tr>
+<tr><td class="rk">3</td><td class="nm">Wirtualna Polska</td><td class="sc">5 315</td><td class="lb">69.77</td></tr>
+<tr><td class="rk">4</td><td class="nm">Interia</td><td class="sc"></td><td class="lb">49.99</td></tr>
+<tr><td class="rk">5</td><td class="nm">TV Republika</td><td class="sc"></td><td class="lb">44.05</td></tr>
+<tr><td class="rk">6</td><td class="nm">O2</td><td class="sc"></td><td class="lb">23.90</td></tr>
+<tr><td class="rk">7</td><td class="nm">Polki</td><td class="sc"></td><td class="lb">23.03</td></tr>
+<tr><td class="rk">8</td><td class="nm">Radio Zet</td><td class="sc"></td><td class="lb">22.05</td></tr>
+<tr><td class="rk">9</td><td class="nm">Radio Eska</td><td class="sc"></td><td class="lb">21.47</td></tr>
+<tr><td class="rk">10</td><td class="nm">Kobieta.pl</td><td class="sc"></td><td class="lb">19.77</td></tr>
+<tr><td class="rk">11</td><td class="nm">TVN24</td><td class="sc"></td><td class="lb">14.95</td></tr>
+<tr><td class="rk">12</td><td class="nm">Pudelek</td><td class="sc"></td><td class="lb">14.83</td></tr>
+<tr><td class="rk">13</td><td class="nm">Gazeta.pl</td><td class="sc"></td><td class="lb">14.36</td></tr>
+<tr><td class="rk">14</td><td class="nm">Niezależna</td><td class="sc"></td><td class="lb">12.93</td></tr>
+<tr><td class="rk">15</td><td class="nm">TOK FM</td><td class="sc"></td><td class="lb">12.62</td></tr>
+<tr><td class="rk">16</td><td class="nm">RMF FM</td><td class="sc"></td><td class="lb">12.03</td></tr>
+<tr><td class="rk">17</td><td class="nm">Gazeta Wyborcza</td><td class="sc"></td><td class="lb">11.29</td></tr>
+<tr><td class="rk">18</td><td class="nm">Weszło</td><td class="sc"></td><td class="lb">10.32</td></tr>
+<tr><td class="rk">19</td><td class="nm">Business Insider</td><td class="sc"></td><td class="lb">9.90</td></tr>
+<tr><td class="rk">20</td><td class="nm">RMF24</td><td class="sc"></td><td class="lb">9.82</td></tr>
+<tr><td class="rk">21</td><td class="nm">Fakt</td><td class="sc"></td><td class="lb">9.78</td></tr>
+<tr><td class="rk">22</td><td class="nm">Sport.pl</td><td class="sc"></td><td class="lb">9.11</td></tr>
+<tr><td class="rk">23</td><td class="nm">Bankier</td><td class="sc"></td><td class="lb">8.73</td></tr>
+<tr><td class="rk">24</td><td class="nm">90minut</td><td class="sc"></td><td class="lb">8.72</td></tr>
+<tr><td class="rk">25</td><td class="nm">Do Rzeczy</td><td class="sc"></td><td class="lb">8.36</td></tr>
+<tr><td class="rk">26</td><td class="nm">Polsat News</td><td class="sc"></td><td class="lb">8.15</td></tr>
+<tr><td class="rk">27</td><td class="nm">Money</td><td class="sc"></td><td class="lb">7.92</td></tr>
+<tr><td class="rk">28</td><td class="nm">TVP Info</td><td class="sc"></td><td class="lb">7.49</td></tr>
+<tr><td class="rk">29</td><td class="nm">Pomponik</td><td class="sc"></td><td class="lb">7.05</td></tr>
+<tr><td class="rk">30</td><td class="nm">wPolsce24</td><td class="sc"></td><td class="lb">6.74</td></tr>
+</tbody></table></div><p class="src">Dane: Mediapanel, marzec 2026</p>
+</div><div class="tp" id="tp-d-cyt" style="display:none"><div class="ts"><table class="rt"><thead><tr><th>#</th><th>Cytowania</th><th style="text-align:right">Liczba</th><th style="text-align:right">%</th></tr></thead><tbody>
+<tr><td class="rk">1</td><td class="nm">TVN24</td><td class="sc">2 663</td><td class="lb">100.00</td></tr>
+<tr><td class="rk">2</td><td class="nm">Wirtualna Polska</td><td class="sc">2 386</td><td class="lb">89.60</td></tr>
+<tr><td class="rk">3</td><td class="nm">RMF FM</td><td class="sc">2 028</td><td class="lb">76.15</td></tr>
+<tr><td class="rk">4</td><td class="nm">Rzeczpospolita</td><td class="sc"></td><td class="lb">58.43</td></tr>
+<tr><td class="rk">5</td><td class="nm">TVP</td><td class="sc"></td><td class="lb">57.87</td></tr>
+<tr><td class="rk">6</td><td class="nm">Polsat News</td><td class="sc"></td><td class="lb">56.55</td></tr>
+<tr><td class="rk">7</td><td class="nm">Onet</td><td class="sc"></td><td class="lb">54.22</td></tr>
+<tr><td class="rk">8</td><td class="nm">TVP Info</td><td class="sc"></td><td class="lb">48.22</td></tr>
+<tr><td class="rk">9</td><td class="nm">Gazeta Wyborcza</td><td class="sc"></td><td class="lb">44.65</td></tr>
+<tr><td class="rk">10</td><td class="nm">TVN</td><td class="sc"></td><td class="lb">39.39</td></tr>
+<tr><td class="rk">11</td><td class="nm">Radio Zet</td><td class="sc"></td><td class="lb">37.89</td></tr>
+<tr><td class="rk">12</td><td class="nm">Polskie Radio</td><td class="sc"></td><td class="lb">34.55</td></tr>
+<tr><td class="rk">13</td><td class="nm">Super Express</td><td class="sc"></td><td class="lb">29.18</td></tr>
+<tr><td class="rk">14</td><td class="nm">Interia</td><td class="sc"></td><td class="lb">26.17</td></tr>
+<tr><td class="rk">15</td><td class="nm">Fakt</td><td class="sc"></td><td class="lb">24.48</td></tr>
+<tr><td class="rk">16</td><td class="nm">TOK FM</td><td class="sc"></td><td class="lb">23.58</td></tr>
+<tr><td class="rk">17</td><td class="nm">RMF24</td><td class="sc"></td><td class="lb">23.02</td></tr>
+<tr><td class="rk">18</td><td class="nm">Dziennik Gazeta Prawna</td><td class="sc"></td><td class="lb">20.43</td></tr>
+<tr><td class="rk">19</td><td class="nm">Polsat Sport</td><td class="sc"></td><td class="lb">18.81</td></tr>
+<tr><td class="rk">20</td><td class="nm">TV Republika</td><td class="sc"></td><td class="lb">18.63</td></tr>
+<tr><td class="rk">21</td><td class="nm">Business Insider</td><td class="sc"></td><td class="lb">16.07</td></tr>
+<tr><td class="rk">22</td><td class="nm">Radio Eska</td><td class="sc"></td><td class="lb">12.96</td></tr>
+<tr><td class="rk">23</td><td class="nm">Kanał Zero</td><td class="sc"></td><td class="lb">12.28</td></tr>
+<tr><td class="rk">24</td><td class="nm">Sport.pl</td><td class="sc"></td><td class="lb">9.91</td></tr>
+<tr><td class="rk">25</td><td class="nm">Forbes</td><td class="sc"></td><td class="lb">8.41</td></tr>
+<tr><td class="rk">26</td><td class="nm">Wirtualnemedia</td><td class="sc"></td><td class="lb">8.41</td></tr>
+<tr><td class="rk">27</td><td class="nm">Money</td><td class="sc"></td><td class="lb">8.04</td></tr>
+<tr><td class="rk">28</td><td class="nm">Ofeminin</td><td class="sc"></td><td class="lb">7.59</td></tr>
+<tr><td class="rk">29</td><td class="nm">Rynek Zdrowia</td><td class="sc"></td><td class="lb">7.13</td></tr>
+<tr><td class="rk">30</td><td class="nm">Dziennik Bałtycki</td><td class="sc"></td><td class="lb">7.10</td></tr>
+</tbody></table></div><p class="src">Dane: Mediaboard, marzec 2026</p>
+</div><div class="tp" id="tp-d-yt" style="display:none"><div class="ts"><table class="rt"><thead><tr><th>#</th><th>YouTube — odsłony</th><th style="text-align:right">Liczba</th><th style="text-align:right">%</th></tr></thead><tbody>
+<tr><td class="rk">1</td><td class="nm">Kanał Zero</td><td class="sc">114 398 495</td><td class="lb">100.00</td></tr>
+<tr><td class="rk">2</td><td class="nm">TV Republika</td><td class="sc">75 388 827</td><td class="lb">65.90</td></tr>
+<tr><td class="rk">3</td><td class="nm">Polsat</td><td class="sc">60 109 877</td><td class="lb">52.54</td></tr>
+<tr><td class="rk">4</td><td class="nm">Super Express</td><td class="sc"></td><td class="lb">31.63</td></tr>
+<tr><td class="rk">5</td><td class="nm">Polsat News</td><td class="sc"></td><td class="lb">29.15</td></tr>
+<tr><td class="rk">6</td><td class="nm">TVN</td><td class="sc"></td><td class="lb">25.17</td></tr>
+<tr><td class="rk">7</td><td class="nm">Wirtualna Polska</td><td class="sc"></td><td class="lb">19.51</td></tr>
+<tr><td class="rk">8</td><td class="nm">Kanał Sportowy</td><td class="sc"></td><td class="lb">15.04</td></tr>
+<tr><td class="rk">9</td><td class="nm">TVP Info</td><td class="sc"></td><td class="lb">12.41</td></tr>
+<tr><td class="rk">10</td><td class="nm">wPolsce24</td><td class="sc"></td><td class="lb">11.96</td></tr>
+<tr><td class="rk">11</td><td class="nm">Goniec</td><td class="sc"></td><td class="lb">10.70</td></tr>
+<tr><td class="rk">12</td><td class="nm">Meczyki</td><td class="sc"></td><td class="lb">9.74</td></tr>
+<tr><td class="rk">13</td><td class="nm">TVP</td><td class="sc"></td><td class="lb">8.31</td></tr>
+<tr><td class="rk">14</td><td class="nm">TOK FM</td><td class="sc"></td><td class="lb">6.87</td></tr>
+<tr><td class="rk">15</td><td class="nm">Weszło</td><td class="sc"></td><td class="lb">6.71</td></tr>
+<tr><td class="rk">16</td><td class="nm">TVN24</td><td class="sc"></td><td class="lb">6.16</td></tr>
+<tr><td class="rk">17</td><td class="nm">Kozaczek</td><td class="sc"></td><td class="lb">5.99</td></tr>
+<tr><td class="rk">18</td><td class="nm">Radio Zet</td><td class="sc"></td><td class="lb">5.84</td></tr>
+<tr><td class="rk">19</td><td class="nm">Onet</td><td class="sc"></td><td class="lb">4.90</td></tr>
+<tr><td class="rk">20</td><td class="nm">naTemat</td><td class="sc"></td><td class="lb">4.09</td></tr>
+<tr><td class="rk">21</td><td class="nm">Pudelek</td><td class="sc"></td><td class="lb">3.69</td></tr>
+<tr><td class="rk">22</td><td class="nm">Świat Gwiazd</td><td class="sc"></td><td class="lb">3.61</td></tr>
+<tr><td class="rk">23</td><td class="nm">RMF24</td><td class="sc"></td><td class="lb">3.34</td></tr>
+<tr><td class="rk">24</td><td class="nm">Plotek</td><td class="sc"></td><td class="lb">3.28</td></tr>
+<tr><td class="rk">25</td><td class="nm">Zwierciadło</td><td class="sc"></td><td class="lb">2.61</td></tr>
+<tr><td class="rk">26</td><td class="nm">Polskie Radio24</td><td class="sc"></td><td class="lb">2.56</td></tr>
+<tr><td class="rk">27</td><td class="nm">Pomponik</td><td class="sc"></td><td class="lb">2.52</td></tr>
+<tr><td class="rk">28</td><td class="nm">Polskie Radio</td><td class="sc"></td><td class="lb">2.49</td></tr>
+<tr><td class="rk">29</td><td class="nm">Radio Eska</td><td class="sc"></td><td class="lb">2.48</td></tr>
+<tr><td class="rk">30</td><td class="nm">Fakt</td><td class="sc"></td><td class="lb">2.43</td></tr>
+</tbody></table></div><p class="src">Dane: Social Blade, marzec 2026</p>
+</div><div class="tp" id="tp-d-fbint" style="display:none"><div class="ts"><table class="rt"><thead><tr><th>#</th><th>Facebook — interakcje</th><th style="text-align:right">Liczba</th><th style="text-align:right">%</th></tr></thead><tbody>
+<tr><td class="rk">1</td><td class="nm">Wirtualna Polska</td><td class="sc">3 291 882</td><td class="lb">100.00</td></tr>
+<tr><td class="rk">2</td><td class="nm">Onet</td><td class="sc">3 052 551</td><td class="lb">92.73</td></tr>
+<tr><td class="rk">3</td><td class="nm">Super Express</td><td class="sc">2 863 718</td><td class="lb">86.99</td></tr>
+<tr><td class="rk">4</td><td class="nm">Goniec</td><td class="sc"></td><td class="lb">84.92</td></tr>
+<tr><td class="rk">5</td><td class="nm">Kanał Zero</td><td class="sc"></td><td class="lb">61.18</td></tr>
+<tr><td class="rk">6</td><td class="nm">TVN24</td><td class="sc"></td><td class="lb">50.24</td></tr>
+<tr><td class="rk">7</td><td class="nm">Fakt</td><td class="sc"></td><td class="lb">40.67</td></tr>
+<tr><td class="rk">8</td><td class="nm">TVP Info</td><td class="sc"></td><td class="lb">38.69</td></tr>
+<tr><td class="rk">9</td><td class="nm">Radio Eska</td><td class="sc"></td><td class="lb">37.22</td></tr>
+<tr><td class="rk">10</td><td class="nm">TV Republika</td><td class="sc"></td><td class="lb">28.23</td></tr>
+<tr><td class="rk">11</td><td class="nm">TVP</td><td class="sc"></td><td class="lb">25.08</td></tr>
+<tr><td class="rk">12</td><td class="nm">Świat Gwiazd</td><td class="sc"></td><td class="lb">24.45</td></tr>
+<tr><td class="rk">13</td><td class="nm">Polskie Radio24</td><td class="sc"></td><td class="lb">20.94</td></tr>
+<tr><td class="rk">14</td><td class="nm">Polsat</td><td class="sc"></td><td class="lb">19.44</td></tr>
+<tr><td class="rk">15</td><td class="nm">Polsat News</td><td class="sc"></td><td class="lb">18.66</td></tr>
+<tr><td class="rk">16</td><td class="nm">Meczyki</td><td class="sc"></td><td class="lb">18.18</td></tr>
+<tr><td class="rk">17</td><td class="nm">Gazeta.pl</td><td class="sc"></td><td class="lb">17.66</td></tr>
+<tr><td class="rk">18</td><td class="nm">Radio Zet</td><td class="sc"></td><td class="lb">16.59</td></tr>
+<tr><td class="rk">19</td><td class="nm">Party</td><td class="sc"></td><td class="lb">15.44</td></tr>
+<tr><td class="rk">20</td><td class="nm">TVN</td><td class="sc"></td><td class="lb">13.50</td></tr>
+<tr><td class="rk">21</td><td class="nm">Interia</td><td class="sc"></td><td class="lb">13.12</td></tr>
+<tr><td class="rk">22</td><td class="nm">wPolsce24</td><td class="sc"></td><td class="lb">12.82</td></tr>
+<tr><td class="rk">23</td><td class="nm">naTemat</td><td class="sc"></td><td class="lb">12.77</td></tr>
+<tr><td class="rk">24</td><td class="nm">Gazeta Wyborcza</td><td class="sc"></td><td class="lb">12.64</td></tr>
+<tr><td class="rk">25</td><td class="nm">Rzeczpospolita</td><td class="sc"></td><td class="lb">12.48</td></tr>
+<tr><td class="rk">26</td><td class="nm">RMF24</td><td class="sc"></td><td class="lb">12.13</td></tr>
+<tr><td class="rk">27</td><td class="nm">Viva</td><td class="sc"></td><td class="lb">11.52</td></tr>
+<tr><td class="rk">28</td><td class="nm">Money</td><td class="sc"></td><td class="lb">10.73</td></tr>
+<tr><td class="rk">29</td><td class="nm">Polsat Sport</td><td class="sc"></td><td class="lb">9.84</td></tr>
+<tr><td class="rk">30</td><td class="nm">Kozaczek</td><td class="sc"></td><td class="lb">9.38</td></tr>
+</tbody></table></div><p class="src">Dane: Sotrender, marzec 2026</p>
+</div><div class="tp" id="tp-d-fbvid" style="display:none"><div class="ts"><table class="rt"><thead><tr><th>#</th><th>Facebook — wideo</th><th style="text-align:right">Liczba</th><th style="text-align:right">%</th></tr></thead><tbody>
+<tr><td class="rk">1</td><td class="nm">Kanał Zero</td><td class="sc">123 042 376</td><td class="lb">100.00</td></tr>
+<tr><td class="rk">2</td><td class="nm">Wirtualna Polska</td><td class="sc">115 724 677</td><td class="lb">94.05</td></tr>
+<tr><td class="rk">3</td><td class="nm">TVP</td><td class="sc">80 744 086</td><td class="lb">65.62</td></tr>
+<tr><td class="rk">4</td><td class="nm">Super Express</td><td class="sc"></td><td class="lb">52.62</td></tr>
+<tr><td class="rk">5</td><td class="nm">Meczyki</td><td class="sc"></td><td class="lb">36.44</td></tr>
+<tr><td class="rk">6</td><td class="nm">TVP Info</td><td class="sc"></td><td class="lb">36.15</td></tr>
+<tr><td class="rk">7</td><td class="nm">TVN</td><td class="sc"></td><td class="lb">34.13</td></tr>
+<tr><td class="rk">8</td><td class="nm">Polsat</td><td class="sc"></td><td class="lb">28.30</td></tr>
+<tr><td class="rk">9</td><td class="nm">Polsat Sport</td><td class="sc"></td><td class="lb">27.40</td></tr>
+<tr><td class="rk">10</td><td class="nm">Onet</td><td class="sc"></td><td class="lb">23.49</td></tr>
+<tr><td class="rk">11</td><td class="nm">Goniec</td><td class="sc"></td><td class="lb">23.18</td></tr>
+<tr><td class="rk">12</td><td class="nm">Świat Gwiazd</td><td class="sc"></td><td class="lb">22.89</td></tr>
+<tr><td class="rk">13</td><td class="nm">Polsat News</td><td class="sc"></td><td class="lb">22.84</td></tr>
+<tr><td class="rk">14</td><td class="nm">Party</td><td class="sc"></td><td class="lb">22.44</td></tr>
+<tr><td class="rk">15</td><td class="nm">Kozaczek</td><td class="sc"></td><td class="lb">22.21</td></tr>
+<tr><td class="rk">16</td><td class="nm">TVN24</td><td class="sc"></td><td class="lb">20.10</td></tr>
+<tr><td class="rk">17</td><td class="nm">Pomponik</td><td class="sc"></td><td class="lb">19.72</td></tr>
+<tr><td class="rk">18</td><td class="nm">Plotek</td><td class="sc"></td><td class="lb">16.14</td></tr>
+<tr><td class="rk">19</td><td class="nm">Gazeta.pl</td><td class="sc"></td><td class="lb">15.15</td></tr>
+<tr><td class="rk">20</td><td class="nm">Radio Eska</td><td class="sc"></td><td class="lb">13.78</td></tr>
+<tr><td class="rk">21</td><td class="nm">Jastrząb Post</td><td class="sc"></td><td class="lb">13.33</td></tr>
+<tr><td class="rk">22</td><td class="nm">Fakt</td><td class="sc"></td><td class="lb">9.58</td></tr>
+<tr><td class="rk">23</td><td class="nm">TV Republika</td><td class="sc"></td><td class="lb">8.42</td></tr>
+<tr><td class="rk">24</td><td class="nm">Polskie Radio24</td><td class="sc"></td><td class="lb">7.83</td></tr>
+<tr><td class="rk">25</td><td class="nm">wPolsce24</td><td class="sc"></td><td class="lb">7.65</td></tr>
+<tr><td class="rk">26</td><td class="nm">Dziennik Zachodni</td><td class="sc"></td><td class="lb">6.77</td></tr>
+<tr><td class="rk">27</td><td class="nm">Radio Zet</td><td class="sc"></td><td class="lb">6.45</td></tr>
+<tr><td class="rk">28</td><td class="nm">Interia</td><td class="sc"></td><td class="lb">6.35</td></tr>
+<tr><td class="rk">29</td><td class="nm">Pudelek</td><td class="sc"></td><td class="lb">5.82</td></tr>
+<tr><td class="rk">30</td><td class="nm">ePoznań</td><td class="sc"></td><td class="lb">5.71</td></tr>
+</tbody></table></div><p class="src">Dane: Sotrender, marzec 2026</p>
+</div><div class="tp" id="tp-d-igint" style="display:none"><div class="ts"><table class="rt"><thead><tr><th>#</th><th>Instagram — interakcje</th><th style="text-align:right">Liczba</th><th style="text-align:right">%</th></tr></thead><tbody>
+<tr><td class="rk">1</td><td class="nm">Meczyki</td><td class="sc">2 393 819</td><td class="lb">100.00</td></tr>
+<tr><td class="rk">2</td><td class="nm">Kanał Zero</td><td class="sc">1 192 897</td><td class="lb">49.83</td></tr>
+<tr><td class="rk">3</td><td class="nm">Kanał Sportowy</td><td class="sc">907 572</td><td class="lb">37.91</td></tr>
+<tr><td class="rk">4</td><td class="nm">Polsat Sport</td><td class="sc"></td><td class="lb">28.05</td></tr>
+<tr><td class="rk">5</td><td class="nm">Glamour</td><td class="sc"></td><td class="lb">16.94</td></tr>
+<tr><td class="rk">6</td><td class="nm">Onet</td><td class="sc"></td><td class="lb">16.89</td></tr>
+<tr><td class="rk">7</td><td class="nm">TVP</td><td class="sc"></td><td class="lb">13.02</td></tr>
+<tr><td class="rk">8</td><td class="nm">TVP Info</td><td class="sc"></td><td class="lb">12.99</td></tr>
+<tr><td class="rk">9</td><td class="nm">Transfery</td><td class="sc"></td><td class="lb">12.94</td></tr>
+<tr><td class="rk">10</td><td class="nm">TVN</td><td class="sc"></td><td class="lb">12.86</td></tr>
+<tr><td class="rk">11</td><td class="nm">TVN24</td><td class="sc"></td><td class="lb">12.56</td></tr>
+<tr><td class="rk">12</td><td class="nm">Filmweb</td><td class="sc"></td><td class="lb">12.50</td></tr>
+<tr><td class="rk">13</td><td class="nm">Vogue Polska</td><td class="sc"></td><td class="lb">9.74</td></tr>
+<tr><td class="rk">14</td><td class="nm">Elle</td><td class="sc"></td><td class="lb">9.42</td></tr>
+<tr><td class="rk">15</td><td class="nm">RMF FM</td><td class="sc"></td><td class="lb">9.04</td></tr>
+<tr><td class="rk">16</td><td class="nm">Donald</td><td class="sc"></td><td class="lb">8.93</td></tr>
+<tr><td class="rk">17</td><td class="nm">OKO.press</td><td class="sc"></td><td class="lb">8.62</td></tr>
+<tr><td class="rk">18</td><td class="nm">Radio Eska</td><td class="sc"></td><td class="lb">7.50</td></tr>
+<tr><td class="rk">19</td><td class="nm">Kozaczek</td><td class="sc"></td><td class="lb">7.03</td></tr>
+<tr><td class="rk">20</td><td class="nm">Radio Zet</td><td class="sc"></td><td class="lb">7.03</td></tr>
+<tr><td class="rk">21</td><td class="nm">Weszło</td><td class="sc"></td><td class="lb">6.67</td></tr>
+<tr><td class="rk">22</td><td class="nm">Gazeta.pl</td><td class="sc"></td><td class="lb">6.01</td></tr>
+<tr><td class="rk">23</td><td class="nm">Polsat</td><td class="sc"></td><td class="lb">5.60</td></tr>
+<tr><td class="rk">24</td><td class="nm">Goniec</td><td class="sc"></td><td class="lb">5.03</td></tr>
+<tr><td class="rk">25</td><td class="nm">newonce</td><td class="sc"></td><td class="lb">4.59</td></tr>
+<tr><td class="rk">26</td><td class="nm">Gazeta Wyborcza</td><td class="sc"></td><td class="lb">4.49</td></tr>
+<tr><td class="rk">27</td><td class="nm">Zwierciadło</td><td class="sc"></td><td class="lb">4.39</td></tr>
+<tr><td class="rk">28</td><td class="nm">Fakt</td><td class="sc"></td><td class="lb">4.26</td></tr>
+<tr><td class="rk">29</td><td class="nm">Wizaż</td><td class="sc"></td><td class="lb">4.26</td></tr>
+<tr><td class="rk">30</td><td class="nm">Świat Gwiazd</td><td class="sc"></td><td class="lb">4.22</td></tr>
+</tbody></table></div><p class="src">Dane: Sotrender, marzec 2026</p>
+</div><div class="tp" id="tp-d-igvid" style="display:none"><div class="ts"><table class="rt"><thead><tr><th>#</th><th>Instagram — wideo</th><th style="text-align:right">Liczba</th><th style="text-align:right">%</th></tr></thead><tbody>
+<tr><td class="rk">1</td><td class="nm">Kanał Zero</td><td class="sc">96 645 175</td><td class="lb">100.00</td></tr>
+<tr><td class="rk">2</td><td class="nm">TVN</td><td class="sc">22 776 242</td><td class="lb">23.57</td></tr>
+<tr><td class="rk">3</td><td class="nm">Kanał Sportowy</td><td class="sc">21 899 693</td><td class="lb">22.66</td></tr>
+<tr><td class="rk">4</td><td class="nm">TVP</td><td class="sc"></td><td class="lb">19.52</td></tr>
+<tr><td class="rk">5</td><td class="nm">Kozaczek</td><td class="sc"></td><td class="lb">17.56</td></tr>
+<tr><td class="rk">6</td><td class="nm">Meczyki</td><td class="sc"></td><td class="lb">17.09</td></tr>
+<tr><td class="rk">7</td><td class="nm">RMF FM</td><td class="sc"></td><td class="lb">14.79</td></tr>
+<tr><td class="rk">8</td><td class="nm">TVN24</td><td class="sc"></td><td class="lb">14.29</td></tr>
+<tr><td class="rk">9</td><td class="nm">Onet</td><td class="sc"></td><td class="lb">10.88</td></tr>
+<tr><td class="rk">10</td><td class="nm">TVP Info</td><td class="sc"></td><td class="lb">10.07</td></tr>
+<tr><td class="rk">11</td><td class="nm">Świat Gwiazd</td><td class="sc"></td><td class="lb">9.92</td></tr>
+<tr><td class="rk">12</td><td class="nm">Gazeta.pl</td><td class="sc"></td><td class="lb">8.12</td></tr>
+<tr><td class="rk">13</td><td class="nm">Radio Zet</td><td class="sc"></td><td class="lb">8.09</td></tr>
+<tr><td class="rk">14</td><td class="nm">Goniec</td><td class="sc"></td><td class="lb">7.34</td></tr>
+<tr><td class="rk">15</td><td class="nm">Super Express</td><td class="sc"></td><td class="lb">6.62</td></tr>
+<tr><td class="rk">16</td><td class="nm">Radio Eska</td><td class="sc"></td><td class="lb">6.09</td></tr>
+<tr><td class="rk">17</td><td class="nm">Polsat</td><td class="sc"></td><td class="lb">5.70</td></tr>
+<tr><td class="rk">18</td><td class="nm">Pomponik</td><td class="sc"></td><td class="lb">5.66</td></tr>
+<tr><td class="rk">19</td><td class="nm">Polsat News</td><td class="sc"></td><td class="lb">5.53</td></tr>
+<tr><td class="rk">20</td><td class="nm">Pudelek</td><td class="sc"></td><td class="lb">5.39</td></tr>
+<tr><td class="rk">21</td><td class="nm">Glamour</td><td class="sc"></td><td class="lb">5.11</td></tr>
+<tr><td class="rk">22</td><td class="nm">Wirtualna Polska</td><td class="sc"></td><td class="lb">4.77</td></tr>
+<tr><td class="rk">23</td><td class="nm">Party</td><td class="sc"></td><td class="lb">4.71</td></tr>
+<tr><td class="rk">24</td><td class="nm">newonce</td><td class="sc"></td><td class="lb">4.45</td></tr>
+<tr><td class="rk">25</td><td class="nm">Elle</td><td class="sc"></td><td class="lb">4.26</td></tr>
+<tr><td class="rk">26</td><td class="nm">Plotek</td><td class="sc"></td><td class="lb">3.91</td></tr>
+<tr><td class="rk">27</td><td class="nm">Donald</td><td class="sc"></td><td class="lb">3.84</td></tr>
+<tr><td class="rk">28</td><td class="nm">Plejada</td><td class="sc"></td><td class="lb">3.16</td></tr>
+<tr><td class="rk">29</td><td class="nm">Vogue Polska</td><td class="sc"></td><td class="lb">2.54</td></tr>
+<tr><td class="rk">30</td><td class="nm">Zwierciadło</td><td class="sc"></td><td class="lb">2.36</td></tr>
+</tbody></table></div><p class="src">Dane: Sotrender, marzec 2026</p>
+</div><div class="tp" id="tp-d-ttint" style="display:none"><div class="ts"><table class="rt"><thead><tr><th>#</th><th>TikTok — interakcje</th><th style="text-align:right">Liczba</th><th style="text-align:right">%</th></tr></thead><tbody>
+<tr><td class="rk">1</td><td class="nm">Goniec</td><td class="sc">5 279 974</td><td class="lb">100.00</td></tr>
+<tr><td class="rk">2</td><td class="nm">Polsat</td><td class="sc">4 966 977</td><td class="lb">94.07</td></tr>
+<tr><td class="rk">3</td><td class="nm">TVN</td><td class="sc">2 966 981</td><td class="lb">56.19</td></tr>
+<tr><td class="rk">4</td><td class="nm">Meczyki</td><td class="sc"></td><td class="lb">27.40</td></tr>
+<tr><td class="rk">5</td><td class="nm">Kozaczek</td><td class="sc"></td><td class="lb">24.47</td></tr>
+<tr><td class="rk">6</td><td class="nm">Kanał Zero</td><td class="sc"></td><td class="lb">21.97</td></tr>
+<tr><td class="rk">7</td><td class="nm">Świat Gwiazd</td><td class="sc"></td><td class="lb">12.66</td></tr>
+<tr><td class="rk">8</td><td class="nm">Kanał Sportowy</td><td class="sc"></td><td class="lb">11.01</td></tr>
+<tr><td class="rk">9</td><td class="nm">Super Express</td><td class="sc"></td><td class="lb">10.90</td></tr>
+<tr><td class="rk">10</td><td class="nm">Onet</td><td class="sc"></td><td class="lb">9.40</td></tr>
+<tr><td class="rk">11</td><td class="nm">Polsat Sport</td><td class="sc"></td><td class="lb">9.30</td></tr>
+<tr><td class="rk">12</td><td class="nm">TVP</td><td class="sc"></td><td class="lb">8.95</td></tr>
+<tr><td class="rk">13</td><td class="nm">RMF FM</td><td class="sc"></td><td class="lb">8.14</td></tr>
+<tr><td class="rk">14</td><td class="nm">Pudelek</td><td class="sc"></td><td class="lb">8.04</td></tr>
+<tr><td class="rk">15</td><td class="nm">Wirtualna Polska</td><td class="sc"></td><td class="lb">7.95</td></tr>
+<tr><td class="rk">16</td><td class="nm">TVN24</td><td class="sc"></td><td class="lb">7.43</td></tr>
+<tr><td class="rk">17</td><td class="nm">Party</td><td class="sc"></td><td class="lb">5.70</td></tr>
+<tr><td class="rk">18</td><td class="nm">Gazeta.pl</td><td class="sc"></td><td class="lb">5.32</td></tr>
+<tr><td class="rk">19</td><td class="nm">Radio Zet</td><td class="sc"></td><td class="lb">4.53</td></tr>
+<tr><td class="rk">20</td><td class="nm">Glamour</td><td class="sc"></td><td class="lb">4.23</td></tr>
+<tr><td class="rk">21</td><td class="nm">newonce</td><td class="sc"></td><td class="lb">3.88</td></tr>
+<tr><td class="rk">22</td><td class="nm">Plotek</td><td class="sc"></td><td class="lb">3.10</td></tr>
+<tr><td class="rk">23</td><td class="nm">Radio Eska</td><td class="sc"></td><td class="lb">2.91</td></tr>
+<tr><td class="rk">24</td><td class="nm">Sport.pl</td><td class="sc"></td><td class="lb">1.62</td></tr>
+<tr><td class="rk">25</td><td class="nm">Donald</td><td class="sc"></td><td class="lb">1.55</td></tr>
+<tr><td class="rk">26</td><td class="nm">naTemat</td><td class="sc"></td><td class="lb">1.52</td></tr>
+<tr><td class="rk">27</td><td class="nm">TVP Info</td><td class="sc"></td><td class="lb">1.45</td></tr>
+<tr><td class="rk">28</td><td class="nm">Jastrząb Post</td><td class="sc"></td><td class="lb">1.44</td></tr>
+<tr><td class="rk">29</td><td class="nm">Filmweb</td><td class="sc"></td><td class="lb">1.44</td></tr>
+<tr><td class="rk">30</td><td class="nm">Fakt</td><td class="sc"></td><td class="lb">1.33</td></tr>
+</tbody></table></div><p class="src">Dane: Sotrender, marzec 2026</p>
+</div><div class="tp" id="tp-d-ttvid" style="display:none"><div class="ts"><table class="rt"><thead><tr><th>#</th><th>TikTok — wideo</th><th style="text-align:right">Liczba</th><th style="text-align:right">%</th></tr></thead><tbody>
+<tr><td class="rk">1</td><td class="nm">Goniec</td><td class="sc">135 501 129</td><td class="lb">100.00</td></tr>
+<tr><td class="rk">2</td><td class="nm">Polsat</td><td class="sc">133 017 264</td><td class="lb">98.17</td></tr>
+<tr><td class="rk">3</td><td class="nm">TVN</td><td class="sc">82 725 454</td><td class="lb">61.05</td></tr>
+<tr><td class="rk">4</td><td class="nm">Kozaczek</td><td class="sc"></td><td class="lb">35.48</td></tr>
+<tr><td class="rk">5</td><td class="nm">Kanał Zero</td><td class="sc"></td><td class="lb">24.28</td></tr>
+<tr><td class="rk">6</td><td class="nm">Meczyki</td><td class="sc"></td><td class="lb">19.92</td></tr>
+<tr><td class="rk">7</td><td class="nm">Super Express</td><td class="sc"></td><td class="lb">18.76</td></tr>
+<tr><td class="rk">8</td><td class="nm">Onet</td><td class="sc"></td><td class="lb">17.50</td></tr>
+<tr><td class="rk">9</td><td class="nm">Świat Gwiazd</td><td class="sc"></td><td class="lb">16.98</td></tr>
+<tr><td class="rk">10</td><td class="nm">Polsat Sport</td><td class="sc"></td><td class="lb">16.52</td></tr>
+<tr><td class="rk">11</td><td class="nm">TVP</td><td class="sc"></td><td class="lb">14.32</td></tr>
+<tr><td class="rk">12</td><td class="nm">Kanał Sportowy</td><td class="sc"></td><td class="lb">12.79</td></tr>
+<tr><td class="rk">13</td><td class="nm">Wirtualna Polska</td><td class="sc"></td><td class="lb">11.10</td></tr>
+<tr><td class="rk">14</td><td class="nm">TVN24</td><td class="sc"></td><td class="lb">10.85</td></tr>
+<tr><td class="rk">15</td><td class="nm">Pudelek</td><td class="sc"></td><td class="lb">9.94</td></tr>
+<tr><td class="rk">16</td><td class="nm">RMF FM</td><td class="sc"></td><td class="lb">8.91</td></tr>
+<tr><td class="rk">17</td><td class="nm">TOK FM</td><td class="sc"></td><td class="lb">8.73</td></tr>
+<tr><td class="rk">18</td><td class="nm">Gazeta.pl</td><td class="sc"></td><td class="lb">7.95</td></tr>
+<tr><td class="rk">19</td><td class="nm">Radio Zet</td><td class="sc"></td><td class="lb">6.39</td></tr>
+<tr><td class="rk">20</td><td class="nm">Party</td><td class="sc"></td><td class="lb">5.34</td></tr>
+<tr><td class="rk">21</td><td class="nm">Plotek</td><td class="sc"></td><td class="lb">5.12</td></tr>
+<tr><td class="rk">22</td><td class="nm">newonce</td><td class="sc"></td><td class="lb">4.33</td></tr>
+<tr><td class="rk">23</td><td class="nm">Radio Eska</td><td class="sc"></td><td class="lb">4.01</td></tr>
+<tr><td class="rk">24</td><td class="nm">Glamour</td><td class="sc"></td><td class="lb">2.83</td></tr>
+<tr><td class="rk">25</td><td class="nm">naTemat</td><td class="sc"></td><td class="lb">2.81</td></tr>
+<tr><td class="rk">26</td><td class="nm">Sport.pl</td><td class="sc"></td><td class="lb">2.70</td></tr>
+<tr><td class="rk">27</td><td class="nm">Wizaż</td><td class="sc"></td><td class="lb">2.26</td></tr>
+<tr><td class="rk">28</td><td class="nm">Plejada</td><td class="sc"></td><td class="lb">2.26</td></tr>
+<tr><td class="rk">29</td><td class="nm">TVP Info</td><td class="sc"></td><td class="lb">2.00</td></tr>
+<tr><td class="rk">30</td><td class="nm">Jastrząb Post</td><td class="sc"></td><td class="lb">1.89</td></tr>
+</tbody></table></div><p class="src">Dane: Sotrender, marzec 2026</p>
+</div><div class="tp" id="tp-d-xint" style="display:none"><div class="ts"><table class="rt"><thead><tr><th>#</th><th>X/Twitter — interakcje</th><th style="text-align:right">Liczba</th><th style="text-align:right">%</th></tr></thead><tbody>
+<tr><td class="rk">1</td><td class="nm">Kanał Zero</td><td class="sc">469 082</td><td class="lb">100.00</td></tr>
+<tr><td class="rk">2</td><td class="nm">Donald</td><td class="sc">224 318</td><td class="lb">47.82</td></tr>
+<tr><td class="rk">3</td><td class="nm">TVP Info</td><td class="sc">221 282</td><td class="lb">47.17</td></tr>
+<tr><td class="rk">4</td><td class="nm">TV Republika</td><td class="sc"></td><td class="lb">44.93</td></tr>
+<tr><td class="rk">5</td><td class="nm">Kanał Sportowy</td><td class="sc"></td><td class="lb">43.33</td></tr>
+<tr><td class="rk">6</td><td class="nm">Meczyki</td><td class="sc"></td><td class="lb">32.01</td></tr>
+<tr><td class="rk">7</td><td class="nm">Weszło</td><td class="sc"></td><td class="lb">29.19</td></tr>
+<tr><td class="rk">8</td><td class="nm">wPolsce24</td><td class="sc"></td><td class="lb">25.05</td></tr>
+<tr><td class="rk">9</td><td class="nm">Super Express</td><td class="sc"></td><td class="lb">24.23</td></tr>
+<tr><td class="rk">10</td><td class="nm">Polsat News</td><td class="sc"></td><td class="lb">23.52</td></tr>
+<tr><td class="rk">11</td><td class="nm">TVN24</td><td class="sc"></td><td class="lb">23.47</td></tr>
+<tr><td class="rk">12</td><td class="nm">Do Rzeczy</td><td class="sc"></td><td class="lb">21.54</td></tr>
+<tr><td class="rk">13</td><td class="nm">Goniec</td><td class="sc"></td><td class="lb">19.79</td></tr>
+<tr><td class="rk">14</td><td class="nm">Radio Zet</td><td class="sc"></td><td class="lb">19.13</td></tr>
+<tr><td class="rk">15</td><td class="nm">wPolityce</td><td class="sc"></td><td class="lb">17.48</td></tr>
+<tr><td class="rk">16</td><td class="nm">RMF24</td><td class="sc"></td><td class="lb">16.14</td></tr>
+<tr><td class="rk">17</td><td class="nm">Polsat Sport</td><td class="sc"></td><td class="lb">13.15</td></tr>
+<tr><td class="rk">18</td><td class="nm">Niezależna</td><td class="sc"></td><td class="lb">10.13</td></tr>
+<tr><td class="rk">19</td><td class="nm">Rzeczpospolita</td><td class="sc"></td><td class="lb">8.13</td></tr>
+<tr><td class="rk">20</td><td class="nm">Onet</td><td class="sc"></td><td class="lb">6.99</td></tr>
+<tr><td class="rk">21</td><td class="nm">Niebezpiecznik</td><td class="sc"></td><td class="lb">5.79</td></tr>
+<tr><td class="rk">22</td><td class="nm">Defence24</td><td class="sc"></td><td class="lb">5.75</td></tr>
+<tr><td class="rk">23</td><td class="nm">Newsweek</td><td class="sc"></td><td class="lb">5.19</td></tr>
+<tr><td class="rk">24</td><td class="nm">Bezprawnik</td><td class="sc"></td><td class="lb">4.86</td></tr>
+<tr><td class="rk">25</td><td class="nm">Transfery</td><td class="sc"></td><td class="lb">4.74</td></tr>
+<tr><td class="rk">26</td><td class="nm">RMF FM</td><td class="sc"></td><td class="lb">3.79</td></tr>
+<tr><td class="rk">27</td><td class="nm">OKO.press</td><td class="sc"></td><td class="lb">3.12</td></tr>
+<tr><td class="rk">28</td><td class="nm">Gol24</td><td class="sc"></td><td class="lb">3.10</td></tr>
+<tr><td class="rk">29</td><td class="nm">Polskie Radio24</td><td class="sc"></td><td class="lb">3.08</td></tr>
+<tr><td class="rk">30</td><td class="nm">Interia</td><td class="sc"></td><td class="lb">2.97</td></tr>
+</tbody></table></div><p class="src">Dane: Sotrender, marzec 2026</p>
+</div><div class="tp" id="tp-d-xvw" style="display:none"><div class="ts"><table class="rt"><thead><tr><th>#</th><th>X/Twitter — odsłony postów</th><th style="text-align:right">Liczba</th><th style="text-align:right">%</th></tr></thead><tbody>
+<tr><td class="rk">1</td><td class="nm">Kanał Zero</td><td class="sc">41 977 236</td><td class="lb">100.00</td></tr>
+<tr><td class="rk">2</td><td class="nm">Kanał Sportowy</td><td class="sc">30 983 425</td><td class="lb">73.81</td></tr>
+<tr><td class="rk">3</td><td class="nm">Meczyki</td><td class="sc">21 972 202</td><td class="lb">52.34</td></tr>
+<tr><td class="rk">4</td><td class="nm">Weszło</td><td class="sc"></td><td class="lb">46.11</td></tr>
+<tr><td class="rk">5</td><td class="nm">TVN24</td><td class="sc"></td><td class="lb">28.39</td></tr>
+<tr><td class="rk">6</td><td class="nm">Goniec</td><td class="sc"></td><td class="lb">26.19</td></tr>
+<tr><td class="rk">7</td><td class="nm">Radio Zet</td><td class="sc"></td><td class="lb">21.45</td></tr>
+<tr><td class="rk">8</td><td class="nm">Donald</td><td class="sc"></td><td class="lb">21.24</td></tr>
+<tr><td class="rk">9</td><td class="nm">Polsat News</td><td class="sc"></td><td class="lb">20.20</td></tr>
+<tr><td class="rk">10</td><td class="nm">RMF24</td><td class="sc"></td><td class="lb">20.03</td></tr>
+<tr><td class="rk">11</td><td class="nm">TVP Info</td><td class="sc"></td><td class="lb">19.01</td></tr>
+<tr><td class="rk">12</td><td class="nm">Polsat Sport</td><td class="sc"></td><td class="lb">17.18</td></tr>
+<tr><td class="rk">13</td><td class="nm">TV Republika</td><td class="sc"></td><td class="lb">12.00</td></tr>
+<tr><td class="rk">14</td><td class="nm">Transfery</td><td class="sc"></td><td class="lb">11.85</td></tr>
+<tr><td class="rk">15</td><td class="nm">Onet</td><td class="sc"></td><td class="lb">11.60</td></tr>
+<tr><td class="rk">16</td><td class="nm">Rzeczpospolita</td><td class="sc"></td><td class="lb">11.45</td></tr>
+<tr><td class="rk">17</td><td class="nm">Do Rzeczy</td><td class="sc"></td><td class="lb">9.03</td></tr>
+<tr><td class="rk">18</td><td class="nm">Defence24</td><td class="sc"></td><td class="lb">8.21</td></tr>
+<tr><td class="rk">19</td><td class="nm">Super Express</td><td class="sc"></td><td class="lb">7.18</td></tr>
+<tr><td class="rk">20</td><td class="nm">Niebezpiecznik</td><td class="sc"></td><td class="lb">6.51</td></tr>
+<tr><td class="rk">21</td><td class="nm">Newsweek</td><td class="sc"></td><td class="lb">5.02</td></tr>
+<tr><td class="rk">22</td><td class="nm">Bezprawnik</td><td class="sc"></td><td class="lb">4.63</td></tr>
+<tr><td class="rk">23</td><td class="nm">RMF FM</td><td class="sc"></td><td class="lb">4.48</td></tr>
+<tr><td class="rk">24</td><td class="nm">Gol24</td><td class="sc"></td><td class="lb">4.24</td></tr>
+<tr><td class="rk">25</td><td class="nm">wPolsce24</td><td class="sc"></td><td class="lb">3.88</td></tr>
+<tr><td class="rk">26</td><td class="nm">wPolityce</td><td class="sc"></td><td class="lb">3.84</td></tr>
+<tr><td class="rk">27</td><td class="nm">Fakt</td><td class="sc"></td><td class="lb">3.68</td></tr>
+<tr><td class="rk">28</td><td class="nm">Wirtualna Polska</td><td class="sc"></td><td class="lb">3.67</td></tr>
+<tr><td class="rk">29</td><td class="nm">Niezależna</td><td class="sc"></td><td class="lb">2.87</td></tr>
+<tr><td class="rk">30</td><td class="nm">Sport.pl</td><td class="sc"></td><td class="lb">2.83</td></tr>
+</tbody></table></div><p class="src">Dane: Sotrender, marzec 2026</p>
+</div>
+
+<script>
+function switchTab(btn, tabId) {
+  var nav = btn.parentElement;
+  var wrap = nav.nextElementSibling;
+  var btns = nav.getElementsByClassName('tb');
+  var panels = wrap.getElementsByClassName('tp');
+  for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
+  for (var i = 0; i < panels.length; i++) panels[i].style.display = 'none';
+  btn.classList.add('active');
+  var target = document.getElementById('tp-' + tabId);
+  if (target) target.style.display = 'block';
+  btn.scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
+}
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.style.opacity='1'; e.target.style.transform='translateY(0)'; }
+    });
+  }, {threshold: 0.08});
+  document.querySelectorAll('.ic,.pc,.mc,.cr,.qi').forEach(function(el, i) {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(18px)';
+    el.style.transition = 'opacity 0.5s ease ' + (i * 0.04) + 's, transform 0.5s ease ' + (i * 0.04) + 's';
+    obs.observe(el);
+  });
+</script>
+</body>
+</html>
