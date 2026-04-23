@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -103,6 +104,29 @@ select.input-field{appearance:none;background-image:url("data:image/svg+xml,%3Cs
 .preview-meta-row{display:flex;align-items:center;gap:6px;font-size:13px;color:rgba(255,255,255,.65);margin-bottom:4px;}
 
 .confirm-icon{width:64px;height:64px;border-radius:50%;background:rgba(240,90,40,.1);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;}
+
+/* ── Mobile ── */
+@media(max-width:680px){
+  .stepper .step-label{display:none;}
+  .step-conn{min-width:10px!important;max-width:20px!important;margin:0 3px!important;}
+  .mode-toggle{width:100%;display:flex!important;}
+  .mode-btn{flex:1;font-size:12px!important;padding:8px 8px!important;text-align:center;}
+  .radio-group{gap:6px;}
+  .radio-pill{padding:6px 10px;font-size:12px;}
+  .pkg-card{padding:18px 14px!important;}
+  .pkg-name{font-size:17px!important;}
+  .audience-banner-inner{flex-direction:column!important;gap:16px!important;padding:16px!important;}
+  .form-2col{grid-template-columns:1fr!important;}
+  .preview-layout{grid-template-columns:1fr!important;}
+  .billing-2col{grid-template-columns:1fr!important;}
+  .salary-row{flex-direction:column!important;gap:8px!important;}
+  .main-content{padding:20px 14px 48px!important;}
+  .pkg-grid{grid-template-columns:1fr!important;}
+  .pkg-grid > div > div:first-child{display:none!important;}
+  .btn{padding:10px 18px;font-size:13px;}
+  h1{font-size:20px!important;}
+  h2{font-size:16px!important;}
+}
 </style>
 </head>
 <body>
@@ -213,7 +237,7 @@ function AudienceBanner(){
     {label:'Junior',color:'#D4D4D8'},
   ];
   return(
-    <div style={{background:'#fff',border:'1.5px solid var(--g200)',borderRadius:6,padding:'20px 24px',display:'flex',alignItems:'center',gap:40,marginBottom:24,flexWrap:'wrap'}}>
+    <div className="audience-banner-inner" style={{background:'#fff',border:'1.5px solid var(--g200)',borderRadius:6,padding:'20px 24px',display:'flex',alignItems:'center',gap:40,marginBottom:24,flexWrap:'wrap'}}>
       <div style={{flex:'1 1 260px'}}>
         <div style={{fontSize:16,fontWeight:800,color:'var(--g900)',lineHeight:1.35,marginBottom:6}}>
           Dotrzesz bezpośrednio do <span style={{color:'var(--orange)'}}>specjalistów tej branży</span> — nie do przypadkowej bazy
@@ -284,7 +308,7 @@ function StepPackage({selected,onSelect,qty,onQtyChange,mode,onModeChange,onGoAc
         </div>
       </div>
       <h2 id="pkg-grid" style={{fontSize:18,fontWeight:800,color:'var(--g900)',marginBottom:16,letterSpacing:'-.01em'}}>Wybierz typ ogłoszenia</h2>
-      <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:20,marginBottom:16,alignItems:'stretch'}}>
+      <div className="pkg-grid" style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:20,marginBottom:16,alignItems:'stretch'}}>
         {PACKAGES.map(pkg=>(
           <div key={pkg.id} style={{display:'flex',flexDirection:'column'}}>
             {/* Reserved label row — same height for all */}
@@ -431,7 +455,7 @@ function StepForm({form,onChange,errors,mode,onModeChange}){
         {errors.title&&<div className="field-error">{errors.title}</div>}
         <div className="field-hint">Dobry tytuł zwiększa klikalność ogłoszenia nawet o 40%.</div>
       </div>
-      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:14}}>
+      <div className="form-2col" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:14}}>
         <div className="field-group">
           <div className="field-label">Lokalizacja <span className="field-req">*</span></div>
           <select className={`input-field ${errors.location?'error':''}`} value={form.location} onChange={e=>set('location',e.target.value)}>
@@ -442,7 +466,7 @@ function StepForm({form,onChange,errors,mode,onModeChange}){
         </div>
         <div className="field-group">
           <div className="field-label">Wynagrodzenie <span className="field-opt">(opcjonalne)</span></div>
-          <div style={{display:'flex',gap:8,alignItems:'center'}}>
+          <div className="salary-row" style={{display:'flex',gap:8,alignItems:'center'}}>
             <div style={{position:'relative',flex:1}}>
               <input className="input-field" placeholder="od np. 8 000" value={form.salaryMin} onChange={e=>set('salaryMin',e.target.value)} style={{paddingRight:40}}/>
               <span style={{position:'absolute',right:10,top:'50%',transform:'translateY(-50%)',fontSize:11,color:'var(--g400)',fontWeight:700}}>PLN</span>
@@ -528,7 +552,7 @@ function StepBilling({billing,onChange,errors}){
         <IC n="info" size={13} color="var(--g400)"/>
         Dane kontaktowe są widoczne wyłącznie dla zespołu Wirtualne Media — nie będą publikowane w ogłoszeniu.
       </div>
-      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:14}}>
+      <div className="billing-2col" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:14}}>
         <div className="field-group">
           <div className="field-label">Imię i nazwisko <span className="field-req">*</span></div>
           <input className={`input-field ${errors.contactName?'error':''}`} placeholder="np. Anna Kowalska" value={billing.contactName} onChange={e=>set('contactName',e.target.value)}/>
@@ -553,7 +577,7 @@ function StepBilling({billing,onChange,errors}){
         <IC n="receipt" size={13} color="var(--orange)"/>
         Faktura VAT zostanie wystawiona i przesłana do systemu <strong>KSeF</strong> (Krajowy System e-Faktur) po aktywacji ogłoszenia.
       </div>
-      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:14}}>
+      <div className="billing-2col" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:14}}>
         <div className="field-group">
           <div className="field-label">Nazwa spółki <span className="field-req">*</span></div>
           <input className={`input-field ${errors.bizName?'error':''}`} placeholder="Firma sp. z o.o." value={billing.bizName} onChange={e=>set('bizName',e.target.value)}/>
@@ -588,7 +612,7 @@ function StepPreview({form,billing,pkg,mode,qty,onConfirm}){
       <h1 style={{fontSize:23,fontWeight:800,color:'var(--g900)',marginBottom:4,letterSpacing:'-.02em'}}>Podgląd ogłoszenia</h1>
       <p style={{fontSize:14,color:'var(--g500)',marginBottom:20}}>Sprawdź, jak Twoje ogłoszenie będzie wyglądać dla kandydatów.</p>
 
-      <div style={{display:'grid',gridTemplateColumns:'1fr 280px',gap:24,alignItems:'start'}}>
+      <div className="preview-layout" style={{display:'grid',gridTemplateColumns:'1fr 280px',gap:24,alignItems:'start'}}>
         {/* Preview */}
         <div className="card" style={{overflow:'hidden',outline:pkg!=='standard'?'2px solid var(--orange)':'none',outlineOffset:2}}>
           <div className="preview-header">
@@ -834,7 +858,7 @@ function App(){
         )}
       </header>
 
-      <main style={{flex:1,padding:'36px 24px 64px'}}>
+      <main className="main-content" style={{flex:1,padding:'36px 24px 64px'}}>
         <div style={{maxWidth:step===previewStep?1080:860,margin:'0 auto'}}>
           {done?(
             <Confirmation form={form} pkg={pkg} mode={mode} qty={qty} onReset={reset}/>
