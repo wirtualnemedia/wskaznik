@@ -5,7 +5,21 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dodaj ogłoszenie — Praca w mediach | Wirtualne Media</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<meta name="ext-resource-dependency" content="logo-dark.png" data-resource-id="logoDark" />
+<template id="__bundler_thumbnail" data-bg-color="#F4F4F5">
+  <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+    <rect width="400" height="300" fill="#F4F4F5"/>
+    <rect x="0" y="0" width="400" height="52" fill="#0D1B2A"/>
+    <rect x="20" y="16" width="80" height="20" rx="3" fill="#F05A28" opacity="0.8"/>
+    <rect x="20" y="72" width="360" height="60" rx="6" fill="#0D1B2A"/>
+    <rect x="20" y="148" width="112" height="130" rx="6" fill="#fff" stroke="#E0E0E0" stroke-width="1.5"/>
+    <rect x="144" y="148" width="112" height="130" rx="6" fill="#fff" stroke="#F05A28" stroke-width="2"/>
+    <rect x="268" y="148" width="112" height="130" rx="6" fill="#fff" stroke="#E0E0E0" stroke-width="1.5"/>
+    <rect x="32" y="248" width="88" height="22" rx="11" fill="#E0E0E0"/>
+    <rect x="156" y="248" width="88" height="22" rx="11" fill="#F05A28"/>
+    <rect x="280" y="248" width="88" height="22" rx="11" fill="#E0E0E0"/>
+  </svg>
+</template>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="base.css">
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
@@ -27,15 +41,15 @@ button{font-family:'Barlow',sans-serif;cursor:pointer;border:none;background:non
 .stepper{display:flex;align-items:center;}
 .step-item{display:flex;align-items:center;gap:9px;}
 .step-circle{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;transition:all .2s;}
-.step-circle.done{background:var(--orange);color:#fff;}
-.step-circle.active{background:var(--navy);color:#fff;box-shadow:0 0 0 3px rgba(13,27,42,.14);}
-.step-circle.pending{background:var(--g200);color:var(--g500);}
+.step-circle.done{background:var(--g200);color:var(--g600);}
+.step-circle.active{background:var(--orange);color:#fff;box-shadow:0 0 0 3px rgba(240,90,40,.18);}
+.step-circle.pending{background:var(--g200);color:var(--g400);}
 .step-label{font-size:13px;font-weight:600;white-space:nowrap;}
-.step-label.active{color:var(--g900);}
-.step-label.done{color:var(--orange);}
+.step-label.active{color:var(--orange);}
+.step-label.done{color:var(--g500);}
 .step-label.pending{color:var(--g400);}
 .step-conn{flex:1;min-width:24px;max-width:44px;height:2px;background:var(--g200);margin:0 6px;}
-.step-conn.done{background:var(--orange);}
+.step-conn.done{background:var(--g300);}
 
 /* Cards */
 .card{background:#fff;border-radius:6px;border:1.5px solid var(--g200);transition:border-color .15s,box-shadow .15s;}
@@ -62,9 +76,9 @@ button{font-family:'Barlow',sans-serif;cursor:pointer;border:none;background:non
 
 /* Form */
 .field-group{margin-bottom:18px;}
-.field-label{font-size:11px;font-weight:700;color:var(--g600);margin-bottom:6px;letter-spacing:.05em;text-transform:uppercase;display:flex;align-items:center;gap:4px;flex-wrap:wrap;}
+.field-label{font-size:13px;font-weight:600;color:var(--g800);margin-bottom:6px;display:flex;align-items:center;gap:4px;flex-wrap:wrap;}
 .field-req{color:var(--orange);}
-.field-opt{font-size:10px;font-weight:600;color:var(--g400);text-transform:none;letter-spacing:0;margin-left:2px;}
+.field-opt{font-size:12px;font-weight:400;color:var(--g400);margin-left:2px;}
 .input-field{width:100%;font-family:'Barlow',sans-serif;font-size:14px;color:var(--g900);background:#fff;border:1.5px solid var(--g300);border-radius:4px;padding:10px 12px;outline:none;transition:border-color .15s,box-shadow .15s;}
 .input-field:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(240,90,40,.1);}
 .input-field.error{border-color:#dc2626;}
@@ -89,7 +103,8 @@ select.input-field{appearance:none;background-image:url("data:image/svg+xml,%3Cs
 .mode-btn{padding:9px 22px;border-radius:9999px;font-size:13px;font-weight:600;font-family:'Barlow',sans-serif;cursor:pointer;border:none;transition:all .15s;color:var(--g500);background:none;}
 .mode-btn.active{background:var(--navy);color:#fff;}
 
-.section-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--g400);margin-bottom:14px;}
+.section-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--g400);margin-bottom:14px;}
+.hint-tip{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--orange);margin-top:5px;font-weight:500;}
 .section-divider{height:1px;background:var(--g200);margin:24px 0;}
 
 .btn{font-family:'Barlow',sans-serif;font-weight:700;font-size:14px;border-radius:9999px;padding:11px 28px;cursor:pointer;transition:all .15s;border:none;display:inline-flex;align-items:center;gap:8px;}
@@ -115,26 +130,6 @@ select.input-field{appearance:none;background-image:url("data:image/svg+xml,%3Cs
   .radio-pill{padding:6px 10px;font-size:12px;}
   .pkg-card{padding:18px 14px!important;}
   .pkg-name{font-size:17px!important;}
-  .audience-banner-inner{flex-direction:column!important;gap:16px!important;padding:16px!important;}
-  .form-2col{grid-template-columns:1fr!important;}
-  .preview-layout{grid-template-columns:1fr!important;}
-  .billing-2col{grid-template-columns:1fr!important;}
-  .salary-row{flex-wrap:wrap!important;}
-  .main-content{padding:20px 14px 48px!important;}
-  .btn{padding:10px 16px!important;font-size:13px!important;}
-  h1{font-size:20px!important;}
-  h2{font-size:16px!important;}
-}
-@media(max-width:680px){
-  .stepper .step-label{display:none;}
-  .step-conn{min-width:10px!important;max-width:20px!important;margin:0 3px!important;}
-  .mode-toggle{width:100%;display:flex!important;}
-  .mode-btn{flex:1;font-size:12px!important;padding:8px 8px!important;text-align:center;}
-  .radio-group{gap:6px;}
-  .radio-pill{padding:6px 10px;font-size:12px;}
-  .pkg-card{padding:18px 14px!important;}
-  .pkg-name{font-size:17px!important;}
-  .audience-banner-inner{flex-direction:column!important;gap:16px!important;padding:16px!important;}
   .form-2col{grid-template-columns:1fr!important;}
   .preview-layout{grid-template-columns:1fr!important;}
   .billing-2col{grid-template-columns:1fr!important;}
@@ -142,7 +137,7 @@ select.input-field{appearance:none;background-image:url("data:image/svg+xml,%3Cs
   .main-content{padding:20px 14px 48px!important;}
   .pkg-grid{grid-template-columns:1fr!important;}
   .pkg-grid > div > div:first-child{display:none!important;}
-  .btn{padding:10px 18px;font-size:13px;}
+  .btn{padding:10px 16px!important;font-size:13px!important;}
   h1{font-size:20px!important;}
   h2{font-size:16px!important;}
 }
@@ -193,11 +188,11 @@ const IC = ({n,size=16,color='currentColor',sw=1.8})=>{
 /* ── Data ── */
 const PACKAGES=[
   {
-    id:'standard', name:'Standard', tagline:'Najpopularniejszy wybór',
+    id:'standard', name:'Standard', tagline:'Prosto i skutecznie',
     badge:'Popularne', badgeColor:'#C94316', badgeBg:'rgba(240,90,40,0.1)',
     price:550, popular:true,
     features:[
-      'Ogłoszenie aktywne 30 dni',
+      'Ogłoszenie aktywne 14 dni',
       'Widoczność w liście ofert pracy',
       'Logo firmy w ogłoszeniu',
     ],
@@ -257,41 +252,37 @@ function Stepper({step, mode}){
 
 /* ── Audience Banner ── */
 function AudienceBanner(){
-  const isMobile=useIsMobile();
-  const chips=[
-    {l:'Media',hi:true},{l:'Marketing',hi:true},{l:'PR',hi:true},{l:'Reklama',hi:true},{l:'Digital',hi:true},
-  ];
+  const chips=['Media','Marketing','PR','Reklama','Digital','Prasa','Technologie'];
   const levels=[
     {label:'C-level',color:'#F05A28'},
     {label:'Senior & Manager',color:'#C94316'},
-    {label:'Mid-level',color:'#A1A1AA'},
-    {label:'Junior',color:'#D4D4D8'},
+    {label:'Mid-level',color:'rgba(255,255,255,0.5)'},
+    {label:'Junior',color:'rgba(255,255,255,0.3)'},
   ];
   return(
-    <div className="audience-banner-inner" style={{background:'#fff',border:'1.5px solid var(--g200)',borderRadius:6,padding:'14px 20px',display:'flex',flexDirection:'column',gap:10,marginBottom:20}}>
-      <div>
-        <div style={{fontSize:14,fontWeight:800,color:'var(--g900)',lineHeight:1.3,marginBottom:3}}>
-          Dotrzesz bezpośrednio do <span style={{color:'var(--orange)'}}>specjalistów tej branży</span> — nie do przypadkowej bazy
+    <div style={{background:'var(--navy)',borderRadius:6,padding:'18px 22px',marginBottom:20,width:'100%'}}>
+      <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',gap:16,marginBottom:12,flexWrap:'wrap'}}>
+        <div style={{flex:1,minWidth:220}}>
+          <div style={{fontSize:16,fontWeight:800,color:'#fff',lineHeight:1.3,marginBottom:6}}>
+            Dotrzesz <span style={{color:'var(--orange)'}}>bezpośrednio</span> do specjalistów mediów i marketingu
+          </div>
+          <div style={{fontSize:12,color:'rgba(255,255,255,0.45)',lineHeight:1.6}}>
+            Kilka kroków i Twoja oferta trafi do tysięcy specjalistów branży.<br/>Szybko, jasno i bez zbędnych formalności.
+          </div>
         </div>
-        <p style={{fontSize:12,color:'var(--g600)',lineHeight:1.5}}>
-          Wirtualnemedia.pl to największy portal branży mediów i marketingu — czytany na każdym poziomie doświadczenia.
-        </p>
+
       </div>
-      <div style={{display:'flex',flexWrap:'wrap',gap:6}}>
+      <div style={{display:'flex',flexWrap:'wrap',gap:6,marginBottom:12}}>
         {chips.map(c=>(
-          <span key={c.l} style={{
-            display:'inline-block',fontSize:12,fontWeight:600,padding:'5px 12px',
-            borderRadius:9999,border:'1.5px solid #F05A28',
-            background:'rgba(240,90,40,0.07)',color:'var(--orange)',
-          }}>{c.l}</span>
+          <span key={c} style={{fontSize:11,fontWeight:600,padding:'4px 10px',borderRadius:9999,border:'1px solid rgba(255,255,255,0.2)',color:'rgba(255,255,255,0.75)',background:'rgba(255,255,255,0.06)'}}>{c}</span>
         ))}
-        <span style={{display:'inline-block',fontSize:12,fontWeight:500,padding:'5px 12px',borderRadius:9999,border:'1.5px solid var(--g200)',color:'var(--g500)'}}>i wiele więcej…</span>
+        <span style={{fontSize:11,fontWeight:500,padding:'4px 10px',borderRadius:9999,border:'1px solid rgba(255,255,255,0.12)',color:'rgba(255,255,255,0.35)'}}>i wiele innych…</span>
       </div>
-      <div style={{display:'flex',alignItems:'center',gap:12,flexWrap:'wrap'}}>
+      <div style={{display:'flex',alignItems:'center',gap:16,flexWrap:'wrap'}}>
         {levels.map(lv=>(
           <div key={lv.label} style={{display:'flex',alignItems:'center',gap:5}}>
             <div style={{width:7,height:7,borderRadius:'50%',background:lv.color,flexShrink:0}}/>
-            <span style={{fontSize:11,fontWeight:600,color:'var(--g600)'}}>{lv.label}</span>
+            <span style={{fontSize:11,fontWeight:500,color:'rgba(255,255,255,0.5)'}}>{lv.label}</span>
           </div>
         ))}
       </div>
@@ -299,31 +290,58 @@ function AudienceBanner(){
   );
 }
 
-/* ── Qty Picker ── */
-function QtyPicker({qty,onChange}){
+/* ── Qty Picker + CTA ── */
+function QtyPicker({qty,onChange,selected,onNext}){
+  const p=selected?PACKAGES.find(x=>x.id===selected):null;
+  const discount=qty>=8;
+  const net=p?Math.round(p.price*qty*(discount?0.85:1)):0;
   return(
-    <div style={{display:'flex',alignItems:'center',gap:16,padding:'16px 20px',background:'#fff',border:'1.5px solid var(--g200)',borderRadius:6,marginBottom:12}}>
-      <div style={{flex:1}}>
-        <div style={{fontSize:13,fontWeight:700,color:'var(--g900)',marginBottom:2}}>Liczba ogłoszeń w zamówieniu</div>
-        <div style={{fontSize:12,color:'var(--g400)'}}>Każde ogłoszenie może dotyczyć innego stanowiska — ta sama cena pakietu za każde.</div>
+    <div style={{background:'#fff',border:'1.5px solid var(--g200)',borderRadius:6,padding:'16px 20px',marginBottom:12}}>
+      <div style={{display:'flex',alignItems:'center',gap:16,marginBottom:discount?10:14}}>
+        <div style={{flex:1}}>
+          <div style={{fontSize:13,fontWeight:700,color:'var(--g900)',marginBottom:2}}>Liczba ogłoszeń w zamówieniu</div>
+          <div style={{fontSize:12,color:'var(--g400)'}}>Każde ogłoszenie może dotyczyć innego stanowiska.</div>
+        </div>
+        <div style={{display:'flex',alignItems:'center',border:'1.5px solid var(--g200)',borderRadius:9999,overflow:'hidden',flexShrink:0}}>
+          <button onClick={()=>onChange(Math.max(1,qty-1))} style={{width:38,height:38,display:'flex',alignItems:'center',justifyContent:'center',fontSize:20,color:qty===1?'var(--g300)':'var(--g700)',background:'none',border:'none',cursor:qty===1?'default':'pointer',fontWeight:300,lineHeight:1}}>−</button>
+          <div style={{minWidth:36,textAlign:'center',fontSize:16,fontWeight:800,color:'var(--g900)',borderLeft:'1px solid var(--g200)',borderRight:'1px solid var(--g200)',height:38,lineHeight:'38px'}}>{qty}</div>
+          <button onClick={()=>onChange(qty+1)} style={{width:38,height:38,display:'flex',alignItems:'center',justifyContent:'center',fontSize:20,color:'var(--g700)',background:'none',border:'none',cursor:'pointer',fontWeight:300,lineHeight:1}}>+</button>
+        </div>
       </div>
-      <div style={{display:'flex',alignItems:'center',border:'1.5px solid var(--g200)',borderRadius:9999,overflow:'hidden',flexShrink:0}}>
-        <button onClick={()=>onChange(Math.max(1,qty-1))} style={{width:38,height:38,display:'flex',alignItems:'center',justifyContent:'center',fontSize:20,color:qty===1?'var(--g300)':'var(--g700)',background:'none',border:'none',cursor:qty===1?'default':'pointer',fontWeight:300,lineHeight:1}}>−</button>
-        <div style={{minWidth:36,textAlign:'center',fontSize:16,fontWeight:800,color:'var(--g900)',borderLeft:'1px solid var(--g200)',borderRight:'1px solid var(--g200)',height:38,lineHeight:'38px'}}>{qty}</div>
-        <button onClick={()=>onChange(qty+1)} style={{width:38,height:38,display:'flex',alignItems:'center',justifyContent:'center',fontSize:20,color:'var(--g700)',background:'none',border:'none',cursor:'pointer',fontWeight:300,lineHeight:1}}>+</button>
+      {discount&&(
+        <div style={{display:'flex',alignItems:'center',gap:7,padding:'8px 12px',background:'rgba(240,90,40,0.07)',border:'1px solid rgba(240,90,40,0.25)',borderRadius:4,marginBottom:14,fontSize:12,color:'var(--g700)'}}>
+          <IC n="star" size={13} color="var(--orange)"/>
+          <span><strong style={{color:'var(--orange)'}}>−15% rabatu</strong> za zamówienie 8 lub więcej ogłoszeń. Oszczędzasz {p?Math.round(p.price*qty*0.15).toLocaleString('pl-PL'):0} zł netto.</span>
+        </div>
+      )}
+      <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:12,flexWrap:'wrap'}}>
+        {p?(
+          <div style={{fontSize:13,color:'var(--g600)'}}>
+            Razem: <strong style={{color:'var(--g900)',fontSize:16}}>{net.toLocaleString('pl-PL')} zł</strong>{' '}
+            <span style={{color:'var(--g400)'}}>netto</span>
+            {discount&&<span style={{fontSize:11,color:'var(--g400)',marginLeft:6,textDecoration:'line-through'}}>{(p.price*qty).toLocaleString('pl-PL')} zł</span>}
+          </div>
+        ):<div style={{fontSize:13,color:'var(--g400)'}}>Wybierz pakiet powyżej</div>}
+        <button
+          className="btn btn-primary"
+          disabled={!selected}
+          onClick={onNext}
+          style={{fontSize:14,padding:'10px 24px'}}>
+          Dodaj ogłoszenie <IC n="arrow" size={14}/>
+        </button>
       </div>
     </div>
   );
 }
 
 /* ── Step 1: Packages ── */
-function StepPackage({selected,onSelect,qty,onQtyChange,mode,onModeChange,onGoActive,onNextFromPkg}){
+function StepPackage({selected,onSelect,onSelectAndNext,qty,onQtyChange,mode,onModeChange,onGoActive}){
   const isMobile=useIsMobile();
   return(
     <div>
-      <AudienceBanner/>
-      {/* Mode toggle — wyśrodkowany */}
-      <div style={{display:'flex',justifyContent:'center',marginBottom:28}}>
+      {/* Górna sekcja — wyśrodkowana */}
+      <div style={{display:'flex',flexDirection:'column',alignItems:'center',textAlign:'center',marginBottom:28}}>
+        <div style={{width:'100%',marginBottom:16}}><AudienceBanner/></div>
         <div className="mode-toggle" style={{width:isMobile?'100%':undefined}}>
           <button className={`mode-btn ${mode==='new'?'active':''}`}
             onClick={()=>{ onModeChange('new'); setTimeout(()=>{const el=document.getElementById('pkg-grid');if(el){const y=el.getBoundingClientRect().top+window.scrollY-100;window.scrollTo({top:y,behavior:'smooth'});}},50); }}>
@@ -332,39 +350,55 @@ function StepPackage({selected,onSelect,qty,onQtyChange,mode,onModeChange,onGoAc
           <button className={`mode-btn ${mode==='active'?'active':''}`} onClick={onGoActive}>Mam aktywny pakiet</button>
         </div>
       </div>
-      <h2 id="pkg-grid" style={{fontSize:isMobile?16:18,fontWeight:800,color:'var(--g900)',marginBottom:16,letterSpacing:'-.01em'}}>Wybierz typ ogłoszenia</h2>
+
+      {/* Karty — od lewej */}
+      <div style={{display:'flex',alignItems:'baseline',gap:10,marginBottom:12,flexWrap:'wrap'}}>
+        <h2 id="pkg-grid" style={{fontSize:isMobile?16:18,fontWeight:800,color:'var(--g900)',letterSpacing:'-.01em',margin:0}}>Wybierz pakiet</h2>
+      </div>
+      <div style={{display:'flex',alignItems:'center',gap:8,padding:'9px 14px',background:'rgba(240,90,40,0.07)',border:'1px solid rgba(240,90,40,0.2)',borderRadius:6,marginBottom:16,fontSize:13,color:'var(--g700)'}}>
+        <IC n="star" size={14} color="var(--orange)"/>
+        <span><strong style={{color:'var(--orange)'}}>−15% rabatu</strong> za zamówienie 8 lub więcej ogłoszeń.</span>
+      </div>
       <div className="pkg-grid" style={{display:'grid',gridTemplateColumns:isMobile?'1fr':'repeat(3,1fr)',gap:isMobile?12:20,marginBottom:16,alignItems:'stretch'}}>
         {PACKAGES.map(pkg=>(
           <div key={pkg.id} style={{display:'flex',flexDirection:'column'}}>
-            {/* Reserved label row — hidden on mobile */}
+            {/* Label row above card */}
             <div style={{height:isMobile?0:24,overflow:'hidden',display:'flex',alignItems:'center',justifyContent:'center',marginBottom:isMobile?0:4}}>
               {pkg.popular&&<div style={{background:'var(--navy)',color:'#fff',fontSize:10,fontWeight:700,padding:'3px 12px',borderRadius:20,whiteSpace:'nowrap',letterSpacing:'.05em',textTransform:'uppercase'}}>Najczęściej wybierany</div>}
             </div>
             <div
               className={`card pkg-card ${selected===pkg.id?'selected':''}`}
               onClick={()=>onSelect(pkg.id)}
-              style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',textAlign:'center',padding:'18px 16px'}}>
-              <div className="pkg-badge" style={{color:pkg.badgeColor,background:pkg.badgeBg,marginBottom:8}}>{pkg.badge}</div>
-              <div className="pkg-name" style={{marginBottom:2}}>{pkg.name}</div>
-              <div className="pkg-tagline" style={{marginBottom:10}}>{pkg.tagline}</div>
-              <div style={{display:'flex',alignItems:'baseline',gap:4,justifyContent:'center',marginBottom:12}}>
-                <span style={{fontSize:30,fontWeight:800,color:'var(--g900)',lineHeight:1,whiteSpace:'nowrap'}}>{pkg.price.toLocaleString('pl-PL')} zł</span>
-                <span style={{fontSize:11,color:'var(--g400)',fontWeight:500,whiteSpace:'nowrap'}}>netto</span>
-              </div>
-              <div className="pkg-divider" style={{width:'100%'}}/>
-              <div style={{width:'100%',textAlign:'center'}}>
-              {pkg.features.map((f,i)=>(
-                <div key={i} style={{display:'flex',alignItems:'flex-start',gap:8,fontSize:12,color:'var(--g600)',marginBottom:7,lineHeight:1.4,justifyContent:'center'}}>
-                  <div style={{width:14,height:14,flexShrink:0,marginTop:1,display:'flex',alignItems:'center',justifyContent:'center'}}>
-                    <IC n="check" size={12} color="#F05A28" sw={2.5}/>
-                  </div>
-                  <span style={{textAlign:'left'}}>{f}</span>
+              style={{flex:1,display:'flex',flexDirection:'column',padding:'18px 20px',cursor:'pointer'}}>
+              {/* Top — wyśrodkowane */}
+              <div style={{textAlign:'center',marginBottom:14}}>
+                <div className="pkg-badge" style={{color:pkg.badgeColor,background:pkg.badgeBg,display:'inline-block',marginBottom:8}}>{pkg.badge}</div>
+                <div className="pkg-name">{pkg.name}</div>
+                <div className="pkg-tagline">{pkg.tagline}</div>
+                <div style={{display:'flex',alignItems:'baseline',gap:4,justifyContent:'center',marginTop:10}}>
+                  <span style={{fontSize:30,fontWeight:800,color:'var(--g900)',lineHeight:1}}>{pkg.price.toLocaleString('pl-PL')} zł</span>
+                  <span style={{fontSize:11,color:'var(--g400)',fontWeight:500}}>netto</span>
                 </div>
-              ))}
               </div>
-              <div style={{width:'100%',marginTop:'auto',paddingTop:14}}>
+              <div className="pkg-divider"/>
+              {/* Features — od lewej */}
+              <div style={{flex:1}}>
+                {pkg.features.map((f,i)=>(
+                  <div key={i} style={{display:'flex',alignItems:'flex-start',gap:8,fontSize:13,color:'var(--g600)',marginBottom:8,lineHeight:1.4}}>
+                    <div style={{width:14,height:14,flexShrink:0,marginTop:1,display:'flex',alignItems:'center',justifyContent:'center'}}>
+                      <IC n="check" size={12} color="#F05A28" sw={2.5}/>
+                    </div>
+                    <span>{f}</span>
+                  </div>
+                ))}
+              </div>
+              {/* Button */}
+              <div style={{marginTop:18}}>
                 <button
-                  style={{width:'100%',padding:9,borderRadius:9999,fontSize:13,fontWeight:700,fontFamily:'Barlow,sans-serif',cursor:'pointer',transition:'all .15s',border:'2px solid transparent',background:selected===pkg.id?'var(--orange)':'#fff',borderColor:selected===pkg.id?'var(--orange)':'var(--g300)',color:selected===pkg.id?'#fff':'var(--g700)'}}
+                  style={{width:'100%',padding:10,borderRadius:9999,fontSize:13,fontWeight:700,fontFamily:'Barlow,sans-serif',cursor:'pointer',transition:'all .15s',border:'2px solid transparent',
+                    background:selected===pkg.id?'var(--orange)':'#fff',
+                    borderColor:selected===pkg.id?'var(--orange)':'var(--g300)',
+                    color:selected===pkg.id?'#fff':'var(--g700)'}}
                   onClick={e=>{e.stopPropagation();onSelect(pkg.id);}}>
                   {selected===pkg.id?'✓ Wybrany':'Wybierz'}
                 </button>
@@ -373,13 +407,15 @@ function StepPackage({selected,onSelect,qty,onQtyChange,mode,onModeChange,onGoAc
           </div>
         ))}
       </div>
+
+      {mode==='new'&&<QtyPicker qty={qty} onChange={onQtyChange} selected={selected} onNext={()=>onSelectAndNext(selected)}/>}
+      <div style={{fontSize:12,color:'var(--g500)',marginBottom:8,display:'flex',alignItems:'center',gap:6}}>
+        <IC n="info" size={12} color="var(--g400)"/>
+        Ceny netto. Do kwoty zostanie doliczony VAT 23%.
+      </div>
       <div style={{display:'flex',alignItems:'center',gap:12,padding:'12px 16px',background:'#FFF7F5',border:'1.5px solid rgba(240,90,40,0.25)',borderRadius:6,marginBottom:10}}>
         <IC n="mail" size={17} color="var(--orange)"/>
-        <span style={{fontSize:13,color:'var(--g700)'}}>Planujesz opublikować więcej ogłoszeń? <strong>Skontaktuj się z nami</strong>, przygotujemy indywidualną ofertę pakietową: <a href="mailto:praca@wirtualnemedia.pl" style={{color:'var(--orange)',fontWeight:700}}>praca@wirtualnemedia.pl</a></span>
-      </div>
-      <div style={{display:'flex',alignItems:'center',gap:12,padding:'14px 18px',background:'#fff',border:'1px solid var(--g200)',borderRadius:6,marginBottom:10}}>
-        <IC n="info" size={13} color="var(--g400)"/>
-        <span style={{fontSize:12,color:'var(--g500)'}}>Wszystkie ceny podane są w wartościach netto. Do podanej kwoty zostanie doliczony podatek VAT 23%.</span>
+        <span style={{fontSize:13,color:'var(--g700)'}}>Planujesz więcej ogłoszeń lub masz pytania? <strong>Napisz do nas</strong> po ofertę pakietową: <a href="mailto:praca@wirtualnemedia.pl" style={{color:'var(--orange)',fontWeight:700}}>praca@wirtualnemedia.pl</a></span>
       </div>
     </div>
   );
@@ -419,15 +455,21 @@ function ModeToggle({mode,onChange}){
 }
 
 /* ── Step 2: Form ── */
-function StepForm({form,onChange,errors,mode,onModeChange}){
+function StepForm({form,onChange,errors,mode,pkg}){
   const isMobile=useIsMobile();
   function set(k,v){onChange({...form,[k]:v});}
   const isNew=mode==='new';
+  const p=pkg?PACKAGES.find(x=>x.id===pkg):null;
   return(
     <div>
-      <h1 style={{fontSize:23,fontWeight:800,color:'var(--g900)',marginBottom:4,letterSpacing:'-.02em'}}>Treść ogłoszenia</h1>
+      <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:12,marginBottom:4}}>
+        <h1 style={{fontSize:23,fontWeight:800,color:'var(--g900)',letterSpacing:'-.02em'}}>Treść ogłoszenia</h1>
+        {p&&<div style={{display:'flex',alignItems:'center',gap:8,padding:'5px 12px',background:'var(--g100)',border:'1.5px solid var(--g200)',borderRadius:9999}}>
+          <div style={{width:8,height:8,borderRadius:'50%',background:'var(--orange)'}}/>
+          <span style={{fontSize:12,fontWeight:700,color:'var(--g800)'}}>Pakiet {p.name} · {p.price.toLocaleString('pl-PL')} zł netto</span>
+        </div>}
+      </div>
       <p style={{fontSize:14,color:'var(--g500)',marginBottom:24}}>Pola oznaczone <span style={{color:'var(--orange)'}}>*</span> są obowiązkowe.</p>
-      <ModeToggle mode={mode} onChange={onModeChange}/>
 
       {/* Firma */}
       <div className="section-label">Informacje o firmie</div>
@@ -439,7 +481,7 @@ function StepForm({form,onChange,errors,mode,onModeChange}){
         </div>
         {isNew&&(
           <div className="field-group">
-            <div className="field-label">Strona www firmy <span className="field-opt">(opcjonalne)</span></div>
+            <div className="field-label">Strona www <span className="field-opt">(opcjonalne)</span></div>
             <input className="input-field" placeholder="https://firma.pl" value={form.website} onChange={e=>set('website',e.target.value)}/>
           </div>
         )}
@@ -447,29 +489,29 @@ function StepForm({form,onChange,errors,mode,onModeChange}){
       {isNew&&(
         <div className="field-group">
           <div className="field-label">Krótki opis firmy <span className="field-opt">(opcjonalne)</span></div>
-          <textarea className="input-field" rows={3} placeholder="Czym zajmuje się Twoja firma? (maks. 200 znaków)" maxLength={200} value={form.companyDesc} onChange={e=>set('companyDesc',e.target.value)}/>
+          <textarea className="input-field" rows={2} placeholder="Czym zajmuje się Twoja firma? (maks. 200 znaków)" maxLength={200} value={form.companyDesc} onChange={e=>set('companyDesc',e.target.value)}/>
           <div className="input-counter">{(form.companyDesc||'').length} / 200</div>
         </div>
       )}
       <div className="field-group">
-        <div className="field-label">Logotyp firmy</div>
-        <div className={`upload-zone ${form.logoName?'has-file':''}`}
+        <div className="field-label">Logotyp firmy <span className="field-opt">(opcjonalne)</span></div>
+        <div
+          style={{display:'flex',alignItems:'center',gap:12,padding:'10px 14px',background:'#fff',border:'1.5px dashed var(--g300)',borderRadius:4,cursor:'pointer',transition:'border-color .15s'}}
           onClick={()=>document.getElementById('logo-inp').click()}
           onDragOver={e=>e.preventDefault()}
           onDrop={e=>{e.preventDefault();const f=e.dataTransfer.files[0];if(f)set('logoName',f.name);}}>
           <input id="logo-inp" type="file" accept="image/*" style={{display:'none'}} onChange={e=>{if(e.target.files[0])set('logoName',e.target.files[0].name);}}/>
+          <IC n="upload" size={16} color="var(--g400)"/>
           {form.logoName?(
-            <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:8,color:'var(--orange)',fontWeight:700,fontSize:13}}>
-              <IC n="chk-c" size={17} color="var(--orange)"/>
-              {form.logoName}
-              <span style={{color:'var(--g400)',fontWeight:400,cursor:'pointer',fontSize:12}} onClick={e=>{e.stopPropagation();set('logoName','');}}>Usuń</span>
+            <div style={{display:'flex',alignItems:'center',gap:8,flex:1}}>
+              <span style={{fontSize:13,fontWeight:600,color:'var(--orange)'}}>{form.logoName}</span>
+              <span style={{fontSize:12,color:'var(--g400)',cursor:'pointer',marginLeft:'auto'}} onClick={e=>{e.stopPropagation();set('logoName','');}}>Usuń</span>
             </div>
           ):(
-            <>
-              <IC n="upload" size={22} color="var(--g400)"/>
-              <div style={{fontSize:13,color:'var(--g700)',marginTop:8,fontWeight:600}}>Dołącz logotyp, jeśli to Twoje pierwsze ogłoszenie lub logotyp uległ zmianie</div>
-              <div style={{fontSize:11,color:'var(--g400)',marginTop:4}}>PNG, SVG lub JPG · maks. 2 MB · zalecany rozmiar 200×200 px</div>
-            </>
+            <div>
+              <span style={{fontSize:13,color:'var(--g700)',fontWeight:500}}>Wgraj logotyp</span>
+              <span style={{fontSize:12,color:'var(--g400)',marginLeft:8}}>PNG, SVG lub JPG · maks. 2 MB</span>
+            </div>
           )}
         </div>
       </div>
@@ -482,7 +524,7 @@ function StepForm({form,onChange,errors,mode,onModeChange}){
         <div className="field-label">Tytuł stanowiska <span className="field-req">*</span></div>
         <input className={`input-field ${errors.title?'error':''}`} placeholder="np. Senior Marketing Manager" value={form.title} onChange={e=>set('title',e.target.value)}/>
         {errors.title&&<div className="field-error">{errors.title}</div>}
-        <div className="field-hint">Dobry tytuł zwiększa klikalność ogłoszenia nawet o 40%.</div>
+        <div className="hint-tip"><IC n="info" size={12} color="var(--orange)"/>Dobry tytuł zwiększa klikalność ogłoszenia nawet o 40%.</div>
       </div>
       <div className="form-2col" style={{display:'grid',gridTemplateColumns:isMobile?'1fr':'1fr 1fr',gap:14}}>
         <div className="field-group">
@@ -494,7 +536,7 @@ function StepForm({form,onChange,errors,mode,onModeChange}){
           {errors.location&&<div className="field-error">{errors.location}</div>}
         </div>
         <div className="field-group">
-          <div className="field-label">Wynagrodzenie <span className="field-opt">(opcjonalne)</span></div>
+          <div className="field-label">Widełki wynagrodzenia <span className="field-opt">(opcjonalne)</span></div>
           <div className="salary-row" style={{display:'flex',gap:8,alignItems:'center',flexWrap:isMobile?'wrap':'nowrap'}}>
             <div style={{position:'relative',flex:1}}>
               <input className="input-field" placeholder="od np. 8 000" value={form.salaryMin} onChange={e=>set('salaryMin',e.target.value)} style={{paddingRight:40}}/>
@@ -506,7 +548,7 @@ function StepForm({form,onChange,errors,mode,onModeChange}){
               <span style={{position:'absolute',right:10,top:'50%',transform:'translateY(-50%)',fontSize:11,color:'var(--g400)',fontWeight:700}}>PLN</span>
             </div>
           </div>
-          <div className="field-hint">Widełki wynagrodzenia zwiększają liczbę aplikacji o ok. 35%.</div>
+          <div className="hint-tip"><IC n="info" size={12} color="var(--orange)"/>Widełki wynagrodzenia zwiększają liczbę aplikacji o ok. 35%.</div>
         </div>
       </div>
       <div className="field-group">
@@ -520,7 +562,7 @@ function StepForm({form,onChange,errors,mode,onModeChange}){
       {/* Opis */}
       <div className="section-label">Opis stanowiska</div>
       <div className="field-group">
-        <div className="field-label">Opis stanowiska</div>
+        <div className="field-label">Opis stanowiska <span className="field-req">*</span></div>
         <textarea className="input-field" rows={4}
           placeholder="Ogólny opis roli, kontekst projektu, miejsce w strukturze organizacji..."
           value={form.description} onChange={e=>set('description',e.target.value)}/>
@@ -528,14 +570,14 @@ function StepForm({form,onChange,errors,mode,onModeChange}){
         <div className="input-counter">{(form.description||'').length} znaków</div>
       </div>
       <div className="field-group">
-        <div className="field-label">Zakres obowiązków</div>
+        <div className="field-label">Zakres obowiązków <span className="field-req">*</span></div>
         <textarea className="input-field" rows={5}
           placeholder={"• Zarządzanie kampaniami reklamowymi\n• Współpraca z agencjami mediowymi\n• Analizowanie wyników i raportowanie"}
           value={form.duties} onChange={e=>set('duties',e.target.value)}/>
         {errors.duties&&<div className="field-error">{errors.duties}</div>}
       </div>
       <div className="field-group">
-        <div className="field-label">Wymagania</div>
+        <div className="field-label">Wymagania <span className="field-req">*</span></div>
         <textarea className="input-field" rows={5}
           placeholder={"• Min. 3 lata doświadczenia w marketingu\n• Znajomość narzędzi analitycznych\n• Wykształcenie wyższe"}
           value={form.requirements} onChange={e=>set('requirements',e.target.value)}/>
@@ -569,19 +611,22 @@ function StepForm({form,onChange,errors,mode,onModeChange}){
 }
 
 /* ── Step 3: Billing (tylko tryb 'new') ── */
-function StepBilling({billing,onChange,errors}){
+function StepBilling({billing,onChange,errors,pkg,qty}){
   const isMobile=useIsMobile();
   function set(k,v){onChange({...billing,[k]:v});}
+  const p=pkg?PACKAGES.find(x=>x.id===pkg):null;
   return(
     <div>
-      <h1 style={{fontSize:23,fontWeight:800,color:'var(--g900)',marginBottom:4,letterSpacing:'-.02em'}}>Dane kontaktowe i rozliczeniowe</h1>
+      <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:12,marginBottom:4}}>
+        <h1 style={{fontSize:23,fontWeight:800,color:'var(--g900)',letterSpacing:'-.02em'}}>Dane kontaktowe i rozliczeniowe</h1>
+        {p&&<div style={{display:'flex',alignItems:'center',gap:8,padding:'5px 12px',background:'var(--g100)',border:'1.5px solid var(--g200)',borderRadius:9999}}>
+          <div style={{width:8,height:8,borderRadius:'50%',background:'var(--orange)'}}/>
+          <span style={{fontSize:12,fontWeight:700,color:'var(--g800)'}}>Pakiet {p.name} · {(p.price*qty).toLocaleString('pl-PL')} zł netto</span>
+        </div>}
+      </div>
       <p style={{fontSize:14,color:'var(--g500)',marginBottom:28}}>Te dane nie są widoczne publicznie w ogłoszeniu.</p>
 
       <div className="section-label">Osoba kontaktowa</div>
-      <div style={{padding:'12px 14px',background:'rgba(13,27,42,0.04)',border:'1px solid var(--g200)',borderRadius:4,marginBottom:16,fontSize:12,color:'var(--g600)',lineHeight:1.6,display:'flex',gap:8}}>
-        <IC n="info" size={13} color="var(--g400)"/>
-        Dane kontaktowe są widoczne wyłącznie dla zespołu Wirtualne Media — nie będą publikowane w ogłoszeniu.
-      </div>
       <div className="billing-2col" style={{display:'grid',gridTemplateColumns:isMobile?'1fr':'1fr 1fr',gap:14}}>
         <div className="field-group">
           <div className="field-label">Imię i nazwisko <span className="field-req">*</span></div>
@@ -598,14 +643,15 @@ function StepBilling({billing,onChange,errors}){
         <div className="field-label">E-mail kontaktowy <span className="field-req">*</span></div>
         <input className={`input-field ${errors.contactEmail?'error':''}`} type="email" placeholder="kontakt@firma.pl" value={billing.contactEmail} onChange={e=>set('contactEmail',e.target.value)}/>
         {errors.contactEmail&&<div className="field-error">{errors.contactEmail}</div>}
+        <div className="field-hint">Widoczny wyłącznie dla zespołu Wirtualne Media — nie będzie publikowany.</div>
       </div>
 
       <div className="section-divider"/>
 
       <div className="section-label">Dane do faktury</div>
-      <div style={{padding:'12px 14px',background:'rgba(240,90,40,0.05)',border:'1px solid rgba(240,90,40,0.2)',borderRadius:4,marginBottom:16,fontSize:12,color:'var(--g700)',lineHeight:1.6,display:'flex',gap:8}}>
+      <div style={{padding:'10px 14px',background:'rgba(240,90,40,0.05)',border:'1px solid rgba(240,90,40,0.2)',borderRadius:4,marginBottom:16,fontSize:12,color:'var(--g700)',lineHeight:1.6,display:'flex',gap:8,alignItems:'flex-start'}}>
         <IC n="receipt" size={13} color="var(--orange)"/>
-        Faktura VAT zostanie wystawiona i przesłana do systemu <strong>KSeF</strong> (Krajowy System e-Faktur) po aktywacji ogłoszenia.
+        Faktura VAT zostanie wystawiona i przesłana do systemu <strong>KSeF</strong> po aktywacji ogłoszenia.
       </div>
       <div className="billing-2col" style={{display:'grid',gridTemplateColumns:isMobile?'1fr':'1fr 1fr',gap:14}}>
         <div className="field-group">
@@ -635,8 +681,10 @@ function StepPreview({form,billing,pkg,mode,qty,onConfirm}){
   const salary=form.salaryMin||form.salaryMax?[form.salaryMin,form.salaryMax].filter(Boolean).join(' – ')+' PLN':null;
   const [agreed,setAgreed]=React.useState(false);
   const net=p.price*qty;
-  const vat=Math.round(net*.23);
-  const gross=net+vat;
+  const discount=qty>=8;
+  const discountedNet=discount?Math.round(net*0.85):net;
+  const vat=Math.round(discountedNet*.23);
+  const gross=discountedNet+vat;
 
   return(
     <div>
@@ -702,18 +750,20 @@ function StepPreview({form,billing,pkg,mode,qty,onConfirm}){
             {[
               ['Pakiet', p.name],
               ['Liczba ogłoszeń', qty+'×'],
-              ['Cena netto', net.toLocaleString('pl-PL')+' zł'],
+              ['Cena bazowa', (p.price*qty).toLocaleString('pl-PL')+' zł'],
+              ...(discount?[['Rabat −15%','−'+Math.round(net*0.15).toLocaleString('pl-PL')+' zł']]:[ ]),
+              ['Netto', discountedNet.toLocaleString('pl-PL')+' zł'],
               ['VAT 23%', vat.toLocaleString('pl-PL')+' zł'],
             ].map(([k,v])=>(
-              <div key={k} style={{display:'flex',justifyContent:'space-between',fontSize:13,color:'var(--g600)',marginBottom:7}}>
-                <span>{k}</span><strong style={{color:'var(--g900)'}}>{v}</strong>
+              <div key={k} style={{display:'flex',justifyContent:'space-between',alignItems:'baseline',gap:8,fontSize:13,color:k==='Rabat −15%'?'var(--orange)':'var(--g600)',marginBottom:7}}>
+                <span style={{flexShrink:0}}>{k}</span>
+                <strong style={{color:k==='Rabat −15%'?'var(--orange)':'var(--g900)',textAlign:'right'}}>{v}</strong>
               </div>
             ))}
             <div style={{borderTop:'1px solid var(--g200)',paddingTop:10,marginTop:4,display:'flex',justifyContent:'space-between',alignItems:'center'}}>
               <span style={{fontWeight:700,fontSize:13}}>Brutto</span>
               <span style={{fontWeight:800,fontSize:20,color:'var(--orange)'}}>{gross.toLocaleString('pl-PL')} zł</span>
-            </div>
-          </div>
+            </div>          </div>
 
           {mode==='active'&&(
             <div style={{background:'rgba(240,90,40,0.06)',border:'1px solid rgba(240,90,40,0.2)',borderRadius:4,padding:'10px 12px',fontSize:12,color:'var(--g700)',marginBottom:12,lineHeight:1.6}}>
@@ -721,9 +771,9 @@ function StepPreview({form,billing,pkg,mode,qty,onConfirm}){
             </div>
           )}
 
-          <label style={{display:'flex',alignItems:'flex-start',gap:8,cursor:'pointer',fontSize:12,color:'var(--g600)',lineHeight:1.5,marginBottom:14}}>
-            <input type="checkbox" style={{marginTop:2,accentColor:'var(--orange)',flexShrink:0}} checked={agreed} onChange={e=>setAgreed(e.target.checked)}/>
-            Akceptuję <span style={{color:'var(--orange)',fontWeight:600,cursor:'pointer'}}>&nbsp;Regulamin serwisu</span>&nbsp;i&nbsp;<span style={{color:'var(--orange)',fontWeight:600,cursor:'pointer'}}>Politykę prywatności</span>&nbsp;Wirtualne Media sp. z o.o.
+          <label style={{display:'flex',alignItems:'flex-start',gap:8,cursor:'pointer',fontSize:12,color:'var(--g600)',lineHeight:1.6,marginBottom:14}}>
+            <input type="checkbox" style={{marginTop:3,accentColor:'var(--orange)',flexShrink:0}} checked={agreed} onChange={e=>setAgreed(e.target.checked)}/>
+            <span>Akceptuję <a href="https://www.wirtualnemedia.pl/regulamin.html" target="_blank" rel="noopener noreferrer" style={{color:'var(--orange)',fontWeight:600}}>Regulamin serwisu</a> i <a href="https://www.wirtualnemedia.pl/polityka-prywatnosci.html" target="_blank" rel="noopener noreferrer" style={{color:'var(--orange)',fontWeight:600}}>Politykę prywatności</a> Wirtualne Media sp. z o.o.</span>
           </label>
           <button className="btn btn-primary" style={{width:'100%',justifyContent:'center',fontSize:14}} disabled={!agreed} onClick={onConfirm}>
             <IC n="send" size={15}/>Wyślij ogłoszenie
@@ -807,7 +857,7 @@ const INIT_BILLING={contactName:'',phone:'',contactEmail:'',bizName:'',nip:'',ad
 function App(){
   const s0=(()=>{try{return JSON.parse(localStorage.getItem('wm_pr3')||'{}')}catch{return{}}})();
   const [step,setStep]=React.useState(s0.step||1);
-  const [pkg,setPkg]=React.useState(s0.pkg||'');
+  const [pkg,setPkg]=React.useState(s0.pkg||'premium');
   const [mode,setMode]=React.useState(s0.step > 1 ? (s0.mode||'new') : 'new');
   const [form,setForm]=React.useState({...INIT_FORM,...(s0.form||{})});
   const [billing,setBilling]=React.useState({...INIT_BILLING,...(s0.billing||{})});
@@ -858,6 +908,7 @@ function App(){
   function handleForm(f){setForm(f);persist(step,pkg,mode,f,billing,qty);}
   function handleBilling(b){setBilling(b);persist(step,pkg,mode,form,b,qty);}
   function handlePkg(p){setPkg(p);persist(step,p,mode,form,billing,qty);}
+  function handleSelectAndNext(p){setPkg(p);persist(2,p,mode,form,billing,qty);setStep(2);window.scrollTo(0,0);}
   function handleMode(m){setMode(m);persist(step,pkg,m,form,billing,qty);}
 
   // Determine what "step 3" and "step 4" mean given mode
@@ -872,7 +923,7 @@ function App(){
       <header style={{position:'sticky',top:0,zIndex:100}}>
         <div style={{background:'#0D1B2A',height:52,display:'flex',alignItems:'center',padding:'0 24px'}}>
           <div style={{marginRight:'auto'}}>
-            <img src="logo-dark.png" alt="Wirtualne Media" style={{height:33,objectFit:'contain',display:'block'}}/>
+            <img src={window.__resources && window.__resources.logoDark || "logo-dark.png"} alt="Wirtualne Media" style={{height:33,objectFit:'contain',display:'block'}}/>
           </div>
           <div style={{display:'flex',alignItems:'center',gap:10}}>
             <span style={{fontSize:12,color:'rgba(255,255,255,0.4)'}}>praca.wirtualnemedia.pl</span>
@@ -895,31 +946,32 @@ function App(){
             <Confirmation form={form} pkg={pkg} mode={mode} qty={qty} onReset={reset}/>
           ):(
             <>
-              {step===1&&<StepPackage selected={pkg} onSelect={handlePkg} qty={qty} onQtyChange={handleQty} mode={mode} onModeChange={handleMode} onGoActive={goActive}/>}
-              {step===2&&<StepForm form={form} onChange={handleForm} errors={errors} mode={mode} onModeChange={handleMode}/>}
-              {step===3&&mode==='new'&&<StepBilling billing={billing} onChange={handleBilling} errors={bErrors}/>}
+              {step===1&&<StepPackage selected={pkg} onSelect={handlePkg} onSelectAndNext={handleSelectAndNext} qty={qty} onQtyChange={handleQty} mode={mode} onModeChange={handleMode} onGoActive={goActive}/>}
+              {step===2&&<StepForm form={form} onChange={handleForm} errors={errors} mode={mode} pkg={pkg}/>}
+              {step===3&&mode==='new'&&<StepBilling billing={billing} onChange={handleBilling} errors={bErrors} pkg={pkg} qty={qty}/>}
               {step===previewStep&&<StepPreview form={form} billing={billing} pkg={pkg} mode={mode} qty={qty} onConfirm={confirm}/>}
 
               {/* Nav */}
+              {step>1&&(
               <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginTop:32,paddingTop:18,borderTop:'1px solid var(--g200)'}}>
                 <div>
                   {step>1&&<button className="btn btn-secondary" onClick={()=>go(step-1)}><IC n="arr-l" size={14}/>Wstecz</button>}
                 </div>
                 <div style={{display:'flex',alignItems:'center',gap:12}}>
                   <span style={{fontSize:12,color:'var(--g400)'}}>Krok {step} z {totalSteps}</span>
-                  {step===1&&<button className="btn btn-primary" onClick={nextFromPkg}>Dalej: Treść ogłoszenia <IC n="arrow" size={14}/></button>}
                   {step===2&&<button className="btn btn-primary" onClick={nextFromForm}>
                     {mode==='active'?'Dalej: Podgląd':'Dalej: Dane i rozliczenia'} <IC n="arrow" size={14}/>
                   </button>}
                   {step===3&&mode==='new'&&<button className="btn btn-primary" onClick={nextFromBilling}>Dalej: Podgląd <IC n="arrow" size={14}/></button>}
                 </div>
               </div>
+              )}
             </>
           )}
         </div>
       </main>
 
-      <div style={{background:'#0D1B2A',padding:'14px 24px',textAlign:'center',fontSize:12,color:'rgba(255,255,255,0.3)'}}>
+      <div style={{background:'#0D1B2A',padding:'14px 24px',textAlign:'center',fontSize:12,color:'rgba(255,255,255,0.55)'}}>
         © {new Date().getFullYear()} Wirtualne Media sp. z o.o. ·{' '}
         <span style={{color:'var(--orange)',cursor:'pointer'}}>Regulamin</span> ·{' '}
         <span style={{color:'var(--orange)',cursor:'pointer'}}>Polityka prywatności</span> ·{' '}
