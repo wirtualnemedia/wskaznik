@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dodaj oferte pracy - WirtualneMedia.pl</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;color:#333;background:#fff;font-size:15px;line-height:1.5}
+a{text-decoration:none;color:inherit}
+
+.nav-top{background:#132B46;height:52px;display:flex;align-items:center;padding:0 20px;justify-content:space-between}
+.nav-logo{display:flex;align-items:center;gap:9px;color:#fff;font-size:14px;font-weight:700;letter-spacing:-.1px}
+.nav-top-right{display:flex;align-items:center;gap:10px}
+.icon-btn{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.icon-btn.orange{background:#FF5E08}
+
+.nav-secondary{background:#fff;border-bottom:1px solid #e4e4e4}
+.nav-secondary-inner{max-width:1100px;margin:0 auto;padding:0 20px;display:flex}
+.nav-secondary a{font-size:13px;color:#555;padding:12px 16px;display:block;white-space:nowrap;border-bottom:2px solid transparent;transition:color .15s}
+.nav-secondary a:hover,.nav-secondary a.active{color:#FF5E08}
+.nav-secondary a.active{border-bottom-color:#FF5E08}
+
+.bc-wrap{background:#fff;border-bottom:1px solid #f0f0f0}
+.bc{max-width:1100px;margin:0 auto;padding:9px 20px;font-size:12px;color:#aaa;display:flex;gap:5px;align-items:center}
+.bc a{color:#aaa}.bc a:hover{color:#FF5E08}.bc-sep{color:#ccc}
+
+.hero{background:#132B46;padding:32px 0 36px}
+.hero-inner{max-width:1100px;margin:0 auto;padding:0 20px}
+.hero h1{color:#fff;font-size:30px;font-weight:700;line-height:1.25}
+
+.wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+
+/* ── VALUE PROP BANNER ── */
+.vp-section{background:#fff;border-bottom:1px solid #eee;padding:32px 0}
+.vp-inner{max-width:1100px;margin:0 auto;padding:0 20px;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.vp-left h2{font-size:19px;font-weight:700;color:#222;line-height:1.4;margin-bottom:10px}
+.vp-left h2 span{color:#FF5E08}
+.vp-left p{font-size:13.5px;color:#666;line-height:1.65}
+.vp-right{}
+.vp-tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}
+.vp-tag{background:#f5f5f5;border:1px solid #e8e8e8;border-radius:20px;padding:5px 13px;font-size:12px;color:#555;font-weight:500}
+.vp-tag.og{background:#FFF3EC;border-color:#ffd5b8;color:#c04000}
+.vp-levels{font-size:12.5px;color:#888;display:flex;align-items:center;gap:8px}
+.vp-dot{width:6px;height:6px;border-radius:50%;background:#FF5E08;display:inline-block}
+
+/* ── OFERTA ── */
+.oferta-section{background:#f5f5f5;padding:40px 0 44px}
+.section-heading{font-size:22px;font-weight:700;color:#222;margin-bottom:24px}
+
+.pkg-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:16px}
+.pkg-card{background:#fff;border:1px solid #e2e2e2;border-radius:4px;padding:20px 22px;display:flex;flex-direction:column}
+.pkg-name{font-size:14px;font-weight:700;color:#222;margin-bottom:10px}
+.pkg-name .prem{color:#FF5E08}
+.pkg-desc{font-size:12.5px;color:#777;line-height:1.55;margin-bottom:14px;flex:1}
+.super-label{display:inline-block;background:#1a6fc4;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:2px;margin-left:6px;vertical-align:middle;letter-spacing:.03em}
+.pkg-note{font-size:11.5px;color:#aaa;margin-bottom:16px;text-align:center}
+.pkg-table{width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:14px}
+.pkg-table th{background:#f5f5f5;padding:6px 10px;text-align:left;font-weight:600;border:1px solid #e4e4e4;color:#666;font-size:12px}
+.pkg-table td{padding:6px 10px;border:1px solid #ebebeb;color:#333}
+.pkg-table tr:nth-child(even) td{background:#fafafa}
+.btn-og{background:#FF5E08;color:#fff;border:none;padding:9px 18px;border-radius:4px;font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:7px;transition:background .15s;width:100%}
+.btn-og:hover{background:#e05200}
+.btn-og svg{flex-shrink:0}
+
+.special{background:#132B46;border-radius:4px;padding:22px 26px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.special-text h3{font-size:14px;font-weight:700;color:#fff;margin-bottom:5px}
+.special-text p{font-size:12.5px;color:rgba(255,255,255,.65);line-height:1.6;max-width:600px}
+.special .btn-sp{background:#FF5E08;color:#fff;border:none;padding:10px 20px;border-radius:4px;font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:background .15s;white-space:nowrap;flex-shrink:0}
+.special .btn-sp:hover{background:#e05200}
+
+/* ── FORM SECTION — dark modern ── */
+.form-section{background:#0e1e2e;padding:60px 0}
+.form-wrap{max-width:1060px;margin:0 auto;padding:0 20px;display:grid;grid-template-columns:260px 1fr;gap:52px;align-items:start}
+.form-lede h2{font-size:22px;font-weight:700;color:#fff;line-height:1.35;margin-bottom:12px}
+.form-lede p{font-size:13px;color:rgba(255,255,255,.48);line-height:1.7;margin-bottom:28px}
+.form-trust{display:flex;flex-direction:column;gap:14px;border-top:1px solid rgba(255,255,255,.07);padding-top:24px}
+.form-trust-item{display:flex;align-items:flex-start;gap:10px}
+.form-trust-ico{width:30px;height:30px;border-radius:6px;background:rgba(255,94,8,.18);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.form-trust-text strong{display:block;font-size:12px;color:rgba(255,255,255,.8);font-weight:600;margin-bottom:1px}
+.form-trust-text span{font-size:11px;color:rgba(255,255,255,.35)}
+
+/* Progress — circles */
+.prg-outer{display:flex;flex-direction:column;margin-bottom:24px}
+.prg-circles{display:flex;align-items:center;margin-bottom:8px}
+.prg-circle{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;transition:all .3s}
+.prg-circle.done{background:#FF5E08;color:#fff}
+.prg-circle.active{background:#FF5E08;color:#fff;box-shadow:0 0 0 4px rgba(255,94,8,.22)}
+.prg-circle.idle{background:rgba(255,255,255,.07);color:rgba(255,255,255,.25);border:1px solid rgba(255,255,255,.1)}
+.prg-connector{flex:1;height:1px;background:rgba(255,255,255,.1);margin:0 5px}
+.prg-connector.done{background:#FF5E08}
+.prg-lbls{display:flex;justify-content:space-between}
+.prg-lbl2{font-size:10px;font-weight:600;color:rgba(255,255,255,.25);width:28px;text-align:center}
+.prg-lbl2.active{color:#FF5E08}
+.prg-lbl2.done{color:rgba(255,255,255,.5)}
+
+/* Form card */
+.form-card{background:#fff;border-radius:12px;padding:28px 30px;box-shadow:0 24px 64px rgba(0,0,0,.4)}
+
+/* ── MODE SELECTOR ── */
+.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:4px}
+.mode-card{border:1.5px solid #ebebeb;border-radius:9px;padding:18px 18px 16px;cursor:pointer;transition:all .2s;background:#fff;position:relative}
+.mode-card:hover{border-color:#FF5E08;background:#fffaf8}
+.mode-card.sel{border-color:#FF5E08;background:#fff8f5}
+.mode-card.sel::after{content:"✓";position:absolute;top:10px;right:12px;width:18px;height:18px;border-radius:50%;background:#FF5E08;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;line-height:18px;text-align:center}
+.mode-card-icon{width:36px;height:36px;background:#FFF3EC;border-radius:7px;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.mode-card-title{font-weight:700;font-size:13.5px;color:#222;margin-bottom:3px}
+.mode-card-desc{font-size:11.5px;color:#aaa;line-height:1.5}
+
+/* ── PACKAGE OPTIONS ── */
+.pkg-opt{border:1.5px solid #ebebeb;border-radius:8px;padding:14px 16px;cursor:pointer;margin-bottom:10px;background:#fff;transition:all .2s}
+.pkg-opt:hover{border-color:#ddd;background:#fafafa}
+.pkg-opt.sel{border-color:#FF5E08;background:#fff8f5}
+.pkg-opt-hd{display:flex;justify-content:space-between;align-items:flex-start}
+.pkg-opt-name{font-weight:700;font-size:14px;color:#222;margin-bottom:3px}
+.pkg-badge{background:#FF5E08;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:3px;margin-left:7px;vertical-align:middle}
+.pkg-opt-desc{font-size:12px;color:#999}
+.pkg-opt-price{font-size:12.5px;color:#aaa;flex-shrink:0;margin-left:14px;padding-top:1px}
+.pkg-opt-price strong{color:#333}
+.pkg-ctrl{margin-top:12px;padding-top:12px;border-top:1px solid #f0f0f0}
+.ctrl-row{display:flex;gap:24px;margin-bottom:12px}
+.ctrl-grp label{display:block;font-size:10px;color:#bbb;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.tog-wrap{display:flex;gap:5px}
+.tog{font-size:12px;padding:5px 12px;background:#f5f5f5;color:#555;border:1px solid #e8e8e8;border-radius:5px;cursor:pointer;transition:all .15s;font-weight:500}
+.tog:hover{border-color:#ccc;background:#eee}.tog.on{background:#132B46;color:#fff;border-color:#132B46}
+.price-row{display:flex;align-items:baseline;gap:6px}
+.price-big{font-size:26px;font-weight:700;color:#FF5E08}
+.price-unit{font-size:13px;color:#aaa}
+
+/* ── CONTACT-ONLY SPECIAL ── */
+.special-contact-box{background:#f8f8f8;border:1px solid #e4e4e4;border-radius:4px;padding:20px 22px}
+.special-contact-box p{font-size:14px;color:#555;line-height:1.7}
+.special-contact-box a{color:#FF5E08;font-weight:600}
+
+/* ── FIELDS ── */
+.frow{display:grid;gap:14px;margin-bottom:14px}
+.fc2{grid-template-columns:1fr 1fr}.fc3{grid-template-columns:1fr 1fr 1fr}
+.fc21{grid-template-columns:2fr 1fr}.fc12{grid-template-columns:1fr 2fr}
+.fg label{display:block;font-size:10.5px;color:#aaa;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}
+.fg input,.fg select,.fg textarea{width:100%;padding:10px 13px;border:1.5px solid #e8e8e8;border-radius:7px;font-size:13.5px;color:#222;font-family:inherit;outline:none;transition:border-color .2s,box-shadow .2s;background:#fff}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:#FF5E08;box-shadow:0 0 0 3px rgba(255,94,8,.08)}
+.fg input::placeholder,.fg textarea::placeholder{color:#ccc}
+.fg textarea{resize:vertical;line-height:1.55}
+.fg-file label{display:block;font-size:12px;color:#888;font-weight:500;margin-bottom:4px}
+.fg-file input[type=file]{width:100%;padding:7px 11px;border:1px dashed #ddd;border-radius:4px;font-size:13px;color:#555;cursor:pointer;background:#fafafa}
+.fg-file input[type=file]:hover{border-color:#bbb}
+.file-hint{font-size:11.5px;color:#bbb;margin-top:4px}
+
+.nav-btns{display:flex;gap:10px;margin-top:24px}
+.btn-back{background:#f5f5f5;color:#555;border:none;padding:10px 20px;border-radius:7px;font-size:13.5px;cursor:pointer;transition:background .15s;font-weight:500}
+.btn-back:hover{background:#ebebeb}
+.btn-primary{background:#FF5E08;color:#fff;border:none;padding:10px 26px;border-radius:7px;font-size:13.5px;font-weight:700;cursor:pointer;flex:1;transition:all .15s}
+.btn-primary:hover{background:#e05200;transform:translateY(-1px);box-shadow:0 4px 14px rgba(255,94,8,.3)}
+.btn-primary:disabled{background:#e0e0e0;color:#aaa;cursor:default;transform:none;box-shadow:none}
+
+.sum-block{border-bottom:1px solid #f2f2f2;padding-bottom:14px;margin-bottom:14px}
+.sum-lbl{font-size:10.5px;color:#bbb;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;font-weight:600}
+
+.success-box{text-align:center;padding:32px 16px}
+.success-icon{width:60px;height:60px;border-radius:50%;background:#FFF3EC;margin:0 auto 14px;display:flex;align-items:center;justify-content:center}
+
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin{width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:inline-block;margin-right:5px;vertical-align:middle}
+
+/* ── STATS ── */
+.stats-section{background:#fff;border-top:1px solid #f0f0f0;padding:52px 0}
+.stats-title{text-align:center;font-size:24px;font-weight:700;color:#222;margin-bottom:36px;line-height:1.35}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:860px;margin:0 auto 30px}
+.stat-card{border:1px solid #e8e8e8;border-radius:4px;padding:18px 18px 16px}
+.stat-ico{width:36px;height:36px;background:#FFF3EC;border-radius:4px;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.stat-ttl{font-weight:700;font-size:14px;color:#222;margin-bottom:3px}
+.stat-sub{font-size:12.5px;color:#aaa}
+.stats-cta{text-align:center}
+
+/* ── FOOTER ── */
+.footer{background:#132B46;padding:40px 0 0}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:36px;margin-bottom:32px}
+.footer-logo{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:#fff;margin-bottom:8px}
+.footer-tagline{font-size:12px;color:rgba(255,255,255,.4);line-height:1.7}
+.fcol-title{color:#fff;font-size:11px;font-weight:600;margin-bottom:11px;text-transform:uppercase;letter-spacing:.05em}
+.fcol a{display:block;color:rgba(255,255,255,.5);font-size:12.5px;margin-bottom:6px;transition:color .15s}
+.fcol a:hover{color:#fff}
+.footer-btm{border-top:1px solid rgba(255,255,255,.08);padding:16px 0;font-size:11px;color:rgba(255,255,255,.3);display:flex;justify-content:space-between}
+.footer-btm a{color:rgba(255,255,255,.3)}.footer-btm a:hover{color:rgba(255,255,255,.6)}
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="nav-top">
+  <a href="https://www.wirtualnemedia.pl" class="nav-logo">
+    <svg width="34" height="24" viewBox="0 0 34 24" fill="none"><path d="M1.5 2.5L8.5 21L17 6.5L25.5 21L32.5 2.5" stroke="#FF5E08" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    wirtualnemedia
+  </a>
+  <div class="nav-top-right">
+    <div class="icon-btn"><svg width="16" height="16" fill="rgba(255,255,255,.7)" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></div>
+    <div class="icon-btn"><svg width="15" height="15" fill="rgba(255,255,255,.7)" viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg></div>
+    <div class="icon-btn orange"><svg width="15" height="15" fill="white" viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg></div>
+  </div>
+</nav>
+
+<!-- SECONDARY NAV -->
+<nav class="nav-secondary">
+  <div class="nav-secondary-inner">
+    <a href="#">Wydawcy</a><a href="#">Internet</a><a href="#">Telewizja</a>
+    <a href="#" class="active">Marketing i PR</a><a href="#">Wideo</a>
+    <a href="#">Audio</a><a href="#">Biznes i Technologie</a><a href="#">Strefa WM &#8964;</a>
+  </div>
+</nav>
+
+<!-- BREADCRUMB -->
+<div class="bc-wrap">
+  <div class="bc">
+    <a href="https://www.wirtualnemedia.pl">Strona g&#322;&#243;wna</a><span class="bc-sep">&#8250;</span>
+    <a href="https://praca.wirtualnemedia.pl">Praca</a><span class="bc-sep">&#8250;</span>
+    <span>Dodaj ofert&#281;</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner"><h1>Dodaj ofert&#281; pracy</h1></div>
+</div>
+
+<!-- VALUE PROPOSITION BANNER -->
+<div class="vp-section">
+  <div class="vp-inner">
+    <div class="vp-left">
+      <h2>Dotrzesz bezpo&#347;rednio<br>do <span>specjalist&#243;w tej bran&#380;y</span> &#8212;<br>nie do przypadkowej bazy</h2>
+      <p>Czytaj&#261; nas osoby, kt&#243;re t&#281; bran&#380;&#281; &#347;ledz&#261; na co dzie&#324; i s&#261; z ni&#261; zawodowo zwi&#261;zane. Twoje og&#322;oszenie trafi do ludzi faktycznie zainteresowanych &#8212; na ka&#380;dym poziomie do&#347;wiadczenia.</p>
+    </div>
+    <div class="vp-right">
+      <div class="vp-tags">
+        <span class="vp-tag og">Media</span>
+        <span class="vp-tag og">Marketing</span>
+        <span class="vp-tag og">PR</span>
+        <span class="vp-tag og">Reklama</span>
+        <span class="vp-tag">E-commerce</span>
+        <span class="vp-tag">Digital</span>
+        <span class="vp-tag">SEO / SEM</span>
+        <span class="vp-tag">Produkcja</span>
+        <span class="vp-tag">AI</span>
+        <span class="vp-tag">Technologie</span>
+        <span class="vp-tag">Social Media</span>
+        <span class="vp-tag">Wydawcy</span>
+        <span class="vp-tag">Dom mediowy</span>
+        <span class="vp-tag">i wiele wi&#281;cej&#8230;</span>
+      </div>
+      <div class="vp-levels">
+        <span class="vp-dot"></span> C-level
+        <span class="vp-dot"></span> Senior &amp; Manager
+        <span class="vp-dot"></span> Mid-level
+        <span class="vp-dot"></span> Junior
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FORM SECTION -->
+<div class="form-section" id="form-anchor">
+  <div class="form-wrap">
+    <div class="form-lede">
+      <h2>Zam&#243;w og&#322;oszenie<br>na Wirtualnemedia.pl</h2>
+      <p>Kilka krok&#243;w i Twoja oferta trafi do tysi&#281;cy specjalist&#243;w bran&#380;y. Szybko, jasno i bez zb&#281;dnych formalno&#347;ci.</p>
+      <div class="form-trust">
+        <div class="form-trust-item">
+          <div class="form-trust-ico"><svg width="15" height="15" fill="#FF5E08" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg></div>
+          <div class="form-trust-text"><strong>Weryfikacja przed publikacj&#261;</strong><span>Konsultant sprawdza ka&#380;de og&#322;oszenie</span></div>
+        </div>
+        <div class="form-trust-item">
+          <div class="form-trust-ico"><svg width="15" height="15" fill="#FF5E08" viewBox="0 0 24 24"><path d="M16 11c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 3-1.34 3-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div>
+          <div class="form-trust-text"><strong>2 mln u&#380;ytkownik&#243;w / mies.</strong><span>Specjali&#347;ci bran&#380;owi, nie przypadkowe osoby</span></div>
+        </div>
+        <div class="form-trust-item">
+          <div class="form-trust-ico"><svg width="15" height="15" fill="#FF5E08" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></div>
+          <div class="form-trust-text"><strong>Newsletter 50 tys. os&#243;b</strong><span>Premium &#8212; Tw&#243;j baner na g&#243;rze skrzynki</span></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div id="prg"></div>
+      <div class="form-card" id="form-content"></div>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-section">
+  <div class="wrap">
+    <div class="stats-title">Szukasz pracownika?<br>Zam&#243;w og&#322;oszenie i znajd&#378; go na Wirtualnemedia.pl</div>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-ico"><svg width="18" height="18" fill="#FF5E08" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg></div><div class="stat-ttl">Najwi&#281;kszy serwis bran&#380;owy</div><div class="stat-sub">w Polsce</div></div>
+      <div class="stat-card"><div class="stat-ico"><svg width="18" height="18" fill="#FF5E08" viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div><div class="stat-ttl">2 Miliony</div><div class="stat-sub">U&#380;ytkownik&#243;w miesi&#281;cznie</div></div>
+      <div class="stat-card"><div class="stat-ico"><svg width="18" height="18" fill="#FF5E08" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></div><div class="stat-ttl">50 Tysi&#281;cy</div><div class="stat-sub">Subskrybent&#243;w newslettera</div></div>
+      <div class="stat-card"><div class="stat-ico"><svg width="18" height="18" fill="#FF5E08" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div><div class="stat-ttl">Precyzyjna grupa docelowa</div><div class="stat-sub">Ze &#347;wiata medi&#243;w, marketingu, reklamy i PR</div></div>
+      <div class="stat-card"><div class="stat-ico"><svg width="18" height="18" fill="#FF5E08" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg></div><div class="stat-ttl">Pomoc konsultant&#243;w</div><div class="stat-sub">Sprawdzanie og&#322;osze&#324; przed publikacj&#261;</div></div>
+      <div class="stat-card"><div class="stat-ico"><svg width="18" height="18" fill="#FF5E08" viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg></div><div class="stat-ttl">Atrakcyjne zni&#380;ki</div><div class="stat-sub">Mo&#380;liwo&#347;&#263; redukcji ceny w pakietach</div></div>
+    </div>
+    <div class="stats-cta"><a href="https://www.wirtualnemedia.pl/kontakt.html" class="btn-og" style="display:inline-flex;width:auto">Skontaktuj si&#281;</a></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo"><svg width="24" height="18" viewBox="0 0 34 24" fill="none"><path d="M1.5 2.5L8.5 21L17 6.5L25.5 21L32.5 2.5" stroke="#FF5E08" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>wirtualnemedia</div>
+        <div class="footer-tagline">O mediach, reklamie, internecie i<br>PR numer 1 w Polsce</div>
+      </div>
+      <div class="fcol"><div class="fcol-title">Wirtualne Media</div><a href="#">O firmie</a><a href="#">Reklama</a><a href="#">Kontakt</a></div>
+      <div class="fcol"><div class="fcol-title">Strona</div><a href="#">RSS</a><a href="#">Regulamin</a><a href="#">Mapa strony</a></div>
+      <div class="fcol"><div class="fcol-title">Do&#322;&#261;cz do nas</div><a href="#">Facebook</a><a href="#">X / Twitter</a><a href="#">LinkedIn</a></div>
+    </div>
+    <div class="footer-btm">
+      <span>&copy;Copyright 2001&ndash;2025 by Wirtualnemedia.pl</span>
+      <span><a href="#">Polityka prywatno&#347;ci</a> &middot; <a href="#">Polityka plik&#243;w cookies</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+/* ============================================================
+   KONFIGURACJA EMAILJS
+   ============================================================ */
+const EJS_KEY = "TWOJ_PUBLIC_KEY";
+const EJS_SVC = "TWOJ_SERVICE_ID";
+const EJS_TPL = "TWOJ_TEMPLATE_ID";
+/* ============================================================ */
+const CFG = ![EJS_KEY,EJS_SVC,EJS_TPL].some(v=>v.startsWith("TWOJ_"));
+if(CFG) emailjs.init({publicKey:EJS_KEY});
+
+const PKG=[
+  {id:"standard",name:"Standard",badge:null,desc:"Og\u0142oszenie na portalu wirtualnemedia.pl",dur:true,
+   p:{"2tyg":{"1-4":550,"5-8":480,"9+":460},"mies":{"1-4":800,"5-8":740,"9+":680}}},
+  {id:"premium",name:"Premium",badge:"Polecany",desc:"Portal + newsletter + etykieta SUPER OFERTA",dur:true,
+   p:{"2tyg":{"1-4":1000,"5-8":880,"9+":820},"mies":{"1-4":1900,"5-8":1600,"9+":1500}}},
+  {id:"specjalna",name:"Oferta specjalna",badge:null,desc:"Artyku\u0142 redakcyjny na stronie g\u0142\u00f3wnej",dur:false}
+];
+const TRYBY=["Stacjonarny","Hybrydowy","Zdalny"];
+const FORMY=["Umowa o prac\u0119","B2B","Umowa zlecenie","Inna"];
+
+// mode: null=wybor, "nowe"=nowe zam, "aktywny"=aktywny pakiet
+// step: w trybie "nowe": 0=mode, 1=pakiet, 2=ogloszenie, 3=faktura, 4=summary
+//       w trybie "aktywny": 0=mode, 2=ogloszenie, 4=summary
+let S={
+  step:0, mode:null, ok:false, err:null, busy:false,
+  pkg:null, dur:"2tyg", qty:"1-4", qtyChosen:1,
+  ad:{s:"",f:"",r:"",t:"",fm:"",opis:"",wym:"",ofer:"",mail:"",link:"",logo:null,logoName:""},
+  bi:{f:"",n:"",a:"",k:"",m:""}
+};
+
+const gp=()=>PKG.find(x=>x.id===S.pkg);
+const bracket=()=>S.qtyChosen<=4?"1-4":S.qtyChosen<=8?"5-8":"9+";
+const gpr=()=>{const p=gp();if(!p)return null;if(!p.dur)return 5000;return p.p[S.dur][bracket()]};
+const c1=()=>S.pkg!==null;
+const c2=()=>{const a=S.ad;return a.s&&a.f&&a.r&&a.t&&a.fm&&(a.opis||a.wym||a.ofer)&&a.mail};
+const c3=()=>{const b=S.bi;return b.f&&b.n&&b.a&&b.k&&b.m};
+const x=s=>(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
+
+function choose(id){S.pkg=id;S.step=1;S.mode="nowe";rdr();document.getElementById("form-anchor").scrollIntoView({behavior:"smooth"})}
+
+function setMode(m){
+  S.mode=m;
+  if(m==="nowe") S.step=1;
+  else{S.step=2;S.pkg=null;}
+  rdr();
+}
+
+function go(n){
+  if(S.mode==="nowe"){
+    if(n===2&&!c1())return;
+    if(n===3&&!c2())return;
+    if(n===4&&!c3())return;
+  } else {
+    if(n===4&&!c2())return;
+  }
+  S.step=n;rdr();
+  document.getElementById("form-anchor").scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+function sp(id){S.pkg=id;rdr()}
+function ss(k,v){S[k]=v;rdr()}
+function sa(k,v){S.ad[k]=v;_upd('btn-next-2',c2());_upd('btn-next-4a',c2())}
+function sb(k,v){S.bi[k]=v;_upd('btn-next-3',c3())}
+function _upd(id,ok){
+  const b=document.getElementById(id);
+  if(!b)return;
+  b.disabled=!ok;
+  b.style.background=ok?'#FF5E08':'#e0e0e0';
+  b.style.color=ok?'#fff':'#aaa';
+  b.style.cursor=ok?'pointer':'default';
+  b.style.transform='';b.style.boxShadow='';
+}
+function handleLogo(input){
+  const f=input.files[0];
+  if(f){S.ad.logo=f;S.ad.logoName=f.name;document.getElementById("logo-name").textContent=f.name;}
+}
+
+async function doSend(){
+  if(S.busy||!CFG)return;
+  S.busy=true;S.err=null;rdr();
+  try{
+    const p=gp(),a=S.ad,b=S.bi;
+    const pkgStr=S.mode==="aktywny"?"Aktywny pakiet":p?`${p.name}${p.dur?" — "+gpr()+" z\u0142 netto ("+( S.dur==="2tyg"?"2 tygodnie":"1 miesi\u0105c")+", pakiet "+S.qty+", liczba og\u0142osze\u0144: "+S.qtyChosen+")":" — 5000 z\u0142 netto"}`:"";
+    const totalStr=S.mode==="nowe"&&p&&p.dur?`\nKwota \u0142\u0105czna: ${(gpr()*S.qtyChosen).toLocaleString('pl-PL')} z\u0142 netto`:"";
+    const billingStr=S.mode==="nowe"?`\n\nDANE DO FAKTURY\nFirma: ${b.f}\nNIP: ${b.n}\nAdres: ${b.a}, ${b.k} ${b.m}`:"";
+    const logoStr=a.logoName?`\nLogotyp: ${a.logoName} (w załączniku)`:"";
+    const msg=`TRYB: ${S.mode==="nowe"?"Nowe zam\u00f3wienie":"Aktywny pakiet"}\nPAKIET: ${pkgStr}${totalStr}\n\nOG\u0141OSZENIE\nStanowisko: ${a.s}\nFirma: ${a.f}\nLokalizacja: ${a.r}\nTryb pracy: ${a.t}\nForma zatrudnienia: ${a.fm}\n\nOpis oferty:\n${a.opis||"\u2014"}\n\nWymagania:\n${a.wym||"\u2014"}\n\nOferujemy:\n${a.ofer||"\u2014"}\n\nMail do zg\u0142osze\u0144: ${a.mail}\nLink do aplikowania: ${a.link||"\u2014"}${logoStr}${billingStr}`;
+    await emailjs.send(EJS_SVC,EJS_TPL,{
+      stanowisko:a.s,firma:a.f,pakiet:pkgStr,
+      subject:`OGŁOSZENIE O PRACĘ — ${a.s} — ${a.f}`,
+      message:msg
+    });
+    S.ok=true;
+  }catch(e){S.err="Błąd: "+(e&&e.text?e.text:e&&e.message?e.message:"spróbuj ponownie")}
+  S.busy=false;rdr();
+}
+
+// ── PROGRESS ──
+function rdrPrg(){
+  if(S.step===0)return"";
+  let nums,labels;
+  if(S.mode==="nowe"){nums=[1,2,3,4];labels=["Pakiet","Og\u0142.","Faktura","Wysy\u0142ka"];}
+  else{nums=[2,4];labels=["Og\u0142oszenie","Wysy\u0142ka"];}
+  let circles="",lbls="";
+  nums.forEach((n,i)=>{
+    const done=S.step>n,active=S.step===n;
+    const cls=done?"done":active?"active":"idle";
+    const inner=done?`<svg width="11" height="11" fill="white" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>`:i+1;
+    circles+=`<div class="prg-circle ${cls}">${inner}</div>`;
+    if(i<nums.length-1)circles+=`<div class="prg-connector ${S.step>n?"done":""}"></div>`;
+    lbls+=`<span class="prg-lbl2 ${cls}">${labels[i]}</span>`;
+  });
+  return`<div class="prg-outer"><div class="prg-circles">${circles}</div><div class="prg-lbls">${lbls}</div></div>`;
+}
+
+function tog(lbl,on,oc){return`<button class="tog ${on?"on":""}" onclick="${oc}">${lbl}</button>`}
+
+// ── STEP 0: mode selector ──
+function s0(){
+  return`<p style="font-size:13.5px;color:#888;margin-bottom:16px">Wybierz opcj&#281;, aby kontynuowa&#263;:</p>
+  <div class="mode-grid">
+    <div class="mode-card ${S.mode==="nowe"?"sel":""}" onclick="setMode('nowe')">
+      <div class="mode-card-icon"><svg width="20" height="20" fill="#FF5E08" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg></div>
+      <div class="mode-card-title">Kupuj&#281; nowe og&#322;oszenie</div>
+      <div class="mode-card-desc">Wybierz pakiet, uzupe&#322;nij tre&#347;&#263; og&#322;oszenia i dane do faktury</div>
+    </div>
+    <div class="mode-card ${S.mode==="aktywny"?"sel":""}" onclick="setMode('aktywny')">
+      <div class="mode-card-icon"><svg width="20" height="20" fill="#FF5E08" viewBox="0 0 24 24"><path d="M20 6h-2.18c.07-.44.18-.88.18-1.5C18 2.015 15.985 0 13.5 0c-1.5 0-2.685.674-3.5 1.78C9.185.675 8 0 6.5 0 4.015 0 2 2.015 2 4.5c0 .625.11 1.065.18 1.5H0v14c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7.5-4c.828 0 1.5.672 1.5 1.5S13.328 5 12.5 5h-1V2.09c.16-.056.322-.09.5-.09zM6.5 2C7.328 2 8 2.672 8 3.5V5H7C6.172 5 5.5 4.328 5.5 3.5S5.672 2 6.5 2zM2 20V8h9v12H2zm11 0V8h9v12h-9z"/></svg></div>
+      <div class="mode-card-title">Mam aktywny pakiet</div>
+      <div class="mode-card-desc">Wklej tylko tre&#347;&#263; og&#322;oszenia &#8212; bez podawania danych firmy i faktury</div>
+    </div>
+  </div>`;
+}
+
+// ── STEP 1: package (nowe only) ──
+function s1(){
+  let h=PKG.map(p=>{
+    const sel=S.pkg===p.id,mn=p.dur?Object.values(p.p["2tyg"])[0]:5000;
+    let ex="";
+    if(sel&&p.id==="specjalna"){
+      ex=`<div class="pkg-ctrl"><div class="special-contact-box">
+        <p style="font-weight:600;color:#333;margin-bottom:10px">Oferta specjalna obejmuje:</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:7px;margin-bottom:14px">
+          <li style="display:flex;gap:8px;font-size:13px;color:#555"><span style="color:#FF5E08;font-size:11px;margin-top:2px;flex-shrink:0">&#10003;</span>Artyku\u0142 redakcyjny z emisj\u0105 na stronie g\u0142\u00f3wnej portalu z informacj\u0105 o prowadzonej rekrutacji</li>
+          <li style="display:flex;gap:8px;font-size:13px;color:#555"><span style="color:#FF5E08;font-size:11px;margin-top:2px;flex-shrink:0">&#10003;</span>Dedykowany artyku\u0142 o rekrutacji na stronie g\u0142\u00f3wnej wirtualnemedia.pl przez 7 dni</li>
+          <li style="display:flex;gap:8px;font-size:13px;color:#555"><span style="color:#FF5E08;font-size:11px;margin-top:2px;flex-shrink:0">&#10003;</span>Og\u0142oszenie w serwisie Praca bezterminowo</li>
+          <li style="display:flex;gap:8px;font-size:13px;color:#555"><span style="color:#FF5E08;font-size:11px;margin-top:2px;flex-shrink:0">&#10003;</span>Dedykowane wsparcie redakcji &#8212; dla najwa\u017cniejszych rekrutacji</li>
+        </ul>
+        <p style="font-size:13px;color:#777">W celu z\u0142o\u017cenia zam\u00f3wienia prosimy o kontakt bezpo&#347;rednio:<br><a href="mailto:praca@wirtualnemedia.pl" style="color:#FF5E08;font-weight:600">praca@wirtualnemedia.pl</a></p>
+      </div></div>`;
+    } else if(sel&&p.dur){
+      ex=`<div class="pkg-ctrl"><div class="ctrl-row">
+        <div class="ctrl-grp"><label>Czas emisji</label><div class="tog-wrap">${tog("2 tygodnie",S.dur==="2tyg","ss('dur','2tyg')")}${tog("Miesi\u0105c",S.dur==="mies","ss('dur','mies')")}</div></div>
+        <div class="ctrl-grp"><label>Liczba og\u0142osze\u0144 <span style="font-weight:400;text-transform:none;letter-spacing:0;color:#bbb">(im wi\u0119cej, tym wi\u0119ksza zni\u017cka)</span></label><div class="tog-wrap">${["1-4","5-8","9+"].map(q=>tog(q,S.qty===q,`ss('qty','${q}')`)).join("")}</div></div>
+      </div><div class="price-row"><span class="price-big">${gpr()} z\u0142</span><span class="price-unit">netto / og\u0142oszenie</span></div>
+      </div>`;
+    }
+    return`<div class="pkg-opt ${sel?"sel":""}" onclick="sp('${p.id}')">
+      <div class="pkg-opt-hd">
+        <div><div class="pkg-opt-name">${p.name}${p.badge?`<span class="pkg-badge">${p.badge}</span>`:""}</div><div class="pkg-opt-desc">${p.desc}</div></div>
+        <div class="pkg-opt-price">od <strong>${mn} z\u0142</strong> netto</div>
+      </div>${ex}
+    </div>`;
+  }).join("");
+  const canNext=S.pkg&&S.pkg!=="specjalna";
+  h+=`<div style="margin-top:18px"><div class="nav-btns">
+    <button onclick="S.step=0;S.mode=null;rdr()" class="btn-back">&larr; Wr\u00f3\u0107</button>
+    <button onclick="go(2)" ${!canNext?"disabled":""} class="btn-primary" style="${!canNext?'background:#ccc;cursor:default':''}">Dalej: Tre\u015b\u0107 og\u0142oszenia &rarr;</button>
+  </div></div>`;
+  if(!CFG)h+=`<p style="font-size:12px;color:#bbb;margin-top:9px;text-align:center">Uzupe\u0142nij dane EmailJS, aby aktywowa\u0107 wysy\u0142k\u0119</p>`;
+  return h;
+}
+
+// ── STEP 2: ad content ──
+function s2(){
+  const a=S.ad;
+  const backBtn=S.mode==="nowe"
+    ?`<button onclick="go(1)" class="btn-back">&larr; Wr\u00f3\u0107</button>`
+    :`<button onclick="S.step=0;S.mode=null;rdr()" class="btn-back">&larr; Wr\u00f3\u0107</button>`;
+  const nextStep=S.mode==="nowe"?3:4;
+  const nextLabel=S.mode==="nowe"?"Dalej: Dane do faktury &rarr;":"Dalej: Podsumowanie &rarr;";
+  const nextId=S.mode==="nowe"?"btn-next-2":"btn-next-4a";
+  const showQty=S.mode==="nowe"&&S.pkg&&S.pkg!=="specjalna";
+  return`
+  ${showQty?`<div style="background:#f8f8f8;border:1.5px solid #e8e8e8;border-radius:8px;padding:13px 16px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+    <div style="font-size:11px;color:#888;font-weight:700;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap">Liczba og\u0142osze\u0144 w pakiecie</div>
+    <input type="number" min="1" max="99" value="${S.qtyChosen}" oninput="S.qtyChosen=Math.max(1,parseInt(this.value)||1)" style="width:72px;padding:7px 10px;border:1.5px solid #ddd;border-radius:6px;font-size:15px;font-weight:700;color:#222;outline:none;text-align:center" onfocus="this.style.borderColor='#FF5E08'" onblur="this.style.borderColor='#ddd'">
+    <span style="font-size:12px;color:#aaa">nie musisz publikowa\u0107 wszystkich od razu</span>
+  </div>`:""}
+  <div class="frow" style="grid-template-columns:1fr 1fr">
+    <div class="fg"><label>Stanowisko *</label><input value="${x(a.s)}" oninput="sa('s',this.value)" placeholder="np. Senior Marketing Manager"></div>
+    <div class="fg"><label>Firma *</label><input value="${x(a.f)}" oninput="sa('f',this.value)" placeholder="Nazwa firmy"></div>
+  </div>
+  <div class="frow" style="grid-template-columns:1fr 1fr 1fr">
+    <div class="fg"><label>Region / lokalizacja *</label><input value="${x(a.r)}" oninput="sa('r',this.value)" placeholder="np. Warszawa / mazowieckie"></div>
+    <div class="fg"><label>Tryb pracy *</label><select onchange="sa('t',this.value)"><option value="">Wybierz</option>${TRYBY.map(o=>`<option${a.t===o?" selected":""}>${o}</option>`).join("")}</select></div>
+    <div class="fg"><label>Forma zatrudnienia *</label><select onchange="sa('fm',this.value)"><option value="">Wybierz</option>${FORMY.map(o=>`<option${a.fm===o?" selected":""}>${o}</option>`).join("")}</select></div>
+  </div>
+  <div class="frow">
+    <div class="fg"><label>Opis oferty</label><textarea rows="4" oninput="sa('opis',this.value)" placeholder="Kr\u00f3tki opis stanowiska i kontekst firmy...">${x(a.opis)}</textarea></div>
+  </div>
+  <div class="frow">
+    <div class="fg"><label>Wymagania</label><textarea rows="4" oninput="sa('wym',this.value)" placeholder="Jakich kompetencji i do\u015bwiadczenia oczekujesz?">${x(a.wym)}</textarea></div>
+  </div>
+  <div class="frow">
+    <div class="fg"><label>Oferujemy</label><textarea rows="4" oninput="sa('ofer',this.value)" placeholder="Co kandydat zyska do\u0142\u0105czaj\u0105c do Twojego zespo\u0142u?">${x(a.ofer)}</textarea></div>
+  </div>
+  <div class="frow" style="grid-template-columns:1fr 1fr">
+    <div class="fg"><label>Mail do wysy\u0142ania zg\u0142osze\u0144 *</label><input type="email" value="${x(a.mail)}" oninput="sa('mail',this.value)" placeholder="rekrutacja@firma.pl"></div>
+    <div class="fg"><label>Link do aplikowania</label><input value="${x(a.link)}" oninput="sa('link',this.value)" placeholder="https://..."></div>
+  </div>
+  <div class="frow">
+    <div class="fg-file">
+      <label>Do\u0142\u0105cz logotyp</label>
+      <input type="file" accept="image/*,.svg,.eps,.ai,.pdf" onchange="handleLogo(this)">
+      <div class="file-hint" id="logo-name">${a.logoName||"Je\u015bli to Twoje pierwsze og\u0142oszenie lub logotyp uleg\u0142 zmianie &mdash; za\u0142\u0105cz plik (PNG, SVG, EPS)"}</div>
+    </div>
+  </div>
+  <div class="nav-btns">${backBtn}<button id="${nextId}" onclick="go(${nextStep})" ${!c2()?"disabled":""} class="btn-primary" style="${!c2()?"background:#e0e0e0;color:#aaa;cursor:default":""}">${nextLabel}</button></div>`;
+}
+
+// ── STEP 3: billing (nowe only) ──
+function s3(){
+  const b=S.bi;
+  return`
+  <div class="frow" style="grid-template-columns:2fr 1fr">
+    <div class="fg"><label>Nazwa firmy *</label><input value="${x(b.f)}" oninput="sb('f',this.value)" placeholder="Pe\u0142na nazwa firmy"></div>
+    <div class="fg"><label>NIP *</label><input value="${x(b.n)}" oninput="sb('n',this.value)" placeholder="0000000000"></div>
+  </div>
+  <div class="frow">
+    <div class="fg"><label>Ulica i numer *</label><input value="${x(b.a)}" oninput="sb('a',this.value)" placeholder="ul. Przyk\u0142adowa 1"></div>
+  </div>
+  <div class="frow" style="grid-template-columns:1fr 2fr">
+    <div class="fg"><label>Kod pocztowy *</label><input value="${x(b.k)}" oninput="sb('k',this.value)" placeholder="00-000"></div>
+    <div class="fg"><label>Miasto *</label><input value="${x(b.m)}" oninput="sb('m',this.value)" placeholder="Warszawa"></div>
+  </div>
+  <div class="nav-btns">
+    <button onclick="go(2)" class="btn-back">&larr; Wr\u00f3\u0107</button>
+    <button id="btn-next-3" onclick="go(4)" ${!c3()?"disabled":""} class="btn-primary" style="${!c3()?"background:#e0e0e0;color:#aaa;cursor:default":""}">Dalej: Podsumowanie &rarr;</button>
+  </div>`;
+}
+
+// ── STEP 4: summary ──
+function sr(k,v){return`<tr><td style="color:#bbb;padding:4px 0;width:38%;font-size:13.5px;vertical-align:top">${k}</td><td style="color:#333;padding:4px 0;font-size:13.5px">${v||"&mdash;"}</td></tr>`}
+
+function s4(){
+  if(S.ok)return`<div class="success-box">
+    <div class="success-icon"><svg width="28" height="28" fill="#FF5E08" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+    <div style="font-size:18px;font-weight:700;color:#222;margin-bottom:7px">Zam\u00f3wienie wys\u0142ane</div>
+    <div style="font-size:13.5px;color:#888;line-height:1.6">Wiadomo\u015b\u0107 trafi\u0142a na praca@wirtualnemedia.pl.<br>Odezwiemy si\u0119 wkr\u00f3tce.</div>
+  </div>`;
+  const p=gp(),a=S.ad,b=S.bi;
+  const priceEach=p&&p.dur?gpr():p?5000:0;
+  const total=p&&p.dur?priceEach*S.qtyChosen:priceEach;
+  const ps=S.mode==="aktywny"?"Aktywny pakiet":
+    p&&p.dur?`${S.dur==="2tyg"?"2 tygodnie":"Miesi\u0105c"} \u00b7 pakiet ${S.qty}`:
+    `<strong style="color:#FF5E08">5000 z\u0142 netto</strong>`;
+  const priceBlock=S.mode==="nowe"&&p&&p.dur?`
+    <div style="margin-top:10px;background:#f8f8f8;border-radius:7px;padding:12px 14px">
+      <div style="display:flex;justify-content:space-between;font-size:12.5px;color:#888;margin-bottom:4px">
+        <span>Cena za og\u0142oszenie <span style="background:#eee;border-radius:3px;padding:1px 6px;font-size:11px;font-weight:600;color:#666">pakiet ${bracket()}</span></span>
+        <span style="font-weight:600;color:#555">${priceEach.toLocaleString('pl-PL')} z\u0142</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:12.5px;color:#888;margin-bottom:8px">
+        <span>Liczba og\u0142osze\u0144</span>
+        <span style="font-weight:600;color:#555">${S.qtyChosen} szt.</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid #e0e0e0;padding-top:8px">
+        <span style="font-size:13px;font-weight:700;color:#555">Razem netto</span>
+        <span style="font-size:22px;font-weight:800;color:#FF5E08">${total.toLocaleString('pl-PL')} z\u0142</span>
+      </div>
+    </div>`:"";
+  const backStep=S.mode==="nowe"?3:2;
+  return`
+  <div class="sum-block"><div class="sum-lbl">Tryb / Pakiet</div>
+    <div style="font-weight:700;font-size:14px;margin-bottom:4px">${S.mode==="nowe"?(p?p.name:""):"Aktywny pakiet"}</div>
+    <div style="font-size:13px;color:#888">${ps}</div>
+    ${priceBlock}
+  </div>
+  <div class="sum-block"><div class="sum-lbl">Og\u0142oszenie</div><table style="width:100%;border-collapse:collapse">
+    ${sr("Stanowisko",x(a.s))}${sr("Firma",x(a.f))}${sr("Region",x(a.r))}
+    ${sr("Tryb pracy",a.t)}${sr("Forma zatrudnienia",a.fm)}
+    ${sr("Mail do zg\u0142osze\u0144",x(a.mail))}${sr("Link",x(a.link)||"&mdash;")}
+    ${a.logoName?sr("Logotyp",x(a.logoName)):""}
+  </table></div>
+  ${S.mode==="nowe"?`<div style="margin-bottom:22px"><div class="sum-lbl">Faktura</div><table style="width:100%;border-collapse:collapse">${sr("Firma",x(b.f))}${sr("NIP",x(b.n))}${sr("Adres",x(`${b.a}, ${b.k} ${b.m}`))}</table></div>`:""}
+  ${S.err?`<p style="color:#c0392b;font-size:13px;margin-bottom:12px">${S.err}</p>`:""}
+  <div class="nav-btns">
+    <button onclick="go(${backStep})" class="btn-back">&larr; Wr\u00f3\u0107</button>
+    <button onclick="doSend()" ${S.busy||!CFG?"disabled":""} class="btn-primary">
+      ${S.busy?`<span class="spin"></span>Wysy\u0142anie...`:"Wy\u015blij zam\u00f3wienie \u2192"}
+    </button>
+  </div>
+  ${!CFG?`<p style="font-size:12px;color:#bbb;margin-top:9px">Uzupe\u0142nij dane EmailJS w konfiguracji pliku HTML</p>`:""}`;
+}
+
+function rdr(){
+  document.getElementById("prg").innerHTML=rdrPrg();
+  const fn={0:s0,1:s1,2:s2,3:s3,4:s4};
+  document.getElementById("form-content").innerHTML=fn[S.step]();
+}
+
+window.choose=choose;window.setMode=setMode;window.go=go;
+window.sp=sp;window.ss=ss;window.sa=sa;window.sb=sb;
+window.doSend=doSend;window.handleLogo=handleLogo;
+rdr();
+</script>
+</body>
+</html>
