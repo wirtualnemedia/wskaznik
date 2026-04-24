@@ -1,0 +1,1056 @@
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dodaj ogłoszenie — Praca w mediach | Wirtualne Media</title>
+<meta name="ext-resource-dependency" content="logo-dark.png" data-resource-id="logoDark" />
+<template id="__bundler_thumbnail" data-bg-color="#F4F4F5">
+  <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+    <rect width="400" height="300" fill="#F4F4F5"/>
+    <rect x="0" y="0" width="400" height="52" fill="#0D1B2A"/>
+    <rect x="20" y="16" width="80" height="20" rx="3" fill="#F05A28" opacity="0.8"/>
+    <rect x="20" y="72" width="360" height="60" rx="6" fill="#0D1B2A"/>
+    <rect x="20" y="148" width="112" height="130" rx="6" fill="#fff" stroke="#E0E0E0" stroke-width="1.5"/>
+    <rect x="144" y="148" width="112" height="130" rx="6" fill="#fff" stroke="#F05A28" stroke-width="2"/>
+    <rect x="268" y="148" width="112" height="130" rx="6" fill="#fff" stroke="#E0E0E0" stroke-width="1.5"/>
+    <rect x="32" y="248" width="88" height="22" rx="11" fill="#E0E0E0"/>
+    <rect x="156" y="248" width="88" height="22" rx="11" fill="#F05A28"/>
+    <rect x="280" y="248" width="88" height="22" rx="11" fill="#E0E0E0"/>
+  </svg>
+</template>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="base.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+  const EMAILJS_PUBLIC_KEY  = 'HGkGbjmJ_jRNTvG7b';
+  const EMAILJS_SERVICE_ID  = 'service_556awvd';
+  const EMAILJS_TEMPLATE_ID = 'template_9f3kjok';
+  (function(){ emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY }); })();
+</script>
+<style>
+:root {
+  --orange:#F05A28; --orange-h:#C94316; --navy:#0D1B2A;
+  --g50:#F9F9FA; --g100:#F4F4F5; --g200:#E8E8EA; --g300:#D4D4D8;
+  --g400:#A1A1AA; --g500:#71717A; --g600:#52525B; --g800:#27272A; --g900:#18181B;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Barlow',system-ui,sans-serif;background:var(--g100);color:var(--g900);min-height:100vh;}
+a{color:inherit;text-decoration:none;}
+button{font-family:'Barlow',sans-serif;cursor:pointer;border:none;background:none;}
+#root{min-height:100vh;display:flex;flex-direction:column;}
+
+/* Stepper */
+.stepper{display:flex;align-items:center;}
+.step-item{display:flex;align-items:center;gap:9px;}
+.step-circle{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;transition:all .2s;}
+.step-circle.done{background:var(--g200);color:var(--g600);}
+.step-circle.active{background:var(--orange);color:#fff;box-shadow:0 0 0 3px rgba(240,90,40,.18);}
+.step-circle.pending{background:var(--g200);color:var(--g400);}
+.step-label{font-size:13px;font-weight:600;white-space:nowrap;}
+.step-label.active{color:var(--orange);}
+.step-label.done{color:var(--g500);}
+.step-label.pending{color:var(--g400);}
+.step-conn{flex:1;min-width:24px;max-width:44px;height:2px;background:var(--g200);margin:0 6px;}
+.step-conn.done{background:var(--g300);}
+
+/* Cards */
+.card{background:#fff;border-radius:6px;border:1.5px solid var(--g200);transition:border-color .15s,box-shadow .15s;}
+.card:hover{border-color:var(--g300);box-shadow:0 2px 12px rgba(0,0,0,.07);}
+.card.selected{border-color:var(--orange);box-shadow:0 0 0 3px rgba(240,90,40,.12);}
+
+/* Package cards */
+.pkg-card{padding:26px 22px;cursor:pointer;position:relative;display:flex;flex-direction:column;}
+.pkg-badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:3px;margin-bottom:10px;align-self:flex-start;}
+.pkg-name{font-size:22px;font-weight:800;color:var(--g900);}
+.pkg-tagline{font-size:12px;color:var(--g500);margin:3px 0 14px;}
+.pkg-price{font-size:36px;font-weight:800;color:var(--g900);line-height:1;}
+.pkg-price span{font-size:15px;font-weight:500;color:var(--g500);}
+.pkg-netto{font-size:11px;color:var(--g400);margin-top:3px;}
+.pkg-divider{height:1px;background:var(--g200);margin:16px 0;}
+.pkg-feature{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--g600);margin-bottom:9px;line-height:1.4;}
+.pkg-popular-tag{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;font-size:10px;font-weight:700;padding:3px 12px;border-radius:20px;white-space:nowrap;letter-spacing:.05em;text-transform:uppercase;}
+.pkg-btn{width:100%;margin-top:auto;padding-top:18px;}
+.pkg-btn-inner{width:100%;padding:10px;border-radius:9999px;font-size:14px;font-weight:700;font-family:'Barlow',sans-serif;cursor:pointer;transition:all .15s;border:2px solid transparent;}
+.pkg-btn-outline{background:#fff;border-color:var(--g300);color:var(--g700);}
+.pkg-btn-outline:hover{border-color:var(--navy);color:var(--navy);}
+.pkg-btn-filled{background:var(--orange);color:#fff;border-color:var(--orange);}
+.pkg-btn-filled:hover{background:var(--orange-h);border-color:var(--orange-h);}
+
+/* Form */
+.field-group{margin-bottom:18px;}
+.field-label{font-size:13px;font-weight:600;color:var(--g800);margin-bottom:6px;display:flex;align-items:center;gap:4px;flex-wrap:wrap;}
+.field-req{color:var(--orange);}
+.field-opt{font-size:12px;font-weight:400;color:var(--g400);margin-left:2px;}
+.input-field{width:100%;font-family:'Barlow',sans-serif;font-size:14px;color:var(--g900);background:#fff;border:1.5px solid var(--g300);border-radius:4px;padding:10px 12px;outline:none;transition:border-color .15s,box-shadow .15s;}
+.input-field:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(240,90,40,.1);}
+.input-field.error{border-color:#dc2626;}
+.input-field::placeholder{color:var(--g400);}
+textarea.input-field{resize:vertical;line-height:1.6;min-height:110px;}
+select.input-field{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2371717A' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:36px;cursor:pointer;}
+.field-hint{font-size:11px;color:var(--g400);margin-top:4px;line-height:1.5;}
+.field-error{font-size:11px;color:#dc2626;margin-top:4px;font-weight:600;}
+.input-counter{font-size:11px;color:var(--g400);text-align:right;margin-top:3px;}
+
+.upload-zone{border:2px dashed var(--g300);border-radius:4px;padding:20px;text-align:center;cursor:pointer;transition:all .15s;}
+.upload-zone:hover{border-color:var(--orange);background:rgba(240,90,40,.03);}
+.upload-zone.has-file{border-style:solid;border-color:var(--orange);background:rgba(240,90,40,.04);}
+
+.radio-group{display:flex;flex-wrap:wrap;gap:8px;}
+.radio-pill{display:flex;align-items:center;gap:6px;padding:7px 16px;border-radius:9999px;border:1.5px solid var(--g300);cursor:pointer;font-size:13px;font-weight:500;color:var(--g700);transition:all .15s;user-select:none;}
+.radio-pill:hover{border-color:var(--g500);}
+.radio-pill.active{border-color:var(--orange);background:rgba(240,90,40,.06);color:var(--orange);font-weight:700;}
+.radio-pill input{display:none;}
+
+.mode-toggle{display:inline-flex;background:#fff;border:1.5px solid var(--g200);border-radius:9999px;padding:4px;gap:4px;}
+.mode-btn{padding:9px 22px;border-radius:9999px;font-size:13px;font-weight:600;font-family:'Barlow',sans-serif;cursor:pointer;border:none;transition:all .15s;color:var(--g500);background:none;}
+.mode-btn.active{background:var(--navy);color:#fff;}
+
+.section-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--g400);margin-bottom:14px;}
+.hint-tip{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--orange);margin-top:5px;font-weight:500;}
+.section-divider{height:1px;background:var(--g200);margin:24px 0;}
+
+.btn{font-family:'Barlow',sans-serif;font-weight:700;font-size:14px;border-radius:9999px;padding:11px 28px;cursor:pointer;transition:all .15s;border:none;display:inline-flex;align-items:center;gap:8px;}
+.btn-primary{background:var(--orange);color:#fff;}
+.btn-primary:hover{background:var(--orange-h);}
+.btn-primary:disabled{background:var(--g300);color:var(--g400);cursor:not-allowed;}
+.btn-secondary{background:#fff;color:var(--g800);border:1.5px solid var(--g300);}
+.btn-secondary:hover{border-color:var(--navy);color:var(--navy);}
+
+.preview-header{background:var(--navy);padding:24px 28px;color:#fff;}
+.preview-body{padding:26px 28px;}
+.preview-meta-row{display:flex;align-items:center;gap:6px;font-size:13px;color:rgba(255,255,255,.65);margin-bottom:4px;}
+
+.confirm-icon{width:64px;height:64px;border-radius:50%;background:rgba(240,90,40,.1);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* ── useIsMobile hook injected via JS ── */
+@media(max-width:680px){
+  .stepper .step-label{display:none;}
+  .step-conn{min-width:10px!important;max-width:20px!important;margin:0 3px!important;}
+  .mode-toggle{width:100%!important;display:flex!important;}
+  .mode-btn{flex:1;font-size:12px!important;padding:8px 6px!important;text-align:center;}
+  .radio-group{gap:6px;}
+  .radio-pill{padding:6px 10px;font-size:12px;}
+  .pkg-card{padding:18px 14px!important;}
+  .pkg-name{font-size:17px!important;}
+  .form-2col{grid-template-columns:1fr!important;}
+  .preview-layout{grid-template-columns:1fr!important;}
+  .billing-2col{grid-template-columns:1fr!important;}
+  .salary-row{flex-direction:column!important;gap:8px!important;}
+  .main-content{padding:20px 14px 48px!important;}
+  .pkg-grid{grid-template-columns:1fr!important;}
+  .pkg-grid > div > div:first-child{display:none!important;}
+  .btn{padding:10px 16px!important;font-size:13px!important;}
+  h1{font-size:20px!important;}
+  h2{font-size:16px!important;}
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+
+/* ── useIsMobile ── */
+function useIsMobile(bp=680){
+  const [m,setM]=React.useState(()=>window.innerWidth<=bp);
+  React.useEffect(()=>{
+    const h=()=>setM(window.innerWidth<=bp);
+    window.addEventListener('resize',h);
+    return()=>window.removeEventListener('resize',h);
+  },[bp]);
+  return m;
+}
+
+/* ── Icons ── */
+const IC = ({n,size=16,color='currentColor',sw=1.8})=>{
+  const d={
+    check:<polyline points="20 6 9 17 4 12"/>,
+    'chk-c':<><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></>,
+    building:<><rect x="3" y="3" width="7" height="18"/><rect x="14" y="7" width="7" height="14"/><path d="M3 21h18"/></>,
+    map:<><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></>,
+    briefcase:<><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></>,
+    star:<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>,
+    upload:<><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></>,
+    eye:<><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></>,
+    arrow:<><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></>,
+    'arr-l':<><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></>,
+    info:<><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></>,
+    mail:<><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></>,
+    phone:<><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.55 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></>,
+    send:<><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></>,
+    receipt:<><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1-2-1z"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="11" y1="17" x2="13" y2="17"/></>,
+    newspaper:<><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8M15 18h-5M10 6h8v4h-8z"/></>,
+  };
+  return(
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round">
+      {d[n]}
+    </svg>
+  );
+};
+
+/* ── Data ── */
+const PACKAGES=[
+  {
+    id:'standard', name:'Standard', tagline:'Prosto i skutecznie',
+    badge:'Popularne', badgeColor:'#C94316', badgeBg:'rgba(240,90,40,0.1)',
+    price:550, popular:true,
+    features:[
+      'Ogłoszenie aktywne 14 dni',
+      'Widoczność w liście ofert pracy',
+      'Logo firmy w ogłoszeniu',
+      'Utworzenie profilu pracodawcy'
+    ],
+  },
+  {
+    id:'premium', name:'Premium', tagline:'Największy zasięg',
+    badge:'Super oferta', badgeColor:'#854D0E', badgeBg:'#FEF3C7',
+    price:999,
+    features:[
+      'Ogłoszenie aktywne 30 dni',
+      'Logo firmy w ogłoszeniu',
+      'Wyróżnienie SUPER OFERTA na liście',
+      'Obecność oferty w newsletterze wysyłanym codziennie do 45 tys. subskrybentów',
+      'Utworzenie profilu pracodawcy'
+    ],
+  },
+  {
+    id:'special', name:'Special', tagline:'Dla najważniejszych rekrutacji',
+    badge:'Premium+', badgeColor:'#1E3A5F', badgeBg:'#EFF6FF',
+    price:4999, topPick:true,
+    features:[
+      'Wszystkie świadczenia pakietu Premium',
+      'Dedykowany artykuł o rekrutacji na stronie głównej wirtualnemedia.pl przez 7 dni',
+      'Ogłoszenie w serwisie Praca bezterminowo',
+      'Wsparcie dedykowanego konsultanta',
+    ],
+  },
+];
+
+const WORK_TYPES=['Stacjonarnie','Zdalnie','Hybrydowo'];
+const LOCATIONS=['Cała Polska','Dolnośląskie','Kujawsko-Pomorskie','Lubelskie','Lubuskie','Łódzkie','Małopolskie','Mazowieckie','Opolskie','Podkarpackie','Podlaskie','Pomorskie','Śląskie','Świętokrzyskie','Warmińsko-Mazurskie','Wielkopolskie','Zachodniopomorskie'];
+
+/* ── Stepper ── */
+function Stepper({step, mode}){
+  const steps = mode==='active'
+    ? ['Pakiet','Treść ogłoszenia','Podgląd i wysyłka']
+    : ['Pakiet','Treść ogłoszenia','Dane i rozliczenia','Podgląd i wysyłka'];
+  return(
+    <div className="stepper">
+      {steps.map((label,i)=>{
+        const s=i+1;
+        const status=s<step?'done':s===step?'active':'pending';
+        return(
+          <React.Fragment key={label}>
+            <div className="step-item">
+              <div className={`step-circle ${status}`}>
+                {status==='done'?<IC n="check" size={13}/>:s}
+              </div>
+              <span className={`step-label ${status}`}>{label}</span>
+            </div>
+            {i<steps.length-1&&<div className={`step-conn ${s<step?'done':''}`}/>}
+          </React.Fragment>
+        );
+      })}
+    </div>
+  );
+}
+
+/* ── Audience Banner ── */
+function AudienceBanner(){
+  const chips=['Media','Marketing','PR','Reklama','Digital','Prasa','Technologie'];
+  const levels=[
+    {label:'C-level',color:'#F05A28'},
+    {label:'Senior & Manager',color:'#C94316'},
+    {label:'Mid-level',color:'rgba(255,255,255,0.5)'},
+    {label:'Junior',color:'rgba(255,255,255,0.3)'},
+  ];
+  return(
+    <div style={{background:'var(--navy)',borderRadius:6,padding:'18px 22px',marginBottom:20,width:'100%'}}>
+      <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',gap:16,marginBottom:12,flexWrap:'wrap'}}>
+        <div style={{flex:1,minWidth:220}}>
+          <div style={{fontSize:16,fontWeight:800,color:'#fff',lineHeight:1.3,marginBottom:6}}>
+            Dotrzesz <span style={{color:'var(--orange)'}}>bezpośrednio</span> do specjalistów mediów i marketingu
+          </div>
+          <div style={{fontSize:12,color:'rgba(255,255,255,0.45)',lineHeight:1.6}}>
+            Kilka kroków i Twoja oferta trafi do tysięcy specjalistów branży.<br/>Szybko, jasno i bez zbędnych formalności.
+          </div>
+        </div>
+
+      </div>
+      <div style={{display:'flex',flexWrap:'wrap',gap:6,marginBottom:12}}>
+        {chips.map(c=>(
+          <span key={c} style={{fontSize:11,fontWeight:600,padding:'4px 10px',borderRadius:9999,border:'1px solid rgba(255,255,255,0.2)',color:'rgba(255,255,255,0.75)',background:'rgba(255,255,255,0.06)'}}>{c}</span>
+        ))}
+        <span style={{fontSize:11,fontWeight:500,padding:'4px 10px',borderRadius:9999,border:'1px solid rgba(255,255,255,0.12)',color:'rgba(255,255,255,0.35)'}}>i wiele innych…</span>
+      </div>
+      <div style={{display:'flex',alignItems:'center',gap:16,flexWrap:'wrap'}}>
+        {levels.map(lv=>(
+          <div key={lv.label} style={{display:'flex',alignItems:'center',gap:5}}>
+            <div style={{width:7,height:7,borderRadius:'50%',background:lv.color,flexShrink:0}}/>
+            <span style={{fontSize:11,fontWeight:500,color:'rgba(255,255,255,0.5)'}}>{lv.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ── Qty Picker + CTA ── */
+function QtyPicker({qty,onChange,selected,onNext}){
+  const p=selected?PACKAGES.find(x=>x.id===selected):null;
+  const discount=qty>=8;
+  const net=p?Math.round(p.price*qty*(discount?0.85:1)):0;
+  return(
+    <div style={{background:'#fff',border:'1.5px solid var(--g200)',borderRadius:6,padding:'16px 20px',marginBottom:12}}>
+      <div style={{display:'flex',alignItems:'center',gap:16,marginBottom:discount?10:14}}>
+        <div style={{flex:1}}>
+          <div style={{fontSize:13,fontWeight:700,color:'var(--g900)',marginBottom:2}}>Liczba ogłoszeń w zamówieniu</div>
+          <div style={{fontSize:12,color:'var(--g400)'}}>Spokojnie. Nie musisz dodawać wszystkich ogłoszeń od razu. Pakiet jest aktywny do końca roku kalendarzowego.</div>
+        </div>
+        <div style={{display:'flex',alignItems:'center',border:'1.5px solid var(--g200)',borderRadius:9999,overflow:'hidden',flexShrink:0}}>
+          <button onClick={()=>onChange(Math.max(1,qty-1))} style={{width:38,height:38,display:'flex',alignItems:'center',justifyContent:'center',fontSize:20,color:qty===1?'var(--g300)':'var(--g700)',background:'none',border:'none',cursor:qty===1?'default':'pointer',fontWeight:300,lineHeight:1}}>−</button>
+          <div style={{minWidth:36,textAlign:'center',fontSize:16,fontWeight:800,color:'var(--g900)',borderLeft:'1px solid var(--g200)',borderRight:'1px solid var(--g200)',height:38,lineHeight:'38px'}}>{qty}</div>
+          <button onClick={()=>onChange(qty+1)} style={{width:38,height:38,display:'flex',alignItems:'center',justifyContent:'center',fontSize:20,color:'var(--g700)',background:'none',border:'none',cursor:'pointer',fontWeight:300,lineHeight:1}}>+</button>
+        </div>
+      </div>
+      {discount&&(
+        <div style={{display:'flex',alignItems:'center',gap:7,padding:'8px 12px',background:'rgba(240,90,40,0.07)',border:'1px solid rgba(240,90,40,0.25)',borderRadius:4,marginBottom:14,fontSize:12,color:'var(--g700)'}}>
+          <IC n="star" size={13} color="var(--orange)"/>
+          <span><strong style={{color:'var(--orange)'}}>−15% rabatu</strong> za zamówienie 8 lub więcej ogłoszeń. Oszczędzasz {p?Math.round(p.price*qty*0.15).toLocaleString('pl-PL'):0} zł netto.</span>
+        </div>
+      )}
+      <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:12,flexWrap:'wrap'}}>
+        {p?(
+          <div style={{fontSize:13,color:'var(--g600)'}}>
+            Razem: <strong style={{color:'var(--g900)',fontSize:16}}>{net.toLocaleString('pl-PL')} zł</strong>{' '}
+            <span style={{color:'var(--g400)'}}>netto</span>
+            {discount&&<span style={{fontSize:11,color:'var(--g400)',marginLeft:6,textDecoration:'line-through'}}>{(p.price*qty).toLocaleString('pl-PL')} zł</span>}
+          </div>
+        ):<div style={{fontSize:13,color:'var(--g400)'}}>Wybierz pakiet powyżej</div>}
+        <button
+          className="btn btn-primary"
+          disabled={!selected}
+          onClick={onNext}
+          style={{fontSize:14,padding:'10px 24px'}}>
+          Dodaj ogłoszenie <IC n="arrow" size={14}/>
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ── Step 1: Packages ── */
+function StepPackage({selected,onSelect,onSelectAndNext,qty,onQtyChange,mode,onModeChange,onGoActive}){
+  const isMobile=useIsMobile();
+  return(
+    <div>
+      {/* Górna sekcja — wyśrodkowana */}
+      <div style={{display:'flex',flexDirection:'column',alignItems:'center',textAlign:'center',marginBottom:28}}>
+        <div style={{width:'100%',marginBottom:16}}><AudienceBanner/></div>
+        <div className="mode-toggle" style={{width:isMobile?'100%':undefined}}>
+          <button className={`mode-btn ${mode==='new'?'active':''}`}
+            onClick={()=>{ onModeChange('new'); setTimeout(()=>{const el=document.getElementById('pkg-grid');if(el){const y=el.getBoundingClientRect().top+window.scrollY-100;window.scrollTo({top:y,behavior:'smooth'});}},50); }}>
+            Kupuję nowe ogłoszenie
+          </button>
+          <button className={`mode-btn ${mode==='active'?'active':''}`} onClick={onGoActive}>Mam aktywny pakiet</button>
+        </div>
+      </div>
+
+      {/* Karty — od lewej */}
+      <div style={{display:'flex',alignItems:'baseline',gap:10,marginBottom:12,flexWrap:'wrap'}}>
+        <h2 id="pkg-grid" style={{fontSize:isMobile?16:18,fontWeight:800,color:'var(--g900)',letterSpacing:'-.01em',margin:0}}>Wybierz typ ogłoszenia</h2>
+      </div>
+      <div style={{display:'flex',alignItems:'center',gap:8,padding:'9px 14px',background:'rgba(240,90,40,0.07)',border:'1px solid rgba(240,90,40,0.2)',borderRadius:6,marginBottom:16,fontSize:13,color:'var(--g700)'}}>
+        <IC n="star" size={14} color="var(--orange)"/>
+        <span><strong style={{color:'var(--orange)'}}>−15% rabatu</strong> za zamówienie 8 lub więcej ogłoszeń.</span>
+      </div>
+      <div className="pkg-grid" style={{display:'grid',gridTemplateColumns:isMobile?'1fr':'repeat(3,1fr)',gap:isMobile?12:20,marginBottom:16,alignItems:'stretch'}}>
+        {PACKAGES.map(pkg=>(
+          <div key={pkg.id} style={{display:'flex',flexDirection:'column'}}>
+            {/* Label row above card */}
+            <div style={{height:isMobile?0:24,overflow:'hidden',display:'flex',alignItems:'center',justifyContent:'center',marginBottom:isMobile?0:4}}>
+              {pkg.popular&&<div style={{background:'var(--navy)',color:'#fff',fontSize:10,fontWeight:700,padding:'3px 12px',borderRadius:20,whiteSpace:'nowrap',letterSpacing:'.05em',textTransform:'uppercase'}}>Najczęściej wybierany</div>}
+            </div>
+            <div
+              className={`card pkg-card ${selected===pkg.id?'selected':''}`}
+              onClick={()=>onSelect(pkg.id)}
+              style={{flex:1,display:'flex',flexDirection:'column',padding:'18px 20px',cursor:'pointer'}}>
+              {/* Top — wyśrodkowane */}
+              <div style={{textAlign:'center',marginBottom:14}}>
+                <div className="pkg-badge" style={{color:pkg.badgeColor,background:pkg.badgeBg,display:'inline-block',marginBottom:8}}>{pkg.badge}</div>
+                <div className="pkg-name">{pkg.name}</div>
+                <div className="pkg-tagline">{pkg.tagline}</div>
+                <div style={{display:'flex',alignItems:'baseline',gap:4,justifyContent:'center',marginTop:10}}>
+                  <span style={{fontSize:30,fontWeight:800,color:'var(--g900)',lineHeight:1}}>{pkg.price.toLocaleString('pl-PL')} zł</span>
+                  <span style={{fontSize:11,color:'var(--g400)',fontWeight:500}}>netto</span>
+                </div>
+              </div>
+              <div className="pkg-divider"/>
+              {/* Features — od lewej */}
+              <div style={{flex:1}}>
+                {pkg.features.map((f,i)=>(
+                  <div key={i} style={{display:'flex',alignItems:'flex-start',gap:8,fontSize:13,color:'var(--g600)',marginBottom:8,lineHeight:1.4}}>
+                    <div style={{width:14,height:14,flexShrink:0,marginTop:1,display:'flex',alignItems:'center',justifyContent:'center'}}>
+                      <IC n="check" size={12} color="#F05A28" sw={2.5}/>
+                    </div>
+                    <span>{f}</span>
+                  </div>
+                ))}
+              </div>
+              {/* Button */}
+              <div style={{marginTop:18}}>
+                <button
+                  style={{width:'100%',padding:10,borderRadius:9999,fontSize:13,fontWeight:700,fontFamily:'Barlow,sans-serif',cursor:'pointer',transition:'all .15s',border:'2px solid transparent',
+                    background:selected===pkg.id?'var(--orange)':'#fff',
+                    borderColor:selected===pkg.id?'var(--orange)':'var(--g300)',
+                    color:selected===pkg.id?'#fff':'var(--g700)'}}
+                  onClick={e=>{e.stopPropagation();onSelect(pkg.id);}}>
+                  {selected===pkg.id?'✓ Wybrany':'Wybierz'}
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {mode==='new'&&<QtyPicker qty={qty} onChange={onQtyChange} selected={selected} onNext={()=>onSelectAndNext(selected)}/>}
+      <div style={{fontSize:12,color:'var(--g500)',marginBottom:8,display:'flex',alignItems:'center',gap:6}}>
+        <IC n="info" size={12} color="var(--g400)"/>
+        Ceny netto. Do kwoty zostanie doliczony VAT 23%.
+      </div>
+      <div style={{display:'flex',alignItems:'center',gap:12,padding:'12px 16px',background:'#FFF7F5',border:'1.5px solid rgba(240,90,40,0.25)',borderRadius:6,marginBottom:10}}>
+        <IC n="mail" size={17} color="var(--orange)"/>
+        <span style={{fontSize:13,color:'var(--g700)'}}>Potrzebujesz niestandardowej oferty lub masz pytania? <strong>Napisz do nas na:</strong> <a href="mailto:praca@wirtualnemedia.pl" style={{color:'var(--orange)',fontWeight:700}}>praca@wirtualnemedia.pl</a></span>
+      </div>
+    </div>
+  );
+}
+
+/* ── RadioGroup ── */
+function RadioGroup({name,options,value,onChange}){
+  return(
+    <div className="radio-group">
+      {options.map(opt=>(
+        <label key={opt} className={`radio-pill ${value===opt?'active':''}`}>
+          <input type="radio" name={name} value={opt} checked={value===opt} onChange={()=>onChange(opt)}/>
+          {opt}
+        </label>
+      ))}
+    </div>
+  );
+}
+
+/* ── ModeToggle ── */
+function ModeToggle({mode,onChange}){
+  return(
+    <div style={{marginBottom:28}}>
+      <div className="field-label" style={{marginBottom:10}}>Rodzaj zakupu</div>
+      <div className="mode-toggle">
+        <button className={`mode-btn ${mode==='new'?'active':''}`} onClick={()=>onChange('new')}>Kupuję nowe ogłoszenie</button>
+        <button className={`mode-btn ${mode==='active'?'active':''}`} onClick={()=>onChange('active')}>Mam aktywny pakiet</button>
+      </div>
+      {mode==='active'&&(
+        <div style={{marginTop:10,padding:'10px 14px',background:'rgba(240,90,40,0.06)',border:'1px solid rgba(240,90,40,0.2)',borderRadius:4,fontSize:12,color:'var(--g700)',lineHeight:1.6}}>
+          <IC n="info" size={12} color="var(--orange)"/>{' '}
+          Masz aktywny pakiet — wypełnij treść ogłoszenia. Nasz zespół doda je do Twojego konta bez dodatkowej płatności.
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ── Step 2: Form ── */
+function StepForm({form,onChange,errors,mode,pkg}){
+  const isMobile=useIsMobile();
+  function set(k,v){onChange({...form,[k]:v});}
+  const isNew=mode==='new';
+  const p=pkg?PACKAGES.find(x=>x.id===pkg):null;
+  return(
+    <div>
+      <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:12,marginBottom:4}}>
+        <h1 style={{fontSize:23,fontWeight:800,color:'var(--g900)',letterSpacing:'-.02em'}}>Treść ogłoszenia</h1>
+        {p&&<div style={{display:'flex',alignItems:'center',gap:8,padding:'5px 12px',background:'var(--g100)',border:'1.5px solid var(--g200)',borderRadius:9999}}>
+          <div style={{width:8,height:8,borderRadius:'50%',background:'var(--orange)'}}/>
+          <span style={{fontSize:12,fontWeight:700,color:'var(--g800)'}}>Pakiet {p.name} · {p.price.toLocaleString('pl-PL')} zł netto</span>
+        </div>}
+      </div>
+      <p style={{fontSize:13,color:'var(--g500)',marginBottom:24}}>Jeśli wykupiłeś/aś więcej niż jedno ogłoszenie, tutaj dodaj pierwsze z pakietu.</p>
+
+      {/* Firma */}
+      <div className="section-label">Informacje o firmie</div>
+      <div style={{display:'grid',gridTemplateColumns:isMobile?'1fr':'1fr 1fr',gap:14}}>
+        <div className="field-group">
+          <div className="field-label">Nazwa firmy <span className="field-req">*</span></div>
+          <input className={`input-field ${errors.company?'error':''}`} placeholder="Nazwa rekrutującej firmy" value={form.company} onChange={e=>set('company',e.target.value)}/>
+          {errors.company&&<div className="field-error">{errors.company}</div>}
+        </div>
+        {isNew&&(
+          <div className="field-group">
+            <div className="field-label">Strona www <span className="field-opt">(opcjonalne)</span></div>
+            <input className="input-field" placeholder="https://firma.pl" value={form.website} onChange={e=>set('website',e.target.value)}/>
+          </div>
+        )}
+      </div>
+      {isNew&&(
+        <div className="field-group">
+          <div className="field-label">Krótki opis firmy <span className="field-opt">(opcjonalne)</span></div>
+          <textarea className="input-field" rows={2} placeholder="Czym zajmuje się Twoja firma? (maks. 200 znaków)" maxLength={200} value={form.companyDesc} onChange={e=>set('companyDesc',e.target.value)}/>
+          <div className="input-counter">{(form.companyDesc||'').length} / 200</div>
+        </div>
+      )}
+      <div className="field-group">
+        <div className="field-label">Logotyp firmy <span className="field-opt">(opcjonalne)</span></div>
+        <div
+          style={{display:'flex',alignItems:'center',gap:12,padding:'10px 14px',background:'#fff',border:'1.5px dashed var(--g300)',borderRadius:4,cursor:'pointer',transition:'border-color .15s'}}
+          onClick={()=>document.getElementById('logo-inp').click()}
+          onDragOver={e=>e.preventDefault()}
+          onDrop={e=>{e.preventDefault();const f=e.dataTransfer.files[0];if(f)set('logoName',f.name);}}>
+          <input id="logo-inp" type="file" accept="image/*" style={{display:'none'}} onChange={e=>{if(e.target.files[0])set('logoName',e.target.files[0].name);}}/>
+          <IC n="upload" size={16} color="var(--g400)"/>
+          {form.logoName?(
+            <div style={{display:'flex',alignItems:'center',gap:8,flex:1}}>
+              <span style={{fontSize:13,fontWeight:600,color:'var(--orange)'}}>{form.logoName}</span>
+              <span style={{fontSize:12,color:'var(--g400)',cursor:'pointer',marginLeft:'auto'}} onClick={e=>{e.stopPropagation();set('logoName','');}}>Usuń</span>
+            </div>
+          ):(
+            <div>
+              <span style={{fontSize:13,color:'var(--g700)',fontWeight:500}}>Wgraj logotyp</span>
+              <span style={{fontSize:12,color:'var(--g400)',marginLeft:8}}>PNG, SVG lub JPG · maks. 2 MB</span>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="section-divider"/>
+
+      {/* Stanowisko */}
+      <div className="section-label">Stanowisko</div>
+      <div className="field-group">
+        <div className="field-label">Tytuł stanowiska <span className="field-req">*</span></div>
+        <input className={`input-field ${errors.title?'error':''}`} placeholder="np. Senior Marketing Manager" value={form.title} onChange={e=>set('title',e.target.value)}/>
+        {errors.title&&<div className="field-error">{errors.title}</div>}
+
+      </div>
+      <div className="form-2col" style={{display:'grid',gridTemplateColumns:isMobile?'1fr':'1fr 1fr',gap:14}}>
+        <div className="field-group">
+          <div className="field-label">Lokalizacja <span className="field-req">*</span></div>
+          <input className={`input-field ${errors.location?'error':''}`} placeholder="np. Cała Polska lub Warszawa" value={form.location} onChange={e=>set('location',e.target.value)}/>
+          {errors.location&&<div className="field-error">{errors.location}</div>}
+        </div>
+        <div className="field-group">
+          <div className="field-label">Widełki wynagrodzenia brutto <span className="field-opt">(opcjonalne)</span></div>
+          <div className="salary-row" style={{display:'flex',gap:8,alignItems:'center',flexWrap:isMobile?'wrap':'nowrap'}}>
+            <div style={{position:'relative',flex:1}}>
+              <input className="input-field" placeholder="od np. 8 000" value={form.salaryMin} onChange={e=>set('salaryMin',e.target.value)} style={{paddingRight:40}}/>
+              <span style={{position:'absolute',right:10,top:'50%',transform:'translateY(-50%)',fontSize:11,color:'var(--g400)',fontWeight:700}}>PLN</span>
+            </div>
+            <span style={{color:'var(--g400)',flexShrink:0,fontSize:13}}>—</span>
+            <div style={{position:'relative',flex:1}}>
+              <input className="input-field" placeholder="do np. 14 000" value={form.salaryMax} onChange={e=>set('salaryMax',e.target.value)} style={{paddingRight:40}}/>
+              <span style={{position:'absolute',right:10,top:'50%',transform:'translateY(-50%)',fontSize:11,color:'var(--g400)',fontWeight:700}}>PLN</span>
+            </div>
+          </div>
+          <div className="hint-tip"><IC n="info" size={12} color="var(--orange)"/>Widełki wynagrodzenia zwiększają liczbę aplikacji o ok. 35%.</div>
+        </div>
+      </div>
+      <div className="field-group">
+        <div className="field-label">Tryb pracy <span className="field-req">*</span></div>
+        <RadioGroup name="worktype" options={WORK_TYPES} value={form.workType} onChange={v=>set('workType',v)}/>
+        {errors.workType&&<div className="field-error" style={{marginTop:8}}>{errors.workType}</div>}
+      </div>
+
+      <div className="section-divider"/>
+
+      {/* Opis */}
+      <div className="section-label">Opis stanowiska</div>
+      <div className="field-group">
+        <div className="field-label">Opis stanowiska i wstęp <span className="field-opt">(opcjonalne)</span></div>
+        <textarea className="input-field" rows={4}
+          placeholder="Ogólny opis roli, kontekst projektu, miejsce w strukturze organizacji..."
+          value={form.description} onChange={e=>set('description',e.target.value)}/>
+        <div className="input-counter">{(form.description||'').length} znaków</div>
+      </div>
+      <div className="field-group">
+        <div className="field-label">Zakres obowiązków <span className="field-req">*</span></div>
+        <textarea className="input-field" rows={5}
+          placeholder={"• Zarządzanie kampaniami reklamowymi\n• Współpraca z agencjami mediowymi\n• Analizowanie wyników i raportowanie"}
+          value={form.duties} onChange={e=>set('duties',e.target.value)}/>
+        {errors.duties&&<div className="field-error">{errors.duties}</div>}
+      </div>
+      <div className="field-group">
+        <div className="field-label">Wymagania <span className="field-req">*</span></div>
+        <textarea className="input-field" rows={5}
+          placeholder={"• Min. 3 lata doświadczenia w marketingu\n• Znajomość narzędzi analitycznych\n• Wykształcenie wyższe"}
+          value={form.requirements} onChange={e=>set('requirements',e.target.value)}/>
+        {errors.requirements&&<div className="field-error">{errors.requirements}</div>}
+      </div>
+      <div className="field-group">
+        <div className="field-label">Co oferujemy <span className="field-req">*</span></div>
+        <textarea className={`input-field ${errors.offer?'error':''}`} rows={4}
+          placeholder={"• Praca w dynamicznym środowisku mediowym\n• Pakiet benefitów\n• Możliwość rozwoju i awansu"}
+          value={form.offer} onChange={e=>set('offer',e.target.value)}/>
+        {errors.offer&&<div className="field-error">{errors.offer}</div>}
+      </div>
+
+      <div className="section-divider"/>
+
+      {/* Aplikowanie */}
+      <div style={{display:'flex',alignItems:'baseline',gap:8,marginBottom:14}}>
+        <div className="section-label" style={{marginBottom:0}}>Aplikowanie</div>
+        <span style={{fontSize:12,color:'var(--g400)'}}>— wybierz jedną z opcji aplikowania</span>
+      </div>
+      <div style={{display:'grid',gridTemplateColumns:isMobile?'1fr':'1fr 1fr',gap:14}}>
+        <div className="field-group">
+          <div className="field-label">E-mail do aplikacji <span className="field-opt">(opcjonalne)</span></div>
+          <input className="input-field" type="email" placeholder="rekrutacja@firma.pl" value={form.email} onChange={e=>set('email',e.target.value)}/>
+        </div>
+        <div className="field-group">
+          <div className="field-label">Link do rekrutacji <span className="field-opt">(opcjonalne)</span></div>
+          <input className="input-field" placeholder="https://..." value={form.applyUrl} onChange={e=>set('applyUrl',e.target.value)}/>
+          <div className="field-hint">Kandydaci zostaną przekierowani zamiast wysyłać e-mail.</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Step 3: Billing (tylko tryb 'new') ── */
+function StepBilling({billing,onChange,errors,pkg,qty}){
+  const isMobile=useIsMobile();
+  function set(k,v){onChange({...billing,[k]:v});}
+  const p=pkg?PACKAGES.find(x=>x.id===pkg):null;
+  return(
+    <div>
+      <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:12,marginBottom:4}}>
+        <h1 style={{fontSize:23,fontWeight:800,color:'var(--g900)',letterSpacing:'-.02em'}}>Dane kontaktowe i rozliczeniowe</h1>
+        {p&&<div style={{display:'flex',alignItems:'center',gap:8,padding:'5px 12px',background:'var(--g100)',border:'1.5px solid var(--g200)',borderRadius:9999}}>
+          <div style={{width:8,height:8,borderRadius:'50%',background:'var(--orange)'}}/>
+          <span style={{fontSize:12,fontWeight:700,color:'var(--g800)'}}>Pakiet {p.name} · {(p.price*qty).toLocaleString('pl-PL')} zł netto</span>
+        </div>}
+      </div>
+      <p style={{fontSize:14,color:'var(--g500)',marginBottom:28}}>Te dane nie są widoczne publicznie w ogłoszeniu.</p>
+
+      <div className="section-label">Osoba kontaktowa</div>
+      <div className="billing-2col" style={{display:'grid',gridTemplateColumns:isMobile?'1fr':'1fr 1fr',gap:14}}>
+        <div className="field-group">
+          <div className="field-label">Imię i nazwisko <span className="field-req">*</span></div>
+          <input className={`input-field ${errors.contactName?'error':''}`} placeholder="np. Anna Kowalska" value={billing.contactName} onChange={e=>set('contactName',e.target.value)}/>
+          {errors.contactName&&<div className="field-error">{errors.contactName}</div>}
+        </div>
+        <div className="field-group">
+          <div className="field-label">Telefon kontaktowy <span className="field-req">*</span></div>
+          <input className={`input-field ${errors.phone?'error':''}`} placeholder="+48 000 000 000" value={billing.phone} onChange={e=>set('phone',e.target.value)}/>
+          {errors.phone&&<div className="field-error">{errors.phone}</div>}
+        </div>
+      </div>
+      <div className="field-group">
+        <div className="field-label">E-mail kontaktowy <span className="field-req">*</span></div>
+        <input className={`input-field ${errors.contactEmail?'error':''}`} type="email" placeholder="kontakt@firma.pl" value={billing.contactEmail} onChange={e=>set('contactEmail',e.target.value)}/>
+        {errors.contactEmail&&<div className="field-error">{errors.contactEmail}</div>}
+        <div className="field-hint">Widoczny wyłącznie dla zespołu Wirtualne Media — nie będzie publikowany.</div>
+      </div>
+
+      <div className="section-divider"/>
+
+      <div className="section-label">Dane do faktury</div>
+      <div style={{padding:'10px 14px',background:'rgba(240,90,40,0.05)',border:'1px solid rgba(240,90,40,0.2)',borderRadius:4,marginBottom:16,fontSize:12,color:'var(--g700)',lineHeight:1.6,display:'flex',gap:8,alignItems:'flex-start'}}>
+        <IC n="receipt" size={13} color="var(--orange)"/>
+        Faktura VAT zostanie wystawiona i przesłana do systemu <strong>KSeF</strong> po aktywacji ogłoszenia.
+      </div>
+      <div className="billing-2col" style={{display:'grid',gridTemplateColumns:isMobile?'1fr':'1fr 1fr',gap:14}}>
+        <div className="field-group">
+          <div className="field-label">Nazwa spółki <span className="field-req">*</span></div>
+          <input className={`input-field ${errors.bizName?'error':''}`} placeholder="Firma sp. z o.o." value={billing.bizName} onChange={e=>set('bizName',e.target.value)}/>
+          {errors.bizName&&<div className="field-error">{errors.bizName}</div>}
+        </div>
+        <div className="field-group">
+          <div className="field-label">NIP <span className="field-req">*</span></div>
+          <input className={`input-field ${errors.nip?'error':''}`} placeholder="0000000000" value={billing.nip} onChange={e=>set('nip',e.target.value)}/>
+          {errors.nip&&<div className="field-error">{errors.nip}</div>}
+        </div>
+      </div>
+      <div className="field-group">
+        <div className="field-label">Adres <span className="field-req">*</span></div>
+        <input className={`input-field ${errors.address?'error':''}`} placeholder="ul. Przykładowa 1, 00-000 Warszawa" value={billing.address} onChange={e=>set('address',e.target.value)}/>
+        {errors.address&&<div className="field-error">{errors.address}</div>}
+      </div>
+    </div>
+  );
+}
+
+/* ── Step preview/final ── */
+function StepPreview({form,billing,pkg,mode,qty,onConfirm,sending,sendError}){
+  const isMobile=useIsMobile();
+  const p=PACKAGES.find(x=>x.id===pkg);
+  const salary=form.salaryMin||form.salaryMax?[form.salaryMin,form.salaryMax].filter(Boolean).join(' – ')+' PLN':null;
+  const [agreed,setAgreed]=React.useState(false);
+  const net=p.price*qty;
+  const discount=qty>=8;
+  const discountedNet=discount?Math.round(net*0.85):net;
+  const vat=Math.round(discountedNet*.23);
+  const gross=discountedNet+vat;
+
+  return(
+    <div>
+      <h1 style={{fontSize:23,fontWeight:800,color:'var(--g900)',marginBottom:4,letterSpacing:'-.02em'}}>Podgląd ogłoszenia</h1>
+      <p style={{fontSize:14,color:'var(--g500)',marginBottom:pkg==='special'?8:20}}>Sprawdź, jak Twoje ogłoszenie będzie wyglądać dla kandydatów.</p>
+      {pkg==='special'&&<div style={{display:'flex',alignItems:'center',gap:8,padding:'9px 14px',background:'rgba(240,90,40,0.07)',border:'1px solid rgba(240,90,40,0.25)',borderRadius:6,marginBottom:20,fontSize:13,color:'var(--g700)'}}>
+        <IC n="info" size={14} color="var(--orange)"/>
+        Nasz konsultant skontaktuje się z Tobą niezwłocznie w celu ustalenia szczegółów dedykowanego artykułu.
+      </div>}
+
+      <div className="preview-layout" style={{display:'grid',gridTemplateColumns:isMobile?'1fr':'1fr 280px',gap:24,alignItems:'start'}}>
+        {/* Preview */}
+        <div className="card" style={{overflow:'hidden',outline:pkg!=='standard'?'2px solid var(--orange)':'none',outlineOffset:2}}>
+          <div className="preview-header">
+            <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',gap:16}}>
+              <div style={{flex:1}}>
+                <div style={{display:'inline-block',fontSize:10,fontWeight:700,letterSpacing:'.07em',textTransform:'uppercase',padding:'3px 8px',borderRadius:3,marginBottom:8,
+                  color:p.badgeColor,background:pkg==='standard'?'rgba(255,255,255,0.1)':p.badgeBg}}>
+                  {pkg==='premium'?'SUPER OFERTA':pkg==='special'?'SPECIAL':'Pakiet '+p.name}
+                </div>
+                <h2 style={{fontSize:22,fontWeight:800,color:'#fff',marginBottom:8,lineHeight:1.2}}>
+                  {form.title||<span style={{opacity:.4}}>Tytuł stanowiska</span>}
+                </h2>
+                <div className="preview-meta-row"><IC n="building" size={13}/>{form.company||<span style={{opacity:.5}}>Nazwa firmy</span>}</div>
+                <div style={{display:'flex',flexWrap:'wrap',gap:14,marginTop:8}}>
+                  {form.location&&<div className="preview-meta-row"><IC n="map" size={13}/>{form.location}</div>}
+                  {form.workType&&<div className="preview-meta-row"><IC n="briefcase" size={13}/>{form.workType}</div>}
+                  {salary&&<div className="preview-meta-row"><IC n="star" size={13}/>{salary}</div>}
+                </div>
+              </div>
+              <div style={{width:60,height:60,background:'rgba(255,255,255,.12)',borderRadius:5,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontSize:10,color:'rgba(255,255,255,.4)',fontWeight:700,textAlign:'center',lineHeight:1.4}}>
+                {form.logoName?'✓\nLOGO':'LOGO'}
+              </div>
+            </div>
+          </div>
+          <div className="preview-body">
+            {form.companyDesc&&(
+              <div style={{marginBottom:16,padding:14,background:'var(--g50)',borderRadius:4,borderLeft:'3px solid var(--orange)'}}>
+                <div style={{fontSize:10,fontWeight:700,textTransform:'uppercase',letterSpacing:'.08em',color:'var(--g400)',marginBottom:5}}>O firmie</div>
+                <p style={{fontSize:13,color:'var(--g700)',lineHeight:1.6}}>{form.companyDesc}</p>
+              </div>
+            )}
+            {[
+              {key:'description',label:'Opis stanowiska i wstęp'},
+              {key:'duties',label:'Zakres obowiązków'},
+              {key:'requirements',label:'Wymagania'},
+              {key:'offer',label:'Co oferujemy'},
+            ].map(s=>form[s.key]?(
+              <div key={s.key} style={{marginBottom:14}}>
+                <div style={{fontSize:10,fontWeight:700,textTransform:'uppercase',letterSpacing:'.07em',color:'var(--g500)',marginBottom:6}}>{s.label}</div>
+                <pre style={{font:"400 13px/1.65 'Barlow',sans-serif",color:'var(--g700)',whiteSpace:'pre-wrap'}}>{form[s.key]}</pre>
+              </div>
+            ):null)}
+            <div style={{borderTop:'1px solid var(--g200)',paddingTop:14,marginTop:8,display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:10}}>
+              <span style={{fontSize:12,color:'var(--g500)'}}>
+                {form.applyUrl?<a href={form.applyUrl} style={{color:'var(--orange)',fontWeight:600}}>{form.applyUrl}</a>:form.email||'—'}
+              </span>
+              <button className="btn btn-primary" style={{fontSize:13,padding:'8px 20px'}}>Aplikuj teraz <IC n="arrow" size={13}/></button>
+            </div>
+          </div>
+        </div>
+
+        {/* Sidebar */}
+        <div>
+          <div style={{background:'#fff',border:'1.5px solid var(--g200)',borderRadius:6,padding:18,marginBottom:12}}>
+            <div style={{fontSize:12,fontWeight:700,color:'var(--g900)',marginBottom:12,paddingBottom:10,borderBottom:'1px solid var(--g200)'}}>Podsumowanie</div>
+            {[
+              ['Pakiet', p.name],
+              ['Liczba ogłoszeń', qty+'×'],
+              ['Cena bazowa', (p.price*qty).toLocaleString('pl-PL')+' zł'],
+              ...(discount?[['Rabat −15%','−'+Math.round(net*0.15).toLocaleString('pl-PL')+' zł']]:[ ]),
+              ['Netto', discountedNet.toLocaleString('pl-PL')+' zł'],
+              ['VAT 23%', vat.toLocaleString('pl-PL')+' zł'],
+            ].map(([k,v])=>(
+              <div key={k} style={{display:'flex',justifyContent:'space-between',alignItems:'baseline',gap:8,fontSize:13,color:k==='Rabat −15%'?'var(--orange)':'var(--g600)',marginBottom:7}}>
+                <span style={{flexShrink:0}}>{k}</span>
+                <strong style={{color:k==='Rabat −15%'?'var(--orange)':'var(--g900)',textAlign:'right'}}>{v}</strong>
+              </div>
+            ))}
+            <div style={{borderTop:'1px solid var(--g200)',paddingTop:10,marginTop:4,display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+              <span style={{fontWeight:700,fontSize:13}}>Brutto</span>
+              <span style={{fontWeight:800,fontSize:20,color:'var(--orange)'}}>{gross.toLocaleString('pl-PL')} zł</span>
+            </div>          </div>
+
+          {mode==='active'&&(
+            <div style={{background:'rgba(240,90,40,0.06)',border:'1px solid rgba(240,90,40,0.2)',borderRadius:4,padding:'10px 12px',fontSize:12,color:'var(--g700)',marginBottom:12,lineHeight:1.6}}>
+              Ogłoszenie zostanie dodane do Twojego aktywnego pakietu — bez dodatkowej płatności.
+            </div>
+          )}
+
+          <label style={{display:'flex',alignItems:'flex-start',gap:8,cursor:'pointer',fontSize:12,color:'var(--g600)',lineHeight:1.6,marginBottom:14}}>
+            <input type="checkbox" style={{marginTop:3,accentColor:'var(--orange)',flexShrink:0}} checked={agreed} onChange={e=>setAgreed(e.target.checked)}/>
+            <span>Akceptuję <a href="https://www.wirtualnemedia.pl/regulamin.html" target="_blank" rel="noopener noreferrer" style={{color:'var(--orange)',fontWeight:600}}>Regulamin serwisu</a> i <a href="https://www.wirtualnemedia.pl/polityka-prywatnosci.html" target="_blank" rel="noopener noreferrer" style={{color:'var(--orange)',fontWeight:600}}>Politykę prywatności</a> Wirtualne Media sp. z o.o.</span>
+          </label>
+          <button className="btn btn-primary" style={{width:'100%',justifyContent:'center',fontSize:14}} disabled={!agreed||sending} onClick={onConfirm}>
+            {sending
+              ? <><span style={{display:'inline-block',width:14,height:14,border:'2px solid rgba(255,255,255,0.4)',borderTopColor:'#fff',borderRadius:'50%',animation:'spin .7s linear infinite'}}/> Wysyłanie...</>
+              : <><IC n="send" size={15}/>Wyślij ogłoszenie</>
+            }
+          </button>
+          {sendError&&<div style={{color:'#dc2626',fontSize:12,marginTop:10,textAlign:'center',lineHeight:1.5,padding:'8px 10px',background:'#FEF2F2',border:'1px solid #FECACA',borderRadius:4}}>{sendError}</div>}
+          <div style={{fontSize:11,color:'var(--g400)',textAlign:'center',marginTop:8,lineHeight:1.5}}>
+            Nasz zespół skontaktuje się z Tobą w ciągu 1 dnia roboczego w sprawie aktywacji{mode==='new'?' i płatności':''}. <em>Zazwyczaj trwa to krócej.</em>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Confirmation ── */
+function Confirmation({form,pkg,mode,qty,onReset}){
+  const p=PACKAGES.find(x=>x.id===pkg);
+  return(
+    <div style={{textAlign:'center',padding:'52px 0'}}>
+      <div className="confirm-icon"><IC n="chk-c" size={30} color="var(--orange)"/></div>
+      <h1 style={{fontSize:26,fontWeight:800,color:'var(--g900)',marginBottom:8,letterSpacing:'-.02em'}}>Zgłoszenie wysłane!</h1>
+      <p style={{fontSize:15,color:'var(--g500)',maxWidth:480,margin:'0 auto 28px',lineHeight:1.65}}>
+        Ogłoszenie <strong style={{color:'var(--g800)'}}>„{form.title}"</strong> zostało przekazane do naszego zespołu. Skontaktujemy się na <strong style={{color:'var(--orange)'}}>{form.email}</strong> w ciągu 1 dnia roboczego z informacją o aktywacji{mode==='new'?' i płatności':''}&nbsp;(pakiet&nbsp;<strong>{p.name}</strong>).
+      </p>
+      <div style={{display:'flex',gap:12,justifyContent:'center',flexWrap:'wrap',marginBottom:32}}>
+        {[
+          {icon:'mail',label:'Potwierdzenie',text:form.email},
+          {icon:'briefcase',label:'Pakiet',text:p.name+(qty>1?' × '+qty:'')+' · '+(p.price*qty).toLocaleString('pl-PL')+' zł netto'},
+          {icon:'eye',label:'Status',text:'Oczekuje na aktywację'},
+        ].map(it=>(
+          <div key={it.label} style={{background:'#fff',border:'1.5px solid var(--g200)',borderRadius:6,padding:'18px 22px',minWidth:168}}>
+            <IC n={it.icon} size={18} color="var(--orange)"/>
+            <div style={{fontSize:10,fontWeight:700,textTransform:'uppercase',letterSpacing:'.07em',color:'var(--g400)',marginTop:9,marginBottom:3}}>{it.label}</div>
+            <div style={{fontSize:12,fontWeight:600,color:'var(--g800)',lineHeight:1.4}}>{it.text}</div>
+          </div>
+        ))}
+      </div>
+      <div style={{display:'flex',gap:10,justifyContent:'center'}}>
+        <button className="btn btn-primary" onClick={onReset}>Dodaj kolejne ogłoszenie</button>
+        <a href="https://praca.wirtualnemedia.pl" target="_blank" rel="noopener noreferrer">
+          <button className="btn btn-secondary">praca.wirtualnemedia.pl</button>
+        </a>
+      </div>
+    </div>
+  );
+}
+
+/* ── Validate ── */
+function validateForm(form){
+  const e={};
+  if(!form.company.trim()) e.company='Podaj nazwę firmy.';
+  if(!form.title.trim()) e.title='Podaj tytuł stanowiska.';
+  if(!form.location.trim()) e.location='Podaj lokalizację.';
+  if(!form.workType) e.workType='Wybierz tryb pracy.';
+  if(!form.duties.trim()) e.duties='Opisz zakres obowiązków.';
+  if(!form.requirements.trim()) e.requirements='Podaj wymagania.';
+  if(!form.offer.trim()) e.offer='Opisz, co oferujecie kandydatom.';
+  if(form.email.trim()&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email='Podaj prawidłowy adres e-mail.';
+  return e;
+}
+function validateBilling(b){
+  const e={};
+  if(!b.contactName.trim()) e.contactName='Podaj imię i nazwisko.';
+  if(!b.phone.trim()) e.phone='Podaj numer telefonu.';
+  if(!b.contactEmail.trim()||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(b.contactEmail)) e.contactEmail='Podaj prawidłowy e-mail.';
+  if(!b.bizName.trim()) e.bizName='Podaj nazwę spółki.';
+  if(!b.nip.trim()) e.nip='Podaj NIP.';
+  if(!b.address.trim()) e.address='Podaj adres.';
+  return e;
+}
+
+/* ── App ── */
+const INIT_FORM={
+  company:'',website:'',companyDesc:'',logoName:'',
+  title:'',location:'',workType:'',
+  salaryMin:'',salaryMax:'',
+  description:'',duties:'',requirements:'',offer:'',
+  email:'',applyUrl:'',
+};
+const INIT_BILLING={contactName:'',phone:'',contactEmail:'',bizName:'',nip:'',address:''};
+
+function App(){
+  const s0=(()=>{try{return JSON.parse(localStorage.getItem('wm_pr3')||'{}')}catch{return{}}})();
+  const [step,setStep]=React.useState(s0.step||1);
+  const [pkg,setPkg]=React.useState(s0.pkg||'premium');
+  const [mode,setMode]=React.useState(s0.step > 1 ? (s0.mode||'new') : 'new');
+  const [form,setForm]=React.useState({...INIT_FORM,...(s0.form||{})});
+  const [billing,setBilling]=React.useState({...INIT_BILLING,...(s0.billing||{})});
+  const [qty,setQty]=React.useState(s0.qty||1);
+  const [errors,setErrors]=React.useState({});
+  const [bErrors,setBErrors]=React.useState({});
+  const [done,setDone]=React.useState(false);
+  const [sending,setSending]=React.useState(false);
+  const [sendError,setSendError]=React.useState('');
+
+  function persist(st,p,m,f,b,q){localStorage.setItem('wm_pr3',JSON.stringify({step:st,pkg:p,mode:m,form:f,billing:b,qty:q}));}
+  function handleQty(q){setQty(q);persist(step,pkg,mode,form,billing,q);}
+  function go(s){
+    if(s===1){setMode('new');}
+    setStep(s);persist(s,pkg,s===1?'new':mode,form,billing,qty);window.scrollTo(0,0);
+  }
+
+  // Step counts differ by mode
+  const totalSteps=mode==='active'?3:4;
+  // Map logical step to display step
+  // mode=new:  1=Pakiet 2=Formularz 3=Billing 4=Preview
+  // mode=active: 1=Pakiet 2=Formularz 3=Preview
+
+  function goActive(){setMode('active');persist(2,pkg,'active',form,billing,qty);setStep(2);window.scrollTo(0,0);}
+  function nextFromPkg(){
+    if(!pkg){alert('Wybierz pakiet, aby kontynuować.');return;}
+    go(2);
+  }
+  function nextFromForm(){
+    const e=validateForm(form);
+    setErrors(e);
+    if(Object.keys(e).length){
+      setTimeout(()=>{const el=document.querySelector('.error');if(el){const y=el.getBoundingClientRect().top+window.scrollY-130;window.scrollTo({top:y,behavior:'smooth'});}},60);
+      return;
+    }
+    if(mode==='active') go(3);
+    else go(3);
+  }
+  function nextFromBilling(){
+    const e=validateBilling(billing);
+    setBErrors(e);
+    if(Object.keys(e).length){
+      setTimeout(()=>{const el=document.querySelector('.error');if(el){const y=el.getBoundingClientRect().top+window.scrollY-130;window.scrollTo({top:y,behavior:'smooth'});}},60);
+      return;
+    }
+    go(4);
+  }
+  async function confirm(){
+    setSending(true);
+    setSendError('');
+    const p=PACKAGES.find(x=>x.id===pkg)||{name:'',price:0};
+    const net=p.price*qty;
+    const discounted=qty>=8?Math.round(net*0.85):net;
+    const gross=Math.round(discounted*1.23);
+    function toHtml(text){
+      if(!text||!text.trim()) return '<span style="color:#9CA3AF">—</span>';
+      const lines=text.split('\n');
+      let html='',inList=false;
+      for(const line of lines){
+        const t=line.trim();
+        if(!t){if(inList){html+='</ul>';inList=false;}continue;}
+        if(/^[-*•–]\s+/.test(t)){
+          if(!inList){html+='<ul style="margin:0;padding-left:20px">';inList=true;}
+          html+=`<li style="margin-bottom:3px">${t.replace(/^[-*•–]\s+/,'')}</li>`;
+        }else{
+          if(inList){html+='</ul>';inList=false;}
+          html+=`<p style="margin:0 0 6px">${t}</p>`;
+        }
+      }
+      if(inList) html+='</ul>';
+      return html;
+    }
+    const params={
+      job_title:form.title,company:form.company,website:form.website||'—',
+      logo:form.logoName||'brak',location:form.location,work_type:form.workType,
+      salary:(form.salaryMin||form.salaryMax)?`${form.salaryMin||''}–${form.salaryMax||''} zł`:'—',
+      apply_email:form.email,apply_url:form.applyUrl||'—',
+      pkg_name:p.name,pkg_price:p.price.toLocaleString('pl-PL')+' zł netto',
+      qty:qty,discount:qty>=8?'−15%':'brak',
+      gross:gross.toLocaleString('pl-PL')+' zł brutto',
+      mode:mode==='active'?'Aktywny pakiet (bez płatności)':'Nowe zamówienie',
+      contact_name:billing.contactName||'—',contact_phone:billing.phone||'—',
+      contact_email:billing.contactEmail||'—',biz_name:billing.bizName||'—',
+      nip:billing.nip||'—',address:billing.address||'—',
+      company_desc_html:toHtml(form.companyDesc),description_html:toHtml(form.description),
+      duties_html:toHtml(form.duties),requirements_html:toHtml(form.requirements),
+      offer_html:toHtml(form.offer),
+    };
+    try{
+      await emailjs.send(EMAILJS_SERVICE_ID,EMAILJS_TEMPLATE_ID,params);
+      setDone(true);localStorage.removeItem('wm_pr3');window.scrollTo(0,0);
+    }catch(err){
+      console.error('EmailJS error:',err);
+      setSendError('Wysyłanie nie powiodło się. Spróbuj ponownie lub napisz na praca@wirtualnemedia.pl');
+    }finally{
+      setSending(false);
+    }
+  }
+  function reset(){setStep(1);setPkg('');setMode('new');setForm(INIT_FORM);setBilling(INIT_BILLING);setErrors({});setBErrors({});setDone(false);setQty(1);localStorage.removeItem('wm_pr3');window.scrollTo(0,0);}
+  function handleForm(f){setForm(f);persist(step,pkg,mode,f,billing,qty);}
+  function handleBilling(b){setBilling(b);persist(step,pkg,mode,form,b,qty);}
+  function handlePkg(p){setPkg(p);persist(step,p,mode,form,billing,qty);}
+  function handleSelectAndNext(p){setPkg(p);persist(2,p,mode,form,billing,qty);setStep(2);window.scrollTo(0,0);}
+  function handleMode(m){setMode(m);persist(step,pkg,m,form,billing,qty);}
+
+  // Determine what "step 3" and "step 4" mean given mode
+  const previewStep = mode==='active' ? 3 : 4;
+  const billingStep = 3; // only relevant when mode==='new'
+
+  // Stepper visual step: for 'active' mode, step 3=preview; for 'new', step 3=billing, step 4=preview
+  const stepperStep = done ? totalSteps+1 : step;
+
+  return(
+    <div style={{display:'flex',flexDirection:'column',minHeight:'100vh'}}>
+      <header style={{position:'sticky',top:0,zIndex:100}}>
+        <div style={{background:'#0D1B2A',height:52,display:'flex',alignItems:'center',padding:'0 24px'}}>
+          <div style={{marginRight:'auto'}}>
+            <img src={window.__resources && window.__resources.logoDark || "logo-dark.png"} alt="Wirtualne Media" style={{height:33,objectFit:'contain',display:'block'}}/>
+          </div>
+          <div style={{display:'flex',alignItems:'center',gap:10}}>
+            <span style={{fontSize:12,color:'rgba(255,255,255,0.4)'}}>praca.wirtualnemedia.pl</span>
+            <span style={{color:'rgba(255,255,255,0.2)'}}>·</span>
+            <span style={{fontSize:13,fontWeight:600,color:'rgba(255,255,255,0.85)'}}>Dodaj ogłoszenie</span>
+          </div>
+        </div>
+        {!done&&(
+          <div style={{background:'#fff',borderBottom:'1px solid var(--g200)',padding:'11px 24px',boxShadow:'0 1px 3px rgba(0,0,0,0.06)'}}>
+            <div style={{maxWidth:860,margin:'0 auto'}}>
+              <Stepper step={step} mode={mode}/>
+            </div>
+          </div>
+        )}
+      </header>
+
+      <main className="main-content" style={{flex:1,padding:'36px 24px 64px'}}>
+        <div style={{maxWidth:step===previewStep?1080:860,margin:'0 auto'}}>
+          {done?(
+            <Confirmation form={form} pkg={pkg} mode={mode} qty={qty} onReset={reset}/>
+          ):(
+            <>
+              {step===1&&<StepPackage selected={pkg} onSelect={handlePkg} onSelectAndNext={handleSelectAndNext} qty={qty} onQtyChange={handleQty} mode={mode} onModeChange={handleMode} onGoActive={goActive}/>}
+              {step===2&&<StepForm form={form} onChange={handleForm} errors={errors} mode={mode} pkg={pkg}/>}
+              {step===3&&mode==='new'&&<StepBilling billing={billing} onChange={handleBilling} errors={bErrors} pkg={pkg} qty={qty}/>}
+              {step===previewStep&&<StepPreview form={form} billing={billing} pkg={pkg} mode={mode} qty={qty} onConfirm={confirm} sending={sending} sendError={sendError}/>}
+
+              {/* Nav */}
+              {step>1&&(
+              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginTop:32,paddingTop:18,borderTop:'1px solid var(--g200)'}}>
+                <div>
+                  {step>1&&<button className="btn btn-secondary" onClick={()=>go(step-1)}><IC n="arr-l" size={14}/>Wstecz</button>}
+                </div>
+                <div style={{display:'flex',alignItems:'center',gap:12}}>
+                  <span style={{fontSize:12,color:'var(--g400)'}}>Krok {step} z {totalSteps}</span>
+                  {step===2&&<button className="btn btn-primary" onClick={nextFromForm}>
+                    {mode==='active'?'Dalej: Podgląd':'Dalej: Dane i rozliczenia'} <IC n="arrow" size={14}/>
+                  </button>}
+                  {step===3&&mode==='new'&&<button className="btn btn-primary" onClick={nextFromBilling}>Dalej: Podgląd <IC n="arrow" size={14}/></button>}
+                </div>
+              </div>
+              )}
+            </>
+          )}
+        </div>
+      </main>
+
+      <div style={{background:'#0D1B2A',padding:'14px 24px',textAlign:'center',fontSize:12,color:'rgba(255,255,255,0.55)'}}>
+        © {new Date().getFullYear()} Wirtualne Media sp. z o.o. ·{' '}
+        <span style={{color:'var(--orange)',cursor:'pointer'}}>Regulamin</span> ·{' '}
+        <span style={{color:'var(--orange)',cursor:'pointer'}}>Polityka prywatności</span> ·{' '}
+        <a href="mailto:praca@wirtualnemedia.pl" style={{color:'var(--orange)'}}>praca@wirtualnemedia.pl</a>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
