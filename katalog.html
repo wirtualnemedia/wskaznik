@@ -48,8 +48,9 @@ body { font-family: 'DM Sans', system-ui, sans-serif; background: #F4F4F5; color
 const CATS = [
   'Wszystkie', 'Agencje reklamowe', 'Wydawcy i media', 'MarTech / AdTech',
   'Badania i monitoring', 'Produkcja treści', 'Events i szkolenia',
-  'Drukarnie i reklama OOH', 'Usługi dla mediów'
+  'Agencje PR', 'Drukarnie i reklama OOH', 'Usługi dla mediów', 'Freelance'
 ];
+const EMP_RANGES = ['1–10','11–50','51–100','101–500','500+'];
 
 const COMPANIES = [
   { id:1, name:'Publicis Groupe Poland', cat:'Agencje reklamowe', short:'Wiodąca sieć agencji reklamowych i domów mediowych. Obsługujemy największe marki FMCG, finansowe i technologiczne na rynku polskim.', city:'Warszawa', www:'publicis.pl', premium:true, featured:true, tags:['agencja kreatywna','dom mediowy','performance'] },
@@ -74,7 +75,8 @@ const COMPANIES = [
 
 const PACKAGES = [
   {
-    id: 'free', name: 'Darmowy', price: 0, period: null, color: '#52525B',
+    id: 'free', name: 'Bezpłatny', tagline: 'Podstawowa obecność w katalogu', price: 0, period: null,
+    badge: 'Podstawowy', badgeColor: '#52525B', badgeBg: '#F4F4F5',
     features: [
       'Nazwa firmy i logotyp (miniatura)',
       'Przynależność do 1 kategorii',
@@ -84,49 +86,36 @@ const PACKAGES = [
       'Wpis moderowany przez redakcję WM',
       'Widoczność w wynikach wyszukiwania katalogu',
     ],
-    locked: [
-      'Link dofollow do strony WWW',
-      'Profile w mediach społecznościowych',
-      'Rozbudowany opis (do 2000 znaków)',
-      'Galeria zdjęć (do 3 plików)',
-      'Embed wideo z YouTube',
-      'Wyróżniona ramka i badge „Wyróżniony"',
-      'Priorytetowa pozycja na liście wyników',
-      'Rotacja w sekcji „Wyróżnieni partnerzy"',
-    ],
     cta: 'Dodaj bezpłatnie',
   },
   {
-    id: 'standard', name: 'Standard', price: 299, period: 'rok', color: '#3B5670',
+    id: 'standard', name: 'Standard', tagline: 'Wyróżniona obecność z pełnym profilem', price: 2990, period: 'rok',
+    badge: 'Standard', badgeColor: '#1E3A5F', badgeBg: '#EFF6FF', popular: true,
     features: [
       'Nazwa firmy i logotyp (miniatura)',
       'Przynależność do 3 kategorii',
       'Krótki opis działalności (do 600 znaków)',
       'Adres siedziby firmy',
       'Numer telefonu i adres e-mail',
+      '2 kontakty personalne',
       'Rozbudowany opis firmy (do 2000 znaków)',
-      'Link dofollow do strony WWW',
+      'Link do strony WWW',
       'Profile w mediach społecznościowych (do 3)',
       'Wyróżniona ramka na karcie firmy',
       'Publikacja w ciągu 1 dnia roboczego',
     ],
-    locked: [
-      'Galeria zdjęć (do 3 plików)',
-      'Embed wideo z YouTube',
-      'Badge „Wyróżniony" na karcie i profilu',
-      'Priorytetowa pozycja na liście wyników',
-      'Rotacja w sekcji „Wyróżnieni partnerzy"',
-    ],
     cta: 'Wybierz Standard',
   },
   {
-    id: 'premium', name: 'Premium', price: 899, period: 'rok', color: '#F05A28', popular: true,
+    id: 'premium', name: 'Premium', tagline: 'Maksymalny zasięg i widoczność', price: 6990, period: 'rok',
+    badge: 'Premium', badgeColor: '#C94316', badgeBg: 'rgba(240,90,40,0.1)',
     features: [
       'Nazwa firmy i logotyp (miniatura)',
       'Przynależność do 5 kategorii',
       'Krótki opis działalności (do 800 znaków)',
       'Adres siedziby firmy',
       'Numer telefonu i adres e-mail',
+      '3 kontakty personalne',
       'Rozbudowany opis firmy (do 5000 znaków)',
       'Link dofollow do strony WWW',
       'Profile w mediach społecznościowych (do 5)',
@@ -137,8 +126,21 @@ const PACKAGES = [
       'Rotacja w sekcji „Wyróżnieni partnerzy" (homepage)',
       'Dedykowany opiekun konta w redakcji WM',
     ],
-    locked: [],
     cta: 'Wybierz Premium',
+  },
+  {
+    id: 'superpremium', name: 'Super Premium', tagline: 'Dla liderów branży — pełna ekspozycja', price: 9990, period: 'rok',
+    badge: 'Ekskluzywny', badgeColor: '#854D0E', badgeBg: '#FEF3C7', topPick: true,
+    features: [
+      'Wszystkie świadczenia pakietu Premium',
+      'Dostęp do wyników Wirtualnego Wskaźnika Wpływu dzień wcześniej',
+      'Gwarantowane 3 zaproszenia na Brand New(s) 2× w roku',
+      '2 ogłoszenia o pracę w roku',
+      'Artykuł na portalu z 7-dniową promocją na SG i social media (1× w roku)',
+      'Sekcja prezentacji nagród branżowych (Effie, KTR i inne)',
+      'Kontakt personalny do wskazanych osób w firmie',
+    ],
+    cta: 'Wybierz Super Premium',
   },
 ];
 
@@ -154,37 +156,39 @@ const T = {
 
 /* ─── SHARED COMPONENTS ─────────────────────────────────────────── */
 function WmNav({ onNavigate, currentPage }) {
-  const NAV_CATS = ['Wydawcy','Internet','Telewizja','Marketing i PR','Wideo','Audio','Biznes i Technologie','Strefa WM'];
+  const NAV_CATS = ['Wydawcy','Telewizja','Marketing i PR','Wideo','Audio','Biznes i Technologie'];
   return (
     <header style={{ position:'sticky', top:0, zIndex:100 }}>
-      <div style={{ background: T.navy, height:52, display:'flex', alignItems:'center', padding:'0 24px' }}>
+      <div style={{ background:'#0D1B2A', height:52, display:'flex', alignItems:'center', padding:'0 28px' }}>
         <div style={{ cursor:'pointer', marginRight:'auto' }} onClick={() => onNavigate('home')}>
-          <img src="../assets/logo-dark.png" alt="Wirtualne Media" style={{ height:30, objectFit:'contain' }}/>
+          <img src="assets/logo-nav.png" alt="Wirtualne Media" style={{ height:28, objectFit:'contain', objectPosition:'left center' }}/>
         </div>
         <div style={{ display:'flex', alignItems:'center', gap:8 }}>
-          <div style={{ width:38,height:20,borderRadius:10,background:T.orange,position:'relative',cursor:'pointer',flexShrink:0 }}>
-            <div style={{ position:'absolute',top:2,right:2,width:16,height:16,borderRadius:'50%',background:'#fff' }}/>
+          <div style={{ width:38,height:21,borderRadius:11,background:T.orange,position:'relative',cursor:'pointer',flexShrink:0 }}>
+            <div style={{ position:'absolute',top:2.5,right:2.5,width:16,height:16,borderRadius:'50%',background:'#fff',boxShadow:'0 1px 3px rgba(0,0,0,0.3)' }}/>
           </div>
-          <button style={{ width:30,height:30,borderRadius:'50%',border:`1.5px solid rgba(255,255,255,0.3)`,background:'none',display:'flex',alignItems:'center',justifyContent:'center',color:'rgba(255,255,255,0.8)' }}>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <button style={{ width:30,height:30,borderRadius:'50%',border:'1.5px solid rgba(255,255,255,0.3)',background:'none',display:'flex',alignItems:'center',justifyContent:'center',color:'rgba(255,255,255,0.85)' }}>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           </button>
           {['Praca','Wydarzenia'].map(l => (
-            <button key={l} style={{ fontSize:12,fontWeight:600,color:'rgba(255,255,255,0.85)',border:'1.5px solid rgba(255,255,255,0.22)',borderRadius:6,padding:'5px 11px',background:'none',fontFamily:"'DM Sans',sans-serif" }}>{l}</button>
+            <button key={l} style={{ display:'flex',alignItems:'center',gap:5,fontSize:12,fontWeight:500,color:'rgba(255,255,255,0.9)',border:'1.5px solid rgba(255,255,255,0.3)',borderRadius:20,padding:'5px 12px',background:'none',fontFamily:"'DM Sans',sans-serif",cursor:'pointer' }}>
+              {l==='Praca' && <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>}
+              {l==='Wydarzenia' && <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>}
+              {l}
+            </button>
           ))}
-          <button style={{ fontSize:12,fontWeight:700,color:'#fff',background:T.orange,borderRadius:9999,padding:'6px 14px',border:'none',fontFamily:"'DM Sans',sans-serif" }}>Newsletter</button>
+          <button style={{ display:'flex',alignItems:'center',gap:5,fontSize:12,fontWeight:600,color:'#fff',background:T.orange,borderRadius:20,padding:'5px 14px',border:'none',fontFamily:"'DM Sans',sans-serif",cursor:'pointer' }}>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            Newsletter
+          </button>
         </div>
       </div>
-      <div style={{ background:'#fff',borderBottom:`1px solid ${T.gray200}`,height:44,display:'flex',alignItems:'stretch',padding:'0 24px',boxShadow:T.shadow1 }}>
-        {NAV_CATS.map(c => (
-          <button key={c} style={{ fontSize:13,fontWeight:500,color:T.gray600,padding:'0 13px',background:'none',borderBottom:'2px solid transparent',whiteSpace:'nowrap',fontFamily:"'DM Sans',sans-serif",display:'flex',alignItems:'center',gap:3 }}>
-            {c}{c==='Strefa WM'&&<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="6 9 12 15 18 9"/></svg>}
+      <div style={{ background:'#fff',borderBottom:`1px solid ${T.gray200}`,height:44,display:'flex',alignItems:'stretch',padding:'0 28px',boxShadow:'0 1px 4px rgba(0,0,0,0.05)' }}>
+        {NAV_CATS.map((c,i) => (
+          <button key={c} style={{ fontSize:13,fontWeight:400,color:T.gray900,padding:'0 20px',background:'none',border:'none',borderLeft:i>0?`1px solid ${T.gray300}`:'none',whiteSpace:'nowrap',fontFamily:"'DM Sans',sans-serif",cursor:'pointer' }}>
+            {c}
           </button>
         ))}
-        <div style={{ marginLeft:'auto',display:'flex',alignItems:'center' }}>
-          <button onClick={() => onNavigate('katalog')} style={{ fontSize:12,fontWeight:700,color:currentPage==='katalog'?T.orange:T.gray600,background:'none',border:'none',fontFamily:"'DM Sans',sans-serif",padding:'0 8px',borderBottom:currentPage==='katalog'?`2px solid ${T.orange}`:'2px solid transparent',height:'100%' }}>
-            📋 Katalog Firm
-          </button>
-        </div>
       </div>
     </header>
   );
@@ -362,7 +366,7 @@ function KatalogHome({ onNavigate, listVariant }) {
             </div>
             <div style={{ display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:16 }}>
               <span style={{ fontSize:13,color:T.gray500 }}>{filtered.length} firm</span>
-              <button onClick={()=>onNavigate('add')} style={{ background:T.orange,color:'#fff',border:'none',borderRadius:6,padding:'8px 18px',fontSize:13,fontWeight:700,fontFamily:"'DM Sans',sans-serif",cursor:'pointer' }}>
+              <button onClick={()=>onNavigate('pakiety')} style={{ background:T.orange,color:'#fff',border:'none',borderRadius:6,padding:'8px 18px',fontSize:13,fontWeight:700,fontFamily:"'DM Sans',sans-serif",cursor:'pointer' }}>
                 + Dodaj firmę
               </button>
             </div>
@@ -390,7 +394,7 @@ function KatalogHome({ onNavigate, listVariant }) {
             </div>
             <div style={{ display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:16 }}>
               <CategoryFilters active={activeCat} onChange={setActiveCat}/>
-              <button onClick={()=>onNavigate('add')} style={{ flexShrink:0,background:T.orange,color:'#fff',border:'none',borderRadius:6,padding:'8px 18px',fontSize:13,fontWeight:700,fontFamily:"'DM Sans',sans-serif",cursor:'pointer',marginLeft:12 }}>+ Dodaj firmę</button>
+              <button onClick={()=>onNavigate('pakiety')} style={{ flexShrink:0,background:T.orange,color:'#fff',border:'none',borderRadius:6,padding:'8px 18px',fontSize:13,fontWeight:700,fontFamily:"'DM Sans',sans-serif",cursor:'pointer',marginLeft:12 }}>+ Dodaj firmę</button>
             </div>
             <div style={{ display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:14 }}>
               {COMPANIES.filter(c=>!c.featured&&(activeCat==='Wszystkie'||c.cat===activeCat)).map(c => <CompanyCard key={c.id} company={c} onClick={()=>onNavigate('company',c)}/>)}
@@ -419,7 +423,7 @@ function KatalogHome({ onNavigate, listVariant }) {
             </div>
             <div style={{ display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:16 }}>
               <CategoryFilters active={activeCat} onChange={setActiveCat}/>
-              <button onClick={()=>onNavigate('add')} style={{ flexShrink:0,background:T.orange,color:'#fff',border:'none',borderRadius:6,padding:'8px 18px',fontSize:13,fontWeight:700,fontFamily:"'DM Sans',sans-serif",cursor:'pointer',marginLeft:12 }}>+ Dodaj firmę</button>
+              <button onClick={()=>onNavigate('pakiety')} style={{ flexShrink:0,background:T.orange,color:'#fff',border:'none',borderRadius:6,padding:'8px 18px',fontSize:13,fontWeight:700,fontFamily:"'DM Sans',sans-serif",cursor:'pointer',marginLeft:12 }}>+ Dodaj firmę</button>
             </div>
             <div style={{ display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:14 }}>
               {COMPANIES.filter(c=>!c.featured&&(activeCat==='Wszystkie'||c.cat===activeCat)).map(c=><CompanyCard key={c.id} company={c} onClick={()=>onNavigate('company',c)}/>)}
@@ -450,12 +454,12 @@ function CompanyProfile({ company, onNavigate }) {
           { label:c.cat, onClick:()=>onNavigate('katalog') },
           { label:c.name }
         ]}/>
-        <div style={{ display:'grid',gridTemplateColumns:'1fr 280px',gap:24,alignItems:'start' }}>
+        <div style={{ display:'flex',flexDirection:'column',gap:16 }}>
 
           {/* Main column */}
           <div style={{ display:'flex',flexDirection:'column',gap:16 }}>
 
-            {/* Header card */}
+            {/* 1. Header card */}
             <div style={{ background:'#fff',borderRadius:8,boxShadow:T.shadow1,border:c.premium?`2px solid ${T.orange}`:`1px solid ${T.gray200}`,overflow:'hidden' }}>
               {c.premium && <div style={{ background:T.orange,padding:'6px 20px',display:'flex',alignItems:'center',gap:6 }}>
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="#fff"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -466,7 +470,7 @@ function CompanyProfile({ company, onNavigate }) {
                 <div style={{ flex:1 }}>
                   <h1 style={{ fontSize:22,fontWeight:800,color:T.gray900,marginBottom:4,letterSpacing:'-0.01em' }}>{c.name}</h1>
                   <div style={{ fontSize:12,fontWeight:700,color:T.orange,letterSpacing:'0.05em',textTransform:'uppercase',marginBottom:10 }}>{c.cat}</div>
-                  <div style={{ display:'flex',gap:16,flexWrap:'wrap' }}>
+                  <div style={{ display:'flex',gap:16,flexWrap:'wrap',alignItems:'center' }}>
                     <span style={{ fontSize:13,color:T.gray500,display:'flex',alignItems:'center',gap:5 }}>
                       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
                       {c.city}
@@ -475,6 +479,10 @@ function CompanyProfile({ company, onNavigate }) {
                       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
                       {c.www}
                     </a>}
+                    <span style={{ fontSize:12,color:T.gray400,display:'flex',alignItems:'center',gap:5 }}>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                      51–100 pracowników
+                    </span>
                   </div>
                   {c.tags && <div style={{ display:'flex',gap:5,flexWrap:'wrap',marginTop:10 }}>
                     {c.tags.map(tag=>(
@@ -485,7 +493,7 @@ function CompanyProfile({ company, onNavigate }) {
               </div>
             </div>
 
-            {/* Opis firmy */}
+            {/* 2. Opis firmy */}
             <div style={{ background:'#fff',borderRadius:8,padding:'24px',boxShadow:T.shadow1,border:`1px solid ${T.gray200}` }}>
               <div style={{ fontSize:12,fontWeight:700,color:T.gray500,letterSpacing:'0.07em',textTransform:'uppercase',marginBottom:14 }}>O firmie</div>
               <p style={{ fontSize:14,lineHeight:1.75,color:T.gray600,marginBottom: c.premium ? 12 : 0 }}>{c.short}</p>
@@ -494,7 +502,99 @@ function CompanyProfile({ company, onNavigate }) {
               </p>}
             </div>
 
-            {/* Galeria — tylko premium */}
+            {/* 3. Kontakt — New Business */}
+            {c.premium && (
+              <div style={{ background:'#fff',borderRadius:8,padding:'22px 24px',boxShadow:T.shadow1,border:`1px solid ${T.gray200}` }}>
+                <div style={{ fontSize:12,fontWeight:700,color:T.gray500,letterSpacing:'0.07em',textTransform:'uppercase',marginBottom:14 }}>Kontakt — New Business</div>
+                <div style={{ display:'flex',gap:14,flexWrap:'wrap' }}>
+                  {[
+                    {name:'Anna Kowalska',role:'Head of New Business',email:'a.kowalska@'+c.www,phone:'+48 601 234 567'},
+                    {name:'Marek Wiśniewski',role:'Business Development Manager',email:'m.wisniewski@'+c.www,phone:'+48 602 345 678'},
+                    {name:'Julia Nowak',role:'Client Partner',email:'j.nowak@'+c.www,phone:'+48 603 456 789'},
+                  ].map(person=>(
+                    <div key={person.name} style={{ flex:'1 1 180px',display:'flex',gap:12,alignItems:'flex-start',padding:'12px',background:T.gray50,borderRadius:6,border:`1px solid ${T.gray200}` }}>
+                      <div style={{ width:40,height:40,borderRadius:'50%',background:T.orange,display:'flex',alignItems:'center',justifyContent:'center',fontSize:14,fontWeight:700,color:'#fff',flexShrink:0 }}>
+                        {person.name.split(' ').map(w=>w[0]).join('')}
+                      </div>
+                      <div style={{ minWidth:0 }}>
+                        <div style={{ fontSize:13,fontWeight:700,color:T.gray900,lineHeight:1.2 }}>{person.name}</div>
+                        <div style={{ fontSize:11,color:T.gray500,marginBottom:6 }}>{person.role}</div>
+                        <a href={'mailto:'+person.email} style={{ fontSize:11,color:T.orange,fontWeight:600,display:'block',marginBottom:2,textDecoration:'none',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap' }}>{person.email}</a>
+                        <div style={{ fontSize:11,color:T.gray500 }}>{person.phone}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* 4. Artykuły + ogłoszenia o pracę */}
+            <div style={{ background:'#fff',borderRadius:8,overflow:'hidden',boxShadow:T.shadow1,border:`1px solid ${T.gray200}` }}>
+              <div style={{ padding:'18px 20px',borderBottom:`1px solid ${T.gray200}` }}>
+                <div style={{ fontSize:12,fontWeight:700,color:T.gray500,letterSpacing:'0.07em',textTransform:'uppercase',marginBottom:12 }}>Artykuły o nas</div>
+                {c.premium ? (
+                  <div style={{ display:'flex',flexDirection:'column',gap:7 }}>
+                    {['Publicis Groupe Poland podsumowuje rok 2024','Nowe kampanie — wyniki Q1 2025','Wywiad z CEO: strategia na 2025','Effie 2024: złoto dla agencji'].map((title,j)=>(
+                      <div key={j} style={{ display:'flex',alignItems:'center',gap:8,padding:'7px 10px',background:T.gray50,borderRadius:4,border:`1px solid ${T.gray200}`,cursor:'pointer' }}>
+                        <div style={{ flex:1 }}>
+                          <div style={{ fontSize:12,fontWeight:600,color:T.gray900,lineHeight:1.3 }}>{title}</div>
+                          <div style={{ fontSize:10,color:T.gray400,marginTop:2 }}>{['3 dni temu','2 tyg. temu','1 mies. temu','3 mies. temu'][j]}</div>
+                        </div>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={T.gray400} strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                      </div>
+                    ))}
+                  </div>
+                ) : <div style={{ fontSize:12,color:T.gray400,fontStyle:'italic' }}>Brak artykułów</div>}
+              </div>
+              <div style={{ padding:'16px 20px',display:'flex',alignItems:'center',justifyContent:'space-between',gap:12 }}>
+                <div style={{ display:'flex',alignItems:'center',gap:8 }}>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1E3A5F" strokeWidth="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+                  <span style={{ fontSize:12,fontWeight:700,color:T.gray700 }}>Nasze ogłoszenia o pracę</span>
+                  {c.premium && <span style={{ fontSize:11,fontWeight:700,background:'#EFF6FF',color:'#1E3A5F',padding:'2px 7px',borderRadius:9999 }}>2 aktywne</span>}
+                </div>
+                <button style={{ fontSize:12,fontWeight:700,color:'#fff',background:'#1E3A5F',border:'none',borderRadius:6,padding:'7px 14px',cursor:'pointer',fontFamily:"'DM Sans',sans-serif",display:'flex',alignItems:'center',gap:5 }}>
+                  Zobacz oferty <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </button>
+              </div>
+            </div>
+
+            {/* 5. Nagrody branżowe */}
+            {c.premium && (
+              <div style={{ background:'#fff',borderRadius:8,padding:'22px 24px',boxShadow:T.shadow1,border:`1px solid ${T.gray200}` }}>
+                <div style={{ fontSize:12,fontWeight:700,color:T.gray500,letterSpacing:'0.07em',textTransform:'uppercase',marginBottom:14 }}>Nagrody branżowe</div>
+                <div style={{ display:'flex',flexWrap:'wrap',gap:10 }}>
+                  {[
+                    {name:'Effie Gold',year:'2024',cat:'FMCG'},
+                    {name:'KTR',year:'2023',cat:'Kampania cyfrowa'},
+                    {name:'IAB Mixx',year:'2023',cat:'Innowacja'},
+                  ].map(award=>(
+                    <div key={award.name+award.year} style={{ display:'flex',alignItems:'center',gap:10,padding:'10px 14px',background:'#FFFBEB',border:'1px solid #FDE68A',borderRadius:6 }}>
+                      <div style={{ width:32,height:32,borderRadius:4,background:'#F59E0B',display:'flex',alignItems:'center',justifyContent:'center' }}>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                      </div>
+                      <div>
+                        <div style={{ fontSize:12,fontWeight:700,color:'#92400E' }}>{award.name} {award.year}</div>
+                        <div style={{ fontSize:11,color:'#B45309' }}>{award.cat}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* 6. Wideo YouTube */}
+            {c.premium && (
+              <div style={{ background:'#fff',borderRadius:8,padding:'24px',boxShadow:T.shadow1,border:`1px solid ${T.gray200}` }}>
+                <div style={{ fontSize:12,fontWeight:700,color:T.gray500,letterSpacing:'0.07em',textTransform:'uppercase',marginBottom:14 }}>Wideo</div>
+                <div style={{ position:'relative',paddingBottom:'56.25%',borderRadius:6,overflow:'hidden',background:T.gray100,border:`1px solid ${T.gray200}` }}>
+                  <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Film firmy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen style={{ position:'absolute',top:0,left:0,width:'100%',height:'100%',border:'none' }}/>
+                </div>
+              </div>
+            )}
+
+            {/* 7. Galeria */}
             {c.premium && (
               <div style={{ background:'#fff',borderRadius:8,padding:'24px',boxShadow:T.shadow1,border:`1px solid ${T.gray200}` }}>
                 <div style={{ fontSize:12,fontWeight:700,color:T.gray500,letterSpacing:'0.07em',textTransform:'uppercase',marginBottom:14 }}>Galeria</div>
@@ -508,7 +608,7 @@ function CompanyProfile({ company, onNavigate }) {
               </div>
             )}
 
-            {/* Dane kontaktowe */}
+            {/* 8. Dane kontaktowe */}
             <div style={{ background:'#fff',borderRadius:8,padding:'24px',boxShadow:T.shadow1,border:`1px solid ${T.gray200}` }}>
               <div style={{ fontSize:12,fontWeight:700,color:T.gray500,letterSpacing:'0.07em',textTransform:'uppercase',marginBottom:14 }}>Dane kontaktowe</div>
               <div style={{ display:'flex',flexDirection:'column',gap:10 }}>
@@ -527,31 +627,32 @@ function CompanyProfile({ company, onNavigate }) {
             </div>
           </div>
 
-          {/* Sidebar */}
-          <aside style={{ display:'flex',flexDirection:'column',gap:14 }}>
-            {!c.premium && (
-              <div style={{ background:T.orangeLight,borderRadius:8,padding:'18px',border:`1px solid ${T.orange}44` }}>
-                <div style={{ fontSize:13,fontWeight:700,color:T.orange,marginBottom:6 }}>Czy to Twoja firma?</div>
-                <p style={{ fontSize:12,color:T.gray600,lineHeight:1.55,marginBottom:12 }}>Wyróżnij wpis, dodaj opis, galerię i link do strony. Zyskaj więcej widoczności wśród tysięcy czytelników WM.</p>
-                <button onClick={()=>onNavigate('pakiety')} style={{ width:'100%',background:T.orange,color:'#fff',border:'none',borderRadius:6,padding:'9px',fontSize:12,fontWeight:700,fontFamily:"'DM Sans',sans-serif",cursor:'pointer' }}>Zobacz pakiety →</button>
-              </div>
-            )}
-
-            <div style={{ background:'#fff',borderRadius:8,padding:'18px',boxShadow:T.shadow1,border:`1px solid ${T.gray200}` }}>
-              <div style={{ fontSize:12,fontWeight:700,color:T.gray500,letterSpacing:'0.06em',textTransform:'uppercase',marginBottom:14 }}>Podobne firmy</div>
-              <div style={{ display:'flex',flexDirection:'column',gap:12 }}>
-                {COMPANIES.filter(x=>x.cat===c.cat&&x.id!==c.id).slice(0,4).map(x=>(
-                  <div key={x.id} onClick={()=>onNavigate('company',x)} style={{ display:'flex',gap:10,cursor:'pointer',alignItems:'center' }}>
-                    <CompanyLogoPlaceholder name={x.name} size={36}/>
-                    <div>
-                      <div style={{ fontSize:12,fontWeight:600,color:T.gray900 }}>{x.name}</div>
-                      <div style={{ fontSize:11,color:T.gray400 }}>{x.city}</div>
-                    </div>
+          {/* 9. Podobne firmy */}
+          <div style={{ background:'#fff',borderRadius:8,padding:'24px',boxShadow:T.shadow1,border:`1px solid ${T.gray200}` }}>
+            <div style={{ fontSize:12,fontWeight:700,color:T.gray500,letterSpacing:'0.07em',textTransform:'uppercase',marginBottom:16 }}>Podobne firmy</div>
+            <div style={{ display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:16 }}>
+              {COMPANIES.filter(x=>x.cat===c.cat&&x.id!==c.id).slice(0,4).map(x=>(
+                <div key={x.id} onClick={()=>onNavigate('company',x)} style={{ display:'flex',gap:12,cursor:'pointer',alignItems:'center',padding:'12px',borderRadius:6,border:`1px solid ${T.gray200}`,transition:'box-shadow 0.15s' }}
+                  onMouseEnter={e=>e.currentTarget.style.boxShadow=T.shadow2}
+                  onMouseLeave={e=>e.currentTarget.style.boxShadow='none'}>
+                  <CompanyLogoPlaceholder name={x.name} size={40}/>
+                  <div>
+                    <div style={{ fontSize:12,fontWeight:600,color:T.gray900 }}>{x.name}</div>
+                    <div style={{ fontSize:11,color:T.gray400 }}>{x.city}</div>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
-          </aside>
+          </div>
+          {!c.premium && (
+            <div style={{ background:T.orangeLight,borderRadius:8,padding:'20px 24px',border:`1px solid ${T.orange}44`,display:'flex',alignItems:'center',justifyContent:'space-between',gap:16 }}>
+              <div>
+                <div style={{ fontSize:14,fontWeight:700,color:T.orange,marginBottom:4 }}>Czy to Twoja firma?</div>
+                <p style={{ fontSize:13,color:T.gray600,lineHeight:1.5 }}>Wyróżnij wpis, dodaj opis, galerię i link do strony. Zyskaj więcej widoczności wśród tysięcy czytelników WM.</p>
+              </div>
+              <button onClick={()=>onNavigate('pakiety')} style={{ flexShrink:0,background:T.orange,color:'#fff',border:'none',borderRadius:6,padding:'10px 22px',fontSize:13,fontWeight:700,fontFamily:"'DM Sans',sans-serif",cursor:'pointer',whiteSpace:'nowrap' }}>Zobacz pakiety →</button>
+            </div>
+          )}
         </div>
       </div>
     </main>
@@ -561,274 +662,317 @@ function CompanyProfile({ company, onNavigate }) {
 /* ─── PAGE: PAKIETY / CENNIK ─────────────────────────────────────── */
 function PakietyPage({ onNavigate }) {
   const [chosen, setChosen] = React.useState(null);
+
   return (
     <main style={{ flex:1, padding:'0 0 48px' }}>
-      <div style={{ maxWidth:1200,margin:'0 auto',padding:'24px 32px 0' }}>
-        <Breadcrumb items={[{ label:'Katalog Firm',onClick:()=>onNavigate('katalog') },{ label:'Dodaj firmę',onClick:()=>onNavigate('add') },{ label:'Wybór pakietu' }]}/>
-        <div style={{ textAlign:'center',marginBottom:36 }}>
-          <div style={{ fontSize:11,fontWeight:700,letterSpacing:'0.08em',textTransform:'uppercase',color:T.orange,marginBottom:8 }}>Pakiety ekspozycji</div>
-          <h1 style={{ fontSize:26,fontWeight:800,color:T.gray900,marginBottom:8,letterSpacing:'-0.02em' }}>Wybierz pakiet dla swojej firmy</h1>
-          <p style={{ fontSize:14,color:T.gray500,lineHeight:1.5 }}>Bezpłatne wpisy są moderowane i publikowane po weryfikacji redakcji.<br/>Pakiety płatne gwarantują wyróżnioną ekspozycję i pełny profil firmowy.</p>
+      <div style={{ maxWidth:1200, margin:'0 auto', padding:'24px 32px 0' }}>
+        <Breadcrumb items={[{ label:'Katalog Firm', onClick:()=>onNavigate('katalog') }, { label:'Dodaj firmę' }]}/>
+        <div style={{ textAlign:'center', marginBottom:36 }}>
+          <div style={{ fontSize:11, fontWeight:700, letterSpacing:'0.08em', textTransform:'uppercase', color:T.orange, marginBottom:8 }}>Pakiety ekspozycji</div>
+          <h1 style={{ fontSize:26, fontWeight:800, color:T.gray900, marginBottom:8, letterSpacing:'-0.02em' }}>Wybierz typ ogłoszenia dla swojej firmy</h1>
+          <p style={{ fontSize:14, color:T.gray500, lineHeight:1.5 }}>Bezpłatne wpisy są moderowane i publikowane po weryfikacji redakcji.<br/>Pakiety płatne gwarantują wyróżnioną ekspozycję i pełny profil firmowy.</p>
         </div>
 
-        <div style={{ display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:20,maxWidth:960,margin:'0 auto' }}>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:18, marginBottom:12 }}>
           {PACKAGES.map(pkg => (
-            <div key={pkg.id}
-              onClick={()=>setChosen(pkg.id)}
-              style={{ background:'#fff',borderRadius:10,padding:'28px 24px',border:chosen===pkg.id?`2px solid ${T.orange}`:pkg.popular?`2px solid ${T.orange}`:` 1px solid ${T.gray200}`,boxShadow:chosen===pkg.id||pkg.popular?T.shadow2:T.shadow1,cursor:'pointer',position:'relative',transition:'box-shadow 0.15s' }}>
-              {pkg.popular && <span style={{ position:'absolute',top:-12,left:'50%',transform:'translateX(-50%)',background:T.orange,color:'#fff',fontSize:10,fontWeight:700,letterSpacing:'0.06em',textTransform:'uppercase',padding:'3px 12px',borderRadius:9999 }}>Najpopularniejszy</span>}
-              <div style={{ fontSize:16,fontWeight:700,color:pkg.color,marginBottom:4 }}>{pkg.name}</div>
-              <div style={{ marginBottom:16 }}>
-                {pkg.price===0 ? (
-                  <span style={{ fontSize:28,fontWeight:800,color:T.gray900 }}>Bezpłatny</span>
-                ) : (
-                  <>
-                    <span style={{ fontSize:32,fontWeight:800,color:T.gray900 }}>{pkg.price} zł</span>
-                    <span style={{ fontSize:13,color:T.gray500 }}>/{pkg.period}</span>
-                  </>
-                )}
+            <div key={pkg.id} style={{ display:'flex', flexDirection:'column' }}>
+              {/* Top label */}
+              <div style={{ height:24, display:'flex', alignItems:'center', justifyContent:'center', marginBottom:4 }}>
+                {pkg.popular && <div style={{ background:T.navy, color:'#fff', fontSize:10, fontWeight:700, padding:'3px 12px', borderRadius:20, whiteSpace:'nowrap', letterSpacing:'.05em', textTransform:'uppercase' }}>Najczęściej wybierany</div>}
+                {pkg.topPick && <div style={{ background:'#854D0E', color:'#fff', fontSize:10, fontWeight:700, padding:'3px 12px', borderRadius:20, whiteSpace:'nowrap', letterSpacing:'.05em', textTransform:'uppercase' }}>Ekskluzywny</div>}
               </div>
-              <div style={{ display:'flex',flexDirection:'column',gap:7,marginBottom:20 }}>
-                {pkg.features.map(f=>(
-                  <div key={f} style={{ display:'flex',gap:8,alignItems:'flex-start',fontSize:12,color:T.gray700 }}>
-                    <svg style={{ flexShrink:0,marginTop:1 }} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={T.orange} strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                    {f}
-                  </div>
-                ))}
-                {pkg.locked.map(f=>(
-                  <div key={f} style={{ display:'flex',gap:8,alignItems:'flex-start',fontSize:12,color:T.gray300 }}>
-                    <svg style={{ flexShrink:0,marginTop:1 }} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={T.gray300} strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                    {f}
-                  </div>
-                ))}
+              <div
+                onClick={() => setChosen(pkg.id)}
+                style={{ flex:1, background:'#fff', borderRadius:8, padding:'22px 20px', cursor:'pointer', position:'relative', display:'flex', flexDirection:'column',
+                  border: chosen===pkg.id ? `2px solid ${T.orange}` : pkg.topPick ? `2px solid #D97706` : `1.5px solid ${T.gray200}`,
+                  boxShadow: chosen===pkg.id ? '0 4px 20px rgba(240,90,40,0.15)' : pkg.topPick ? '0 4px 16px rgba(217,119,6,0.12)' : '0 1px 3px rgba(0,0,0,0.06)',
+                  transition:'box-shadow 0.15s, border-color 0.15s',
+                }}>
+                {/* Badge */}
+                <div style={{ display:'inline-block', fontSize:10, fontWeight:700, letterSpacing:'.08em', textTransform:'uppercase', padding:'3px 8px', borderRadius:3, marginBottom:10, alignSelf:'flex-start', color:pkg.badgeColor, background:pkg.badgeBg }}>{pkg.badge}</div>
+                {/* Name & tagline */}
+                <div style={{ fontSize:20, fontWeight:800, color:T.gray900, marginBottom:3 }}>{pkg.name}</div>
+                <div style={{ fontSize:12, color:T.gray500, marginBottom:14, lineHeight:1.4 }}>{pkg.tagline}</div>
+                {/* Price */}
+                <div style={{ display:'flex', alignItems:'baseline', gap:4, marginBottom:16 }}>
+                  {pkg.price === 0
+                    ? <span style={{ fontSize:26, fontWeight:800, color:T.gray900 }}>0 zł</span>
+                    : <><span style={{ fontSize:28, fontWeight:800, color:T.gray900, lineHeight:1 }}>{pkg.price.toLocaleString('pl-PL')} zł</span><span style={{ fontSize:12, color:T.gray400, fontWeight:500 }}>/{pkg.period} netto</span></>
+                  }
+                </div>
+                {/* Divider */}
+                <div style={{ height:1, background:T.gray200, marginBottom:14 }}/>
+                {/* Features */}
+                <div style={{ flex:1, display:'flex', flexDirection:'column', gap:7 }}>
+                  {pkg.features.map((f,i) => (
+                    <div key={i} style={{ display:'flex', alignItems:'flex-start', gap:7, fontSize:12, color:T.gray600, lineHeight:1.45 }}>
+                      <svg style={{ flexShrink:0, marginTop:1 }} width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={pkg.id==='superpremium'?'#D97706':T.orange} strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                      <span>{f}</span>
+                    </div>
+                  ))}
+                </div>
+                {/* CTA */}
+                <button
+                  onClick={e => { e.stopPropagation(); setChosen(pkg.id); }}
+                  style={{ width:'100%', marginTop:18, padding:'10px', borderRadius:9999, fontSize:13, fontWeight:700, fontFamily:"'DM Sans',sans-serif", cursor:'pointer', transition:'all .15s', border:'2px solid transparent',
+                    background: chosen===pkg.id ? T.orange : '#fff',
+                    borderColor: chosen===pkg.id ? T.orange : pkg.topPick ? '#D97706' : T.gray300,
+                    color: chosen===pkg.id ? '#fff' : pkg.topPick ? '#92400E' : T.gray700,
+                  }}>
+                  {chosen===pkg.id ? '✓ Wybrany' : 'Wybierz'}
+                </button>
               </div>
-              <button onClick={e=>{e.stopPropagation();setChosen(pkg.id);onNavigate('add',{pkg})}}
-                style={{ width:'100%',background:pkg.id==='premium'?T.orange:'#fff',color:pkg.id==='premium'?'#fff':T.orange,border:`2px solid ${T.orange}`,borderRadius:6,padding:'10px',fontSize:13,fontWeight:700,fontFamily:"'DM Sans',sans-serif",cursor:'pointer' }}>
-                {pkg.cta}
-              </button>
             </div>
           ))}
         </div>
 
-        <div style={{ textAlign:'center',marginTop:24,fontSize:12,color:T.gray400 }}>
-          Pytania? Skontaktuj się z nami: <a href="mailto:katalog@wirtualnemedia.pl" style={{ color:T.orange,fontWeight:600 }}>katalog@wirtualnemedia.pl</a>
+        {/* Przejdź dalej — zawsze widoczny */}
+        <div style={{ display:'flex', justifyContent:'flex-end', margin:'16px 0 8px' }}>
+          <button
+            onClick={() => chosen && onNavigate('add', { pkg: PACKAGES.find(p=>p.id===chosen) })}
+            style={{ background: chosen ? T.orange : T.gray300, color:'#fff', border:'none', borderRadius:9999, padding:'12px 32px', fontSize:14, fontWeight:700, fontFamily:"'DM Sans',sans-serif", cursor: chosen ? 'pointer' : 'not-allowed', display:'flex', alignItems:'center', gap:8, transition:'background 0.15s' }}>
+            {chosen ? 'Przejdź dalej i uzupełnij szczegóły' : 'Wybierz pakiet, aby kontynuować'}
+            {chosen && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>}
+          </button>
         </div>
+
+        <div style={{ display:'flex', alignItems:'center', gap:8, padding:'10px 16px', background:'#FFF7F5', border:`1.5px solid rgba(240,90,40,0.25)`, borderRadius:6, marginBottom:8, fontSize:13, color:T.gray700 }}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={T.orange} strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Pytania? Skontaktuj się z nami: <a href="mailto:katalog@wirtualnemedia.pl" style={{ color:T.orange, fontWeight:700 }}>katalog@wirtualnemedia.pl</a>
+        </div>
+        <div style={{ fontSize:12, color:T.gray400, marginBottom:4 }}>Ceny netto. Do kwoty zostanie doliczony VAT 23%.</div>
       </div>
     </main>
+  );
+}
+
+/* ─── SHARED FORM HELPERS ────────────────────────────────────────── */
+function Sect({ label }) {
+  return <div style={{ fontSize:10, fontWeight:700, letterSpacing:'.08em', textTransform:'uppercase', color:T.gray400, marginBottom:12, marginTop:4 }}>{label}</div>;
+}
+
+function Inp({ label, value, onChange, placeholder, required, type='text', locked=false, hint='' }) {
+  return (
+    <div style={{ marginBottom:14 }}>
+      <label style={{ display:'block', fontSize:12, fontWeight:600, color:locked?T.gray400:T.gray700, marginBottom:5 }}>
+        {label}{required && <span style={{ color:T.orange }}> *</span>}
+        {locked && <span style={{ marginLeft:6, fontSize:10, background:T.gray200, color:T.gray500, padding:'1px 6px', borderRadius:3, fontWeight:600 }}>wyższy pakiet</span>}
+      </label>
+      <input type={type} disabled={locked} value={value||''} onChange={e=>onChange(e.target.value)}
+        placeholder={locked ? 'Niedostępne w tym pakiecie' : placeholder}
+        style={{ width:'100%', padding:'9px 12px', border:`1.5px solid ${locked?T.gray200:T.gray300}`, borderRadius:6, fontSize:13, fontFamily:"'DM Sans',sans-serif", outline:'none', color:T.gray900, background:locked?T.gray50:'#fff' }}
+        onFocus={e=>{ if(!locked) e.target.style.borderColor=T.orange; }}
+        onBlur={e=>e.target.style.borderColor=locked?T.gray200:T.gray300}
+      />
+      {hint && <div style={{ fontSize:11, color:T.gray400, marginTop:3 }}>{hint}</div>}
+    </div>
   );
 }
 
 /* ─── PAGE: FORMULARZ DODAWANIA ──────────────────────────────────── */
 function AddCompanyForm({ onNavigate, initPkg }) {
+  const pkgId = initPkg?.id || 'free';
+  const pkgData = PACKAGES.find(p => p.id === pkgId) || PACKAGES[0];
+  const isPaid = pkgId !== 'free';
+  const isStandard = ['standard','premium','superpremium'].includes(pkgId);
+  const isPremium = ['premium','superpremium'].includes(pkgId);
+  const isSuperPremium = pkgId === 'superpremium';
+
+  const STEPS = isPaid
+    ? ['Dane firmy', 'Opis i media', 'Rozliczenie', 'Potwierdzenie']
+    : ['Dane firmy', 'Opis i kategoria', 'Potwierdzenie'];
+  const billingStep = isPaid ? 3 : null;
+  const confirmStep = isPaid ? 4 : 3;
+
   const [step, setStep] = React.useState(1);
-  const [pkg, setPkg] = React.useState(initPkg?.id||'free');
-  const [form, setForm] = React.useState({ name:'', cat:'', short:'', city:'', nip:'', phone:'', email:'', www:'' });
+  const [form, setForm] = React.useState({
+    name:'', cat:'', short:'', longDesc:'', city:'', nip:'', phone:'', email:'', www:'',
+    logoName:'', contactName:'', contactPhone:'', contactEmail:'',
+    social1:'', social2:'', social3:'', social4:'', social5:'',
+    ytUrl:'', gallery:[],
+    billingName:'', billingNip:'', billingAddress:'', billingCity:'',
+    billingEmail:'', billingPhone:'',
+  });
 
-  function Field({ label, id, placeholder, required, locked }) {
-    return (
-      <div style={{ marginBottom:14 }}>
-        <label style={{ display:'block',fontSize:12,fontWeight:600,color:locked?T.gray400:T.gray600,marginBottom:5 }}>
-          {label}{required&&<span style={{ color:T.orange }}> *</span>}
-          {locked&&<span style={{ marginLeft:6,fontSize:10,background:T.gray200,color:T.gray500,padding:'1px 6px',borderRadius:3,fontWeight:600 }}>Premium</span>}
-        </label>
-        <input disabled={locked} value={form[id]||''} onChange={e=>setForm(f=>({...f,[id]:e.target.value}))}
-          placeholder={locked?'Dostępne w pakiecie Standard lub Premium':placeholder}
-          style={{ width:'100%',padding:'9px 12px',border:`1.5px solid ${locked?T.gray200:T.gray300}`,borderRadius:6,fontSize:14,fontFamily:"'DM Sans',sans-serif",outline:'none',color:T.gray900,background:locked?T.gray50:'#fff' }}
-          onFocus={e=>{if(!locked)e.target.style.borderColor=T.orange}}
-          onBlur={e=>e.target.style.borderColor=locked?T.gray200:T.gray300}
-        />
-      </div>
-    );
-  }
+  function set(k,v){ setForm(f=>({...f,[k]:v})); }
 
-  const STEPS = ['Dane firmy','Opis i kategoria','Pakiet','Potwierdzenie'];
-  const isPremium = pkg==='premium';
-  const isStandard = pkg==='standard'||isPremium;
+  function F(props){ return <Inp {...props} value={form[props.id]} onChange={v=>set(props.id,v)}/>; }
+
+  const pkgBadgeStyle = { display:'inline-flex', alignItems:'center', gap:6, padding:'4px 12px', borderRadius:9999, fontSize:12, fontWeight:700,
+    background: pkgId==='superpremium'?'#FEF3C7': pkgId==='premium'?'rgba(240,90,40,0.1)': pkgId==='standard'?'#EFF6FF':'#F4F4F5',
+    color: pkgId==='superpremium'?'#92400E': pkgId==='premium'?T.orange: pkgId==='standard'?'#1E3A5F':T.gray500,
+  };
 
   return (
     <main style={{ flex:1, padding:'0 0 48px' }}>
-      <div style={{ maxWidth:760,margin:'0 auto',padding:'24px 32px 0' }}>
-        <Breadcrumb items={[{ label:'Katalog Firm',onClick:()=>onNavigate('katalog') },{ label:'Dodaj firmę' }]}/>
+      <div style={{ maxWidth:760, margin:'0 auto', padding:'24px 32px 0' }}>
+        <Breadcrumb items={[{ label:'Katalog Firm', onClick:()=>onNavigate('katalog') }, { label:'Dodaj firmę', onClick:()=>onNavigate('pakiety') }, { label:pkgData.name }]}/>
 
-        {/* Step indicator */}
-        <div style={{ display:'flex',gap:0,marginBottom:28 }}>
+        {/* Package pill */}
+        <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:20 }}>
+          <span style={pkgBadgeStyle}>Pakiet: {pkgData.name}</span>
+          {isPaid && <span style={{ fontSize:12, color:T.gray500 }}>{pkgData.price.toLocaleString('pl-PL')} zł netto / rok</span>}
+        </div>
+
+        {/* Stepper */}
+        <div style={{ display:'flex', gap:0, marginBottom:28 }}>
           {STEPS.map((s,i) => (
-            <div key={i} style={{ flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:6,position:'relative' }}>
-              {i<STEPS.length-1 && <div style={{ position:'absolute',top:14,left:'50%',right:'-50%',height:2,background:step>i+1?T.orange:T.gray200,zIndex:0 }}/>}
-              <div style={{ width:28,height:28,borderRadius:'50%',background:step>i+1?T.orange:step===i+1?T.orange:'#fff',border:`2px solid ${step>=i+1?T.orange:T.gray300}`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:12,fontWeight:700,color:step>=i+1?'#fff':T.gray400,zIndex:1,position:'relative' }}>
+            <div key={i} style={{ flex:1, display:'flex', flexDirection:'column', alignItems:'center', gap:6, position:'relative' }}>
+              {i<STEPS.length-1 && <div style={{ position:'absolute', top:14, left:'50%', right:'-50%', height:2, background:step>i+1?T.orange:T.gray200, zIndex:0 }}/>}
+              <div style={{ width:28, height:28, borderRadius:'50%', background:step>i+1?T.orange:step===i+1?T.orange:'#fff', border:`2px solid ${step>=i+1?T.orange:T.gray300}`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:12, fontWeight:700, color:step>=i+1?'#fff':T.gray400, zIndex:1, position:'relative' }}>
                 {step>i+1?'✓':i+1}
               </div>
-              <span style={{ fontSize:11,fontWeight:600,color:step===i+1?T.orange:T.gray400,textAlign:'center' }}>{s}</span>
+              <span style={{ fontSize:11, fontWeight:600, color:step===i+1?T.orange:T.gray400, textAlign:'center' }}>{s}</span>
             </div>
           ))}
         </div>
 
-        <div style={{ background:'#fff',borderRadius:8,padding:'28px',boxShadow:T.shadow1,border:`1px solid ${T.gray200}` }}>
-          {step===1 && (
-            <>
-              <h2 style={{ fontSize:16,fontWeight:700,color:T.gray900,marginBottom:4 }}>Dane teleadresowe firmy</h2>
-              <p style={{ fontSize:13,color:T.gray500,marginBottom:20 }}>Wypełnij dane firmy, która ma zostać dodana do katalogu.</p>
-              <div style={{ display:'grid',gridTemplateColumns:'1fr 1fr',gap:'0 16px' }}>
-                <div style={{ gridColumn:'1/-1' }}><Field label="Nazwa firmy" id="name" placeholder="np. Agencja Kreatywna XYZ" required/></div>
-                <Field label="Miasto" id="city" placeholder="np. Warszawa" required/>
-                <Field label="NIP" id="nip" placeholder="000-000-00-00" required/>
-                <Field label="Telefon firmy" id="phone" placeholder="+48 000 000 000" required/>
-                <Field label="E-mail firmy" id="email" placeholder="kontakt@firma.pl" required/>
-                <div style={{ gridColumn:'1/-1' }}><Field label="Strona WWW" id="www" placeholder="www.firma.pl" locked={!isStandard}/></div>
-              </div>
-              <div style={{ borderTop:`1px solid ${T.gray200}`,marginTop:8,paddingTop:20 }}>
-                <div style={{ fontSize:13,fontWeight:700,color:T.gray700,marginBottom:14 }}>Dane osoby zgłaszającej</div>
-                <div style={{ display:'grid',gridTemplateColumns:'1fr 1fr',gap:'0 16px' }}>
-                  <Field label="Imię i nazwisko" id="contactName" placeholder="np. Anna Kowalska" required/>
-                  <Field label="E-mail kontaktowy" id="contactEmail" placeholder="anna.kowalska@firma.pl" required/>
-                </div>
-                <p style={{ fontSize:11,color:T.gray400,marginTop:-4,lineHeight:1.5 }}>Dane służą wyłącznie do komunikacji z redakcją w sprawie weryfikacji wpisu. Nie będą publikowane.</p>
-              </div>
-            </>
-          )}
-          {step===2 && (
-            <>
-              <h2 style={{ fontSize:16,fontWeight:700,color:T.gray900,marginBottom:4 }}>Opis i kategoria</h2>
-              <p style={{ fontSize:13,color:T.gray500,marginBottom:20 }}>Opisz działalność firmy i prześlij logotyp.</p>
+        <div style={{ background:'#fff', borderRadius:8, padding:'28px', boxShadow:T.shadow1, border:`1px solid ${T.gray200}` }}>
 
-              {/* Logo upload */}
-              <div style={{ marginBottom:20 }}>
-                <label style={{ display:'block',fontSize:12,fontWeight:600,color:T.gray600,marginBottom:5 }}>Logotyp firmy <span style={{ fontSize:11,fontWeight:400,color:T.gray400 }}>(PNG, JPG, SVG — maks. 2 MB)</span></label>
-                <div style={{ border:`2px dashed ${T.gray300}`,borderRadius:8,padding:'20px',textAlign:'center',cursor:'pointer',background:T.gray50,transition:'border-color 0.15s' }}
-                  onDragOver={e=>{e.preventDefault();e.currentTarget.style.borderColor=T.orange}}
-                  onDragLeave={e=>e.currentTarget.style.borderColor=T.gray300}
-                  onClick={()=>document.getElementById('logo-upload').click()}>
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={T.gray400} strokeWidth="1.5" style={{ margin:'0 auto 8px',display:'block' }}><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                  <div style={{ fontSize:13,fontWeight:600,color:T.gray600,marginBottom:2 }}>Kliknij lub przeciągnij plik</div>
-                  <div style={{ fontSize:11,color:T.gray400 }}>Zalecany rozmiar: 400×400 px, tło transparentne</div>
-                  <input id="logo-upload" type="file" accept=".png,.jpg,.jpeg,.svg" style={{ display:'none' }}
-                    onChange={e=>{ const f=e.target.files[0]; if(f) setForm(fm=>({...fm,logoName:f.name})); }}/>
-                </div>
-                {form.logoName && <div style={{ fontSize:12,color:T.orange,fontWeight:600,marginTop:6,display:'flex',alignItems:'center',gap:6 }}>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12"/></svg>
-                  {form.logoName}
-                </div>}
-              </div>
-
-              <div style={{ marginBottom:14 }}>
-                <label style={{ display:'block',fontSize:12,fontWeight:600,color:T.gray600,marginBottom:5 }}>Kategoria <span style={{ color:T.orange }}>*</span></label>
-                <select value={form.cat} onChange={e=>setForm(f=>({...f,cat:e.target.value}))}
-                  style={{ width:'100%',padding:'9px 12px',border:`1.5px solid ${T.gray300}`,borderRadius:6,fontSize:14,fontFamily:"'DM Sans',sans-serif",outline:'none',color:T.gray900,background:'#fff' }}>
-                  <option value="">-- Wybierz kategorię --</option>
-                  {CATS.slice(1).map(c=><option key={c} value={c}>{c}</option>)}
-                </select>
-              </div>
-              <div style={{ marginBottom:14 }}>
-                <label style={{ display:'block',fontSize:12,fontWeight:600,color:T.gray600,marginBottom:5 }}>Krótki opis <span style={{ color:T.orange }}>*</span> <span style={{ fontWeight:400,color:T.gray400 }}>(do 300 znaków)</span></label>
-                <textarea rows={3} maxLength={300} value={form.short||''} onChange={e=>setForm(f=>({...f,short:e.target.value}))}
-                  placeholder="Krótki opis działalności firmy..."
-                  style={{ width:'100%',padding:'9px 12px',border:`1.5px solid ${T.gray300}`,borderRadius:6,fontSize:14,fontFamily:"'DM Sans',sans-serif",outline:'none',color:T.gray900,resize:'vertical' }}/>
-                <div style={{ fontSize:11,color:T.gray400,textAlign:'right',marginTop:3 }}>{(form.short||'').length}/300</div>
-              </div>
-              <div style={{ marginBottom:14 }}>
-                <label style={{ display:'block',fontSize:12,fontWeight:600,color:isStandard?T.gray600:T.gray400,marginBottom:5 }}>
-                  Rozbudowany opis
-                  {!isStandard&&<span style={{ marginLeft:6,fontSize:10,background:T.gray200,color:T.gray500,padding:'1px 6px',borderRadius:3,fontWeight:600 }}>Standard+</span>}
-                </label>
-                <textarea rows={4} disabled={!isStandard}
-                  placeholder={isStandard?'Szczegółowy opis firmy, usług, doświadczenia...':'Dostępne w pakiecie Standard lub Premium'}
-                  style={{ width:'100%',padding:'9px 12px',border:`1.5px solid ${isStandard?T.gray300:T.gray200}`,borderRadius:6,fontSize:14,fontFamily:"'DM Sans',sans-serif",outline:'none',color:T.gray900,resize:'vertical',background:isStandard?'#fff':T.gray50 }}/>
-              </div>
-            </>
-          )}
-          {step===3 && (
-            <>
-              <h2 style={{ fontSize:16,fontWeight:700,color:T.gray900,marginBottom:4 }}>Wybierz pakiet</h2>
-              <p style={{ fontSize:13,color:T.gray500,marginBottom:20 }}>Pakiet możesz zmienić lub rozszerzyć w dowolnym momencie.</p>
-              <div style={{ display:'flex',flexDirection:'column',gap:12 }}>
-                {PACKAGES.map(p => (
-                  <div key={p.id} onClick={()=>setPkg(p.id)}
-                    style={{ border:`2px solid ${pkg===p.id?T.orange:T.gray200}`,borderRadius:8,cursor:'pointer',background:pkg===p.id?T.orangeLight:'#fff',transition:'all 0.15s',overflow:'hidden' }}>
-                    {/* Header row */}
-                    <div style={{ display:'flex',alignItems:'center',gap:14,padding:'14px 18px',borderBottom:pkg===p.id?`1px solid ${T.orange}22`:`1px solid ${T.gray200}` }}>
-                      <div style={{ width:20,height:20,borderRadius:'50%',border:`2px solid ${pkg===p.id?T.orange:T.gray300}`,background:pkg===p.id?T.orange:'#fff',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0 }}>
-                        {pkg===p.id&&<div style={{ width:8,height:8,borderRadius:'50%',background:'#fff' }}/>}
-                      </div>
-                      <div style={{ flex:1 }}>
-                        <div style={{ display:'flex',alignItems:'center',gap:8 }}>
-                          <span style={{ fontSize:15,fontWeight:700,color:T.gray900 }}>{p.name}</span>
-                          {p.popular&&<span style={{ fontSize:10,background:T.orange,color:'#fff',padding:'2px 8px',borderRadius:9999,fontWeight:700 }}>Popularny</span>}
-                        </div>
-                        <div style={{ fontSize:12,color:T.gray500,marginTop:1 }}>
-                          {p.price===0?'Bezpłatny':`${p.price} zł / ${p.period}`}
-                        </div>
-                      </div>
-                      <div style={{ fontSize:12,color:pkg===p.id?T.orange:T.gray400,fontWeight:600 }}>
-                        {p.features.length} funkcji
-                      </div>
-                    </div>
-                    {/* Benefits — visible when selected */}
-                    {pkg===p.id && (
-                      <div style={{ padding:'14px 18px 16px 52px' }}>
-                        <div style={{ display:'grid',gridTemplateColumns:'1fr 1fr',gap:'6px 20px' }}>
-                          {p.features.map(f=>(
-                            <div key={f} style={{ display:'flex',gap:7,alignItems:'flex-start',fontSize:12,color:T.gray700 }}>
-                              <svg style={{ flexShrink:0,marginTop:1,color:T.orange }} width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                              {f}
-                            </div>
-                          ))}
-                        </div>
-                        {p.locked.length>0 && (
-                          <div style={{ marginTop:10,paddingTop:10,borderTop:`1px solid ${T.orange}22` }}>
-                            <div style={{ fontSize:11,fontWeight:600,color:T.gray400,marginBottom:6 }}>Niedostępne w tym pakiecie:</div>
-                            <div style={{ display:'grid',gridTemplateColumns:'1fr 1fr',gap:'4px 20px' }}>
-                              {p.locked.map(f=>(
-                                <div key={f} style={{ display:'flex',gap:7,alignItems:'flex-start',fontSize:11,color:T.gray300 }}>
-                                  <svg style={{ flexShrink:0,marginTop:1 }} width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                                  {f}
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
+          {/* STEP 1 — Dane firmy */}
+          {step===1 && (<>
+            <h2 style={{ fontSize:16, fontWeight:700, color:T.gray900, marginBottom:4 }}>Dane teleadresowe firmy</h2>
+            <p style={{ fontSize:13, color:T.gray500, marginBottom:20 }}>Podstawowe informacje widoczne w profilu firmy.</p>
+            <Sect label="Firma"/>
+            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0 16px' }}>
+              <div style={{ gridColumn:'1/-1' }}><F label="Nazwa firmy" id="name" placeholder="np. Agencja Kreatywna XYZ" required/></div>
+              <F label="Miasto" id="city" placeholder="np. Warszawa" required/>
+              <F label="NIP" id="nip" placeholder="000-000-00-00" required/>
+              <F label="Telefon firmy" id="phone" placeholder="+48 000 000 000" required/>
+              <F label="E-mail firmy" id="email" placeholder="kontakt@firma.pl" required type="email"/>
+              <div style={{ gridColumn:'1/-1' }}><F label="Strona WWW" id="www" placeholder="www.firma.pl" locked={!isStandard}/></div>
+            </div>
+            {isPremium && (<>
+              <Sect label="Media społecznościowe"/>
+              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0 16px' }}>
+                {['LinkedIn','Facebook','Twitter / X','Instagram', isSuperPremium?'YouTube':''].filter(Boolean).slice(0,isPremium?5:3).map((pl,i)=>(
+                  <F key={pl} label={pl} id={`social${i+1}`} placeholder={`https://`}/>
                 ))}
               </div>
-              {pkg!=='free' && (
-                <div style={{ marginTop:20,padding:'16px',background:T.gray50,borderRadius:8,border:`1px solid ${T.gray200}` }}>
-                  <div style={{ fontSize:12,fontWeight:700,color:T.gray700,marginBottom:8 }}>Dane do faktury</div>
-                  <div style={{ display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px 16px' }}>
-                    {['Nazwa firmy / imię i nazwisko','NIP','Adres','Kod pocztowy i miasto'].map(l=>(
-                      <div key={l}>
-                        <label style={{ fontSize:11,fontWeight:600,color:T.gray500,display:'block',marginBottom:3 }}>{l}</label>
-                        <input style={{ width:'100%',padding:'7px 10px',border:`1px solid ${T.gray300}`,borderRadius:4,fontSize:13,fontFamily:"'DM Sans',sans-serif",outline:'none' }} placeholder="..."/>
-                      </div>
-                    ))}
-                  </div>
-                  <p style={{ fontSize:11,color:T.gray400,marginTop:10,lineHeight:1.5 }}>Po złożeniu zgłoszenia skontaktujemy się z Tobą w ciągu 1 dnia roboczego w celu wystawienia faktury i aktywacji wpisu.</p>
+            </>)}
+            <div style={{ borderTop:`1px solid ${T.gray200}`, marginTop:8, paddingTop:20 }}>
+              <Sect label="Osoba zgłaszająca"/>
+              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0 16px' }}>
+                <F label="Imię i nazwisko" id="contactName" placeholder="np. Anna Kowalska" required/>
+                <F label="Numer telefonu" id="contactPhone" placeholder="+48 000 000 000" required/>
+                <div style={{ gridColumn:'1/-1' }}><F label="E-mail kontaktowy" id="contactEmail" placeholder="anna.kowalska@firma.pl" required type="email"/></div>
+              </div>
+              <p style={{ fontSize:11, color:T.gray400, marginTop:-4, lineHeight:1.5 }}>Dane służą wyłącznie do komunikacji z redakcją WM. Nie będą publikowane.</p>
+            </div>
+          </>)}
+
+          {/* STEP 2 — Opis i media */}
+          {step===2 && (<>
+            <h2 style={{ fontSize:16, fontWeight:700, color:T.gray900, marginBottom:4 }}>Opis i media</h2>
+            <p style={{ fontSize:13, color:T.gray500, marginBottom:20 }}>Opisz działalność firmy i prześlij materiały.</p>
+            <Sect label="Logotyp"/>
+            <div style={{ border:`2px dashed ${T.gray300}`, borderRadius:8, padding:'18px', textAlign:'center', cursor:'pointer', background:T.gray50, marginBottom:18 }}
+              onClick={()=>document.getElementById('logo-upload').click()}>
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke={T.gray400} strokeWidth="1.5" style={{ margin:'0 auto 6px', display:'block' }}><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <div style={{ fontSize:13, fontWeight:600, color:T.gray600, marginBottom:2 }}>{form.logoName || 'Kliknij lub przeciągnij plik'}</div>
+              <div style={{ fontSize:11, color:T.gray400 }}>PNG, SVG, JPG \u00b7 maks. 2 MB \u00b7 zalecane 400\u00d7400 px</div>
+              <input id="logo-upload" type="file" accept=".png,.jpg,.jpeg,.svg" style={{ display:'none' }} onChange={e=>{ const f=e.target.files[0]; if(f) set('logoName',f.name); }}/>
+            </div>
+            <Sect label="Kategoria"/>
+            <div style={{ marginBottom:14 }}>
+              <label style={{ display:'block', fontSize:12, fontWeight:600, color:T.gray700, marginBottom:5 }}>Kategoria <span style={{ color:T.orange }}>*</span>{isStandard && <span style={{ fontSize:11, fontWeight:400, color:T.gray400, marginLeft:4 }}>(do {isPremium?5:3} kategorii)</span>}</label>
+              <select value={form.cat} onChange={e=>set('cat',e.target.value)}
+                style={{ width:'100%', padding:'9px 12px', border:`1.5px solid ${T.gray300}`, borderRadius:6, fontSize:13, fontFamily:"'DM Sans',sans-serif", outline:'none', color:T.gray900, background:'#fff' }}>
+                <option value="">-- Wybierz główną kategorię --</option>
+                {CATS.slice(1).map(c=><option key={c} value={c}>{c}</option>)}
+              </select>
+            </div>
+            <Sect label="Opis firmy"/>
+            <div style={{ marginBottom:14 }}>
+              <label style={{ display:'block', fontSize:12, fontWeight:600, color:T.gray700, marginBottom:5 }}>Krótki opis <span style={{ color:T.orange }}>*</span> <span style={{ fontWeight:400, color:T.gray400 }}>(do {isPremium?800:isStandard?600:300} znaków)</span></label>
+              <textarea rows={3} maxLength={isPremium?800:isStandard?600:300} value={form.short||''} onChange={e=>set('short',e.target.value)}
+                placeholder="Krótki opis działalności firmy..."
+                style={{ width:'100%', padding:'9px 12px', border:`1.5px solid ${T.gray300}`, borderRadius:6, fontSize:13, fontFamily:"'DM Sans',sans-serif", outline:'none', color:T.gray900, resize:'vertical' }}/>
+              <div style={{ fontSize:11, color:T.gray400, textAlign:'right', marginTop:3 }}>{(form.short||'').length}/{isPremium?800:isStandard?600:300}</div>
+            </div>
+            {isStandard && (
+              <div style={{ marginBottom:14 }}>
+                <label style={{ display:'block', fontSize:12, fontWeight:600, color:T.gray700, marginBottom:5 }}>Rozbudowany opis <span style={{ fontWeight:400, color:T.gray400 }}>(do {isPremium?5000:2000} znaków)</span></label>
+                <textarea rows={5} maxLength={isPremium?5000:2000} value={form.longDesc||''} onChange={e=>set('longDesc',e.target.value)}
+                  placeholder="Szczegółowy opis firmy, usług, doświadczenia, klientów..."
+                  style={{ width:'100%', padding:'9px 12px', border:`1.5px solid ${T.gray300}`, borderRadius:6, fontSize:13, fontFamily:"'DM Sans',sans-serif", outline:'none', color:T.gray900, resize:'vertical' }}/>
+                <div style={{ fontSize:11, color:T.gray400, textAlign:'right', marginTop:3 }}>{(form.longDesc||'').length}/{isPremium?5000:2000}</div>
+              </div>
+            )}
+            {isPremium && (<>
+              <Sect label="Galeria zdjęć"/>
+              <div style={{ border:`2px dashed ${T.gray300}`, borderRadius:8, padding:'16px', textAlign:'center', cursor:'pointer', background:T.gray50, marginBottom:14 }}>
+                <div style={{ fontSize:13, fontWeight:600, color:T.gray600 }}>Dodaj zdjęcia (do 3 plików, maks. 5 MB każdy)</div>
+                <div style={{ fontSize:11, color:T.gray400 }}>PNG lub JPG</div>
+              </div>
+              <Sect label="Wideo YouTube / Vimeo"/>
+              <F label="Link do wideo" id="ytUrl" placeholder="https://www.youtube.com/watch?v=..." hint="Wideo będzie widoczne na profilu firmy jako odtwarzacz."/>
+            </>)}
+          </>)}
+
+          {/* STEP 3 — Rozliczenie (tylko paid) */}
+          {step===billingStep && isPaid && (<>
+            <h2 style={{ fontSize:16, fontWeight:700, color:T.gray900, marginBottom:4 }}>Dane rozliczeniowe i podsumowanie</h2>
+            <p style={{ fontSize:13, color:T.gray500, marginBottom:20 }}>Faktura VAT zostanie wystawiona po aktywacji wpisu.</p>
+
+            {/* Podsumowanie zamówienia */}
+            <div style={{ background:T.gray50, border:`1.5px solid ${T.gray200}`, borderRadius:8, padding:'18px 20px', marginBottom:24 }}>
+              <div style={{ fontSize:11, fontWeight:700, letterSpacing:'.07em', textTransform:'uppercase', color:T.gray400, marginBottom:12 }}>Podsumowanie zamówienia</div>
+              {[
+                ['Pakiet', pkgData.name],
+                ['Okres', '1 rok'],
+                ['Cena netto', `${pkgData.price.toLocaleString('pl-PL')} zł`],
+                ['VAT 23%', `${Math.round(pkgData.price*0.23).toLocaleString('pl-PL')} zł`],
+              ].map(([k,v])=>(
+                <div key={k} style={{ display:'flex', justifyContent:'space-between', fontSize:13, color:T.gray600, marginBottom:7 }}>
+                  <span>{k}</span><strong style={{ color:T.gray900 }}>{v}</strong>
                 </div>
-              )}
-            </>
-          )}
-          {step===4 && (
-            <div style={{ textAlign:'center',padding:'20px 0' }}>
-              <div style={{ width:64,height:64,borderRadius:'50%',background:'#DCFCE7',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 16px' }}>
+              ))}
+              <div style={{ borderTop:`1px solid ${T.gray200}`, paddingTop:10, marginTop:6, display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+                <span style={{ fontWeight:700, fontSize:14 }}>Razem brutto</span>
+                <span style={{ fontWeight:800, fontSize:22, color:T.orange }}>{Math.round(pkgData.price*1.23).toLocaleString('pl-PL')} zł</span>
+              </div>
+            </div>
+
+            <Sect label="Dane do faktury"/>
+            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0 16px' }}>
+              <div style={{ gridColumn:'1/-1' }}><F label="Nazwa firmy / imię i nazwisko" id="billingName" placeholder="Firma sp. z o.o." required/></div>
+              <F label="NIP" id="billingNip" placeholder="0000000000" required/>
+              <F label="E-mail do faktury" id="billingEmail" placeholder="faktury@firma.pl" required type="email"/>
+              <div style={{ gridColumn:'1/-1' }}><F label="Adres" id="billingAddress" placeholder="ul. Przykładowa 1" required/></div>
+              <F label="Kod pocztowy i miasto" id="billingCity" placeholder="00-000 Warszawa" required/>
+              <F label="Telefon kontaktowy" id="billingPhone" placeholder="+48 000 000 000"/>
+            </div>
+            <div style={{ padding:'12px 14px', background:'rgba(240,90,40,0.06)', border:'1px solid rgba(240,90,40,0.2)', borderRadius:6, fontSize:12, color:T.gray700, lineHeight:1.6, marginTop:4 }}>
+              Po złożeniu zgłoszenia nasz zespół skontaktuje się w ciągu 1 dnia roboczego w sprawie aktywacji i płatności.
+            </div>
+          </>)}
+
+          {/* STEP — Potwierdzenie */}
+          {step===confirmStep && (
+            <div style={{ textAlign:'center', padding:'20px 0' }}>
+              <div style={{ width:64, height:64, borderRadius:'50%', background:'#DCFCE7', display:'flex', alignItems:'center', justifyContent:'center', margin:'0 auto 16px' }}>
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22C55E" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
               </div>
-              <h2 style={{ fontSize:20,fontWeight:800,color:T.gray900,marginBottom:8 }}>Zgłoszenie wysłane!</h2>
-              <p style={{ fontSize:14,color:T.gray500,lineHeight:1.6,maxWidth:400,margin:'0 auto 24px' }}>
-                Twoja firma trafiła do moderacji. Redakcja Wirtualne Media zweryfikuje wpis w ciągu 1–2 dni roboczych i poinformuje Cię e-mailem o publikacji.
+              <h2 style={{ fontSize:20, fontWeight:800, color:T.gray900, marginBottom:8 }}>Zgłoszenie wysłane!</h2>
+              <p style={{ fontSize:14, color:T.gray500, lineHeight:1.6, maxWidth:420, margin:'0 auto 24px' }}>
+                {isPaid
+                  ? `Twoja firma (pakiet ${pkgData.name}) trafiła do weryfikacji. Skontaktujemy się na ${form.contactEmail||form.billingEmail||'podany e-mail'} w ciągu 1 dnia roboczego w sprawie aktywacji i faktury.`
+                  : 'Twoja firma trafiła do moderacji. Redakcja WM zweryfikuje wpis i poinformuje Cię e-mailem o publikacji.'}
               </p>
-              <button onClick={()=>onNavigate('katalog')} style={{ background:T.orange,color:'#fff',border:'none',borderRadius:6,padding:'10px 24px',fontSize:14,fontWeight:700,fontFamily:"'DM Sans',sans-serif",cursor:'pointer' }}>Wróć do katalogu</button>
+              <button onClick={()=>onNavigate('katalog')} style={{ background:T.orange, color:'#fff', border:'none', borderRadius:6, padding:'10px 28px', fontSize:14, fontWeight:700, fontFamily:"'DM Sans',sans-serif", cursor:'pointer' }}>Wróć do katalogu</button>
             </div>
           )}
 
-          {step < 4 && (
-            <div style={{ display:'flex',justifyContent:'space-between',marginTop:24,paddingTop:20,borderTop:`1px solid ${T.gray200}` }}>
-              <button onClick={()=>step>1?setStep(s=>s-1):onNavigate('katalog')}
-                style={{ background:'#fff',color:T.gray600,border:`1.5px solid ${T.gray300}`,borderRadius:6,padding:'9px 20px',fontSize:13,fontWeight:600,fontFamily:"'DM Sans',sans-serif",cursor:'pointer' }}>
-                {step===1?'Anuluj':'Wstecz'}
+          {step < confirmStep && (
+            <div style={{ display:'flex', justifyContent:'space-between', marginTop:24, paddingTop:20, borderTop:`1px solid ${T.gray200}` }}>
+              <button onClick={()=>step>1?setStep(s=>s-1):onNavigate('pakiety')}
+                style={{ background:'#fff', color:T.gray600, border:`1.5px solid ${T.gray300}`, borderRadius:6, padding:'9px 20px', fontSize:13, fontWeight:600, fontFamily:"'DM Sans',sans-serif", cursor:'pointer' }}>
+                {step===1?'← Wróć do pakietów':'Wstecz'}
               </button>
               <button onClick={()=>setStep(s=>s+1)}
-                style={{ background:T.orange,color:'#fff',border:'none',borderRadius:6,padding:'9px 24px',fontSize:13,fontWeight:700,fontFamily:"'DM Sans',sans-serif",cursor:'pointer' }}>
-                {step===3?'Wyślij zgłoszenie':'Dalej →'}
+                style={{ background:T.orange, color:'#fff', border:'none', borderRadius:6, padding:'9px 24px', fontSize:13, fontWeight:700, fontFamily:"'DM Sans',sans-serif", cursor:'pointer' }}>
+                {step===confirmStep-1?'Wyślij zgłoszenie':'Dalej →'}
               </button>
             </div>
           )}
@@ -837,7 +981,6 @@ function AddCompanyForm({ onNavigate, initPkg }) {
     </main>
   );
 }
-
 /* ─── FOOTER ─────────────────────────────────────────────────────── */
 function Footer() {
   return (
@@ -851,7 +994,9 @@ function Footer() {
 }
 
 /* ─── APP ────────────────────────────────────────────────────────── */
-const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{ "listVariant": "A" }/*EDITMODE-END*/;
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "listVariant": "A"
+}/*EDITMODE-END*/;
 
 function App() {
   const saved = (() => { try { return JSON.parse(localStorage.getItem('wm_katalog')||'{}'); } catch { return {}; }})();
@@ -876,18 +1021,13 @@ function App() {
 
     function renderTweaks() {
       const variantEl = document.getElementById('tweak-variant');
-      const viewEl = document.getElementById('tweak-view');
       if (variantEl) {
         variantEl.innerHTML = '';
-        ['A','B','C'].forEach(v => {
-          const btn = document.createElement('button');
-          btn.className = 'tweak-chip' + (tweaks.listVariant===v?' active':'');
-          btn.textContent = v==='A'?'A — Siatka mieszana':v==='B'?'B — Wyróżnieni na górze':'C — Hero spotlight';
-          btn.style.cssText = 'font-size:11px;font-weight:600;padding:4px 10px;border-radius:9999px;border:1.5px solid #E0E0E0;background:#fff;color:#555;cursor:pointer;';
-          if (tweaks.listVariant===v) { btn.style.borderColor='#F05A28'; btn.style.background='#FEF0E9'; btn.style.color='#F05A28'; }
-          btn.onclick = () => { setTweaks(t=>({...t,listVariant:v})); window.parent.postMessage({type:'__edit_mode_set_keys',edits:{listVariant:v}},'*'); };
-          variantEl.appendChild(btn);
-        });
+        const btn = document.createElement('button');
+        btn.className = 'tweak-chip active';
+        btn.textContent = 'A — Siatka mieszana';
+        btn.style.cssText = 'font-size:11px;font-weight:600;padding:4px 10px;border-radius:9999px;border:1.5px solid #F05A28;background:#FEF0E9;color:#F05A28;cursor:default;';
+        variantEl.appendChild(btn);
       }
     }
     renderTweaks();
