@@ -796,8 +796,6 @@ function AddCompanyForm({ onNavigate, initPkg }) {
 
   function set(k,v){ setForm(f=>({...f,[k]:v})); }
 
-  function F(props){ return <Inp {...props} value={form[props.id]} onChange={v=>set(props.id,v)}/>; }
-
   const pkgBadgeStyle = { display:'inline-flex', alignItems:'center', gap:6, padding:'4px 12px', borderRadius:9999, fontSize:12, fontWeight:700,
     background: pkgId==='superpremium'?'#FEF3C7': pkgId==='premium'?'rgba(240,90,40,0.1)': pkgId==='standard'?'#EFF6FF':'#F4F4F5',
     color: pkgId==='superpremium'?'#92400E': pkgId==='premium'?T.orange: pkgId==='standard'?'#1E3A5F':T.gray500,
@@ -835,27 +833,27 @@ function AddCompanyForm({ onNavigate, initPkg }) {
             <p style={{ fontSize:13, color:T.gray500, marginBottom:20 }}>Podstawowe informacje widoczne w profilu firmy.</p>
             <Sect label="Firma"/>
             <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0 16px' }}>
-              <div style={{ gridColumn:'1/-1' }}><F label="Nazwa firmy" id="name" placeholder="np. Agencja Kreatywna XYZ" required/></div>
-              <F label="Miasto" id="city" placeholder="np. Warszawa" required/>
-              <F label="NIP" id="nip" placeholder="000-000-00-00" required/>
-              <F label="Telefon firmy" id="phone" placeholder="+48 000 000 000" required/>
-              <F label="E-mail firmy" id="email" placeholder="kontakt@firma.pl" required type="email"/>
-              <div style={{ gridColumn:'1/-1' }}><F label="Strona WWW" id="www" placeholder="www.firma.pl" locked={!isStandard}/></div>
+              <div style={{ gridColumn:'1/-1' }}><Inp label="Nazwa firmy" id="name" value={form.name} onChange={v=>set('name',v)} placeholder="np. Agencja Kreatywna XYZ" required/></div>
+              <Inp label="Miasto" id="city" value={form.city} onChange={v=>set('city',v)} placeholder="np. Warszawa" required/>
+              <Inp label="NIP" id="nip" value={form.nip} onChange={v=>set('nip',v)} placeholder="000-000-00-00" required/>
+              <Inp label="Telefon firmy" id="phone" value={form.phone} onChange={v=>set('phone',v)} placeholder="+48 000 000 000" required/>
+              <Inp label="E-mail firmy" id="email" value={form.email} onChange={v=>set('email',v)} placeholder="kontakt@firma.pl" required type="email"/>
+              <div style={{ gridColumn:'1/-1' }}><Inp label="Strona WWW" id="www" value={form.www} onChange={v=>set('www',v)} placeholder="www.firma.pl" locked={!isStandard}/></div>
             </div>
             {isPremium && (<>
               <Sect label="Media społecznościowe"/>
               <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0 16px' }}>
                 {['LinkedIn','Facebook','Twitter / X','Instagram', isSuperPremium?'YouTube':''].filter(Boolean).slice(0,isPremium?5:3).map((pl,i)=>(
-                  <F key={pl} label={pl} id={`social${i+1}`} placeholder={`https://`}/>
+                  <Inp key={pl} label={pl} id={`social${i+1}`} value={form[`social${i+1}`]||''} onChange={v=>set(`social${i+1}`,v)} placeholder={`https://`}/>
                 ))}
               </div>
             </>)}
             <div style={{ borderTop:`1px solid ${T.gray200}`, marginTop:8, paddingTop:20 }}>
               <Sect label="Osoba zgłaszająca"/>
               <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0 16px' }}>
-                <F label="Imię i nazwisko" id="contactName" placeholder="np. Anna Kowalska" required/>
-                <F label="Numer telefonu" id="contactPhone" placeholder="+48 000 000 000" required/>
-                <div style={{ gridColumn:'1/-1' }}><F label="E-mail kontaktowy" id="contactEmail" placeholder="anna.kowalska@firma.pl" required type="email"/></div>
+                <Inp label="Imię i nazwisko" id="contactName" value={form.contactName} onChange={v=>set('contactName',v)} placeholder="np. Anna Kowalska" required/>
+                <Inp label="Numer telefonu" id="contactPhone" value={form.contactPhone} onChange={v=>set('contactPhone',v)} placeholder="+48 000 000 000" required/>
+                <div style={{ gridColumn:'1/-1' }}><Inp label="E-mail kontaktowy" id="contactEmail" value={form.contactEmail} onChange={v=>set('contactEmail',v)} placeholder="anna.kowalska@firma.pl" required type="email"/></div>
               </div>
               <p style={{ fontSize:11, color:T.gray400, marginTop:-4, lineHeight:1.5 }}>Dane służą wyłącznie do komunikacji z redakcją WM. Nie będą publikowane.</p>
             </div>
@@ -906,7 +904,7 @@ function AddCompanyForm({ onNavigate, initPkg }) {
                 <div style={{ fontSize:11, color:T.gray400 }}>PNG lub JPG</div>
               </div>
               <Sect label="Wideo YouTube / Vimeo"/>
-              <F label="Link do wideo" id="ytUrl" placeholder="https://www.youtube.com/watch?v=..." hint="Wideo będzie widoczne na profilu firmy jako odtwarzacz."/>
+              <Inp label="Link do wideo" id="ytUrl" value={form.ytUrl} onChange={v=>set('ytUrl',v)} placeholder="https://www.youtube.com/watch?v=..." hint="Wideo będzie widoczne na profilu firmy jako odtwarzacz."/>
             </>)}
           </>)}
 
@@ -936,12 +934,12 @@ function AddCompanyForm({ onNavigate, initPkg }) {
 
             <Sect label="Dane do faktury"/>
             <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0 16px' }}>
-              <div style={{ gridColumn:'1/-1' }}><F label="Nazwa firmy / imię i nazwisko" id="billingName" placeholder="Firma sp. z o.o." required/></div>
-              <F label="NIP" id="billingNip" placeholder="0000000000" required/>
-              <F label="E-mail do faktury" id="billingEmail" placeholder="faktury@firma.pl" required type="email"/>
-              <div style={{ gridColumn:'1/-1' }}><F label="Adres" id="billingAddress" placeholder="ul. Przykładowa 1" required/></div>
-              <F label="Kod pocztowy i miasto" id="billingCity" placeholder="00-000 Warszawa" required/>
-              <F label="Telefon kontaktowy" id="billingPhone" placeholder="+48 000 000 000"/>
+              <div style={{ gridColumn:'1/-1' }}><Inp label="Nazwa firmy / imię i nazwisko" id="billingName" value={form.billingName} onChange={v=>set('billingName',v)} placeholder="Firma sp. z o.o." required/></div>
+              <Inp label="NIP" id="billingNip" value={form.billingNip} onChange={v=>set('billingNip',v)} placeholder="0000000000" required/>
+              <Inp label="E-mail do faktury" id="billingEmail" value={form.billingEmail} onChange={v=>set('billingEmail',v)} placeholder="faktury@firma.pl" required type="email"/>
+              <div style={{ gridColumn:'1/-1' }}><Inp label="Adres" id="billingAddress" value={form.billingAddress} onChange={v=>set('billingAddress',v)} placeholder="ul. Przykładowa 1" required/></div>
+              <Inp label="Kod pocztowy i miasto" id="billingCity" value={form.billingCity} onChange={v=>set('billingCity',v)} placeholder="00-000 Warszawa" required/>
+              <Inp label="Telefon kontaktowy" id="billingPhone" value={form.billingPhone} onChange={v=>set('billingPhone',v)} placeholder="+48 000 000 000"/>
             </div>
             <div style={{ padding:'12px 14px', background:'rgba(240,90,40,0.06)', border:'1px solid rgba(240,90,40,0.2)', borderRadius:6, fontSize:12, color:T.gray700, lineHeight:1.6, marginTop:4 }}>
               Po złożeniu zgłoszenia nasz zespół skontaktuje się w ciągu 1 dnia roboczego w sprawie aktywacji i płatności.
