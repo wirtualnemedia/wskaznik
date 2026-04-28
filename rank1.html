@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wirtualny Wskaźnik Wpływu — Archiwum</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+:root {
+  --bg: #F4F4F5; --surface: #ffffff; --surface2: #F9F9FA;
+  --nav: #0D1B2A; --border: #E0E0E0; --border-strong: #CBD0D8;
+  --orange: #F05A28; --orange-hover: #C94316; --orange-dim: rgba(240,90,40,0.10); --orange-dim2: rgba(240,90,40,0.06);
+  --text: #111111; --text2: #555555; --text3: #8A9AAB;
+  --green: #16A34A; --green-dim: rgba(22,163,74,0.12);
+  --shadow: 0 1px 4px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.05);
+  --shadow-lg: 0 4px 24px rgba(0,0,0,0.10);
+}
+[data-dark] {
+  --bg: #070d17; --surface: #0c1525; --surface2: #101d32;
+  --nav: #040b14; --border: #182d4a; --border-strong: #243f5e;
+  --orange: #F05A28; --orange-hover: #ff7347; --orange-dim: rgba(240,90,40,0.14); --orange-dim2: rgba(240,90,40,0.06);
+  --text: #e4eaf2; --text2: #7a9ab8; --text3: #3d6080;
+  --green: #34d399; --green-dim: rgba(52,211,153,0.14);
+  --shadow: 0 2px 12px rgba(0,0,0,0.30); --shadow-lg: 0 8px 32px rgba(0,0,0,0.40);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: 'Barlow', sans-serif; line-height: 1.55; -webkit-font-smoothing: antialiased; transition: background 0.3s, color 0.3s; }
+a { color: inherit; text-decoration: none; }
+button { font-family: 'Barlow', sans-serif; cursor: pointer; border: none; background: none; }
+
+.nav-top { background: var(--nav); height: 52px; display: flex; align-items: center; padding: 0 24px; gap: 16px; position: sticky; top: 0; z-index: 100; }
+.nav-logo { display: flex; align-items: center; gap: 10px; margin-right: auto; }
+.nav-pill { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,0.7); border: 1.5px solid rgba(255,255,255,0.18); border-radius: 4px; padding: 4px 10px; transition: color 0.15s, border-color 0.15s; }
+.nav-pill:hover { color: #fff; border-color: rgba(255,255,255,0.4); }
+.nav-cta { background: var(--orange); color: #fff; font-size: 12px; font-weight: 700; border-radius: 9999px; padding: 6px 16px; letter-spacing: 0.04em; transition: background 0.15s; }
+.nav-cta:hover { background: var(--orange-hover); }
+.nav-cat { background: var(--surface); border-bottom: 1px solid var(--border); height: 40px; display: flex; align-items: stretch; padding: 0 24px; overflow-x: auto; scrollbar-width: none; }
+.nav-cat::-webkit-scrollbar { display: none; }
+.nav-cat a { font-size: 12px; font-weight: 600; color: var(--text2); padding: 0 14px; display: flex; align-items: center; border-bottom: 2px solid transparent; white-space: nowrap; transition: color 0.15s, border-color 0.15s; }
+.nav-cat a:hover, .nav-cat a.active { color: var(--orange); border-bottom-color: var(--orange); }
+
+.wrap { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+.section { padding: 56px 0; border-bottom: 1px solid var(--border); }
+.section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--orange); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+.section-label::before { content: ''; width: 20px; height: 2px; background: var(--orange); display: inline-block; flex-shrink: 0; }
+
+/* HERO */
+.hero { background: var(--nav); color: #fff; padding: 64px 0 52px; position: relative; overflow: hidden; }
+.hero::after { content: 'WWW'; position: absolute; right: 24px; top: 50%; transform: translateY(-50%); font-family: 'Barlow Condensed', sans-serif; font-size: 240px; font-weight: 800; color: rgba(240,90,40,0.035); pointer-events: none; letter-spacing: -8px; line-height: 1; }
+.hero-badge { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--orange); margin-bottom: 14px; }
+.hero-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(44px, 7vw, 80px); font-weight: 800; line-height: 0.95; letter-spacing: -1px; margin-bottom: 16px; }
+.hero-title span { color: var(--orange); }
+.hero-sub { font-size: 15px; color: rgba(255,255,255,0.45); max-width: 520px; line-height: 1.6; margin-bottom: 36px; }
+.hero-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.08); }
+.hstat-val { font-family: 'Barlow Condensed', sans-serif; font-size: 28px; font-weight: 800; color: var(--orange); }
+.hstat-lbl { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 3px; line-height: 1.3; }
+
+/* MONTH GRID */
+.months-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.month-card { background: var(--surface); border: 1px solid var(--border); padding: 28px; display: block; position: relative; transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s; overflow: hidden; cursor: pointer; }
+.month-card::before { content: ''; position: absolute; inset: 0; background: var(--orange-dim2); opacity: 0; transition: opacity 0.2s; pointer-events: none; }
+.month-card:hover { transform: translateY(-4px); border-color: var(--orange); box-shadow: var(--shadow-lg); }
+.month-card:hover::before { opacity: 1; }
+.month-card.current { border-color: var(--orange); }
+.month-card.current::after { content: 'NOWY'; position: absolute; top: 0; right: 0; background: var(--orange); color: #fff; font-size: 9px; font-weight: 700; letter-spacing: 0.1em; padding: 4px 10px; }
+.month-card.bonus { grid-column: 1 / -1; border-color: var(--orange); background: var(--surface); }
+.month-card.bonus::before { opacity: 0.5; }
+.month-label { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--orange); margin-bottom: 16px; }
+.month-name { font-family: 'Barlow Condensed', sans-serif; font-size: 36px; font-weight: 800; line-height: 1; letter-spacing: -0.5px; color: var(--text); }
+.month-year { font-size: 14px; font-weight: 600; color: var(--text3); margin-top: 4px; margin-bottom: 20px; }
+.month-divider { height: 1px; background: var(--border); margin-bottom: 16px; }
+.month-cta { font-size: 13px; font-weight: 600; color: var(--text2); display: flex; align-items: center; justify-content: space-between; }
+.month-arrow { font-size: 18px; color: var(--orange); }
+.bonus-inner { display: flex; align-items: center; gap: 24px; }
+.bonus-icon { font-size: 40px; color: var(--orange); opacity: 0.6; flex-shrink: 0; }
+.bonus-label { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--orange); margin-bottom: 8px; }
+.bonus-name { font-family: 'Barlow Condensed', sans-serif; font-size: 26px; font-weight: 800; line-height: 1.1; color: var(--text); margin-bottom: 4px; }
+.bonus-sub { font-size: 12px; color: var(--text3); }
+
+/* ABOUT */
+.qa-item { border-top: 1px solid var(--border); padding: 18px 0; }
+.qa-item:first-child { border-top: none; }
+.qa-q { font-size: 14px; font-weight: 700; margin-bottom: 8px; display: flex; gap: 12px; align-items: flex-start; }
+.qa-num { min-width: 24px; height: 24px; background: var(--orange); color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+.qa-a { font-size: 13px; color: var(--text2); line-height: 1.75; padding-left: 36px; }
+.qa-a strong { color: var(--text); font-weight: 600; }
+
+/* METHODOLOGY */
+.method-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+.method-card { background: var(--surface); border: 1px solid var(--border); padding: 16px 18px; }
+.method-weight { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 800; color: var(--orange); }
+.method-name { font-size: 13px; font-weight: 600; color: var(--text); margin-top: 4px; }
+.method-src { font-size: 11px; color: var(--text3); margin-top: 2px; }
+
+/* FOOTER */
+.footer { padding: 32px 0 48px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.footer-brand { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text2); }
+.footer-src { font-size: 10px; color: var(--text3); letter-spacing: 0.06em; text-transform: uppercase; }
+
+/* TWEAKS */
+.tweaks-panel { position: fixed; bottom: 20px; right: 20px; background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow-lg); padding: 20px; width: 240px; z-index: 200; display: none; }
+.tweaks-panel.visible { display: block; }
+.tweaks-title { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text); margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+.tweaks-close { font-size: 18px; color: var(--text3); cursor: pointer; }
+.tw-label { font-size: 11px; font-weight: 600; color: var(--text2); margin-bottom: 6px; }
+.tw-row { display: flex; gap: 6px; margin-bottom: 14px; }
+.tw-opt { flex: 1; padding: 7px; font-size: 11px; font-weight: 600; text-align: center; border: 1.5px solid var(--border); color: var(--text2); cursor: pointer; transition: all 0.15s; }
+.tw-opt.active, .tw-opt:hover { border-color: var(--orange); color: var(--orange); background: var(--orange-dim); }
+
+@media (max-width: 800px) { .months-grid { grid-template-columns: repeat(2, 1fr); } .month-card.bonus { grid-column: 1 / -1; } .hero-stats { grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 500px) { .months-grid { grid-template-columns: 1fr; } .bonus-inner { flex-direction: column; gap: 12px; } .wrap { padding: 0 14px; } .section { padding: 36px 0; } .hero-title { font-size: 40px; } .method-grid { grid-template-columns: repeat(2,1fr); } }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+
+const MONTHS = [
+  {id:'marzec2026', name:'Marzec', year:'2026', current:true, href:'Ranking - Wyniki Miesięczne.html'},
+  {id:'luty2026', name:'Luty', year:'2026', href:'uploads/www-luty2026.html'},
+  {id:'styczen2026', name:'Styczeń', year:'2026', href:'uploads/www-styczen2026.html'},
+  {id:'grudzien2025', name:'Grudzień', year:'2025', href:'uploads/www-grudzien2025.html'},
+  {id:'listopad2025', name:'Listopad', year:'2025', href:'uploads/www-listopad2025.html'},
+  {id:'pazdziernik2025', name:'Październik', year:'2025', href:'uploads/www-pazdziernik2025.html'},
+  {id:'wrzesien2025', name:'Wrzesień', year:'2025', href:'uploads/www-wrzesien2025.html'},
+];
+
+const WEIGHTS = [
+  {name:'Realni użytkownicy',w:'×2',src:'Mediapanel'},
+  {name:'Odsłony strony',w:'×1',src:'Mediapanel'},
+  {name:'Śr. dzienna RU',w:'×1',src:'Mediapanel'},
+  {name:'Śr. czas na stronie',w:'×1',src:'Mediapanel'},
+  {name:'Cytowania',w:'×1',src:'Mediaboard'},
+  {name:'YouTube — odsłony',w:'×1,5',src:'Social Blade'},
+  {name:'FB — interakcje',w:'×1',src:'Sotrender'},
+  {name:'FB — wideo',w:'×0,5',src:'Sotrender'},
+  {name:'IG — interakcje',w:'×1',src:'Sotrender'},
+  {name:'IG — wideo',w:'×0,5',src:'Sotrender'},
+  {name:'TikTok — interakcje',w:'×1',src:'Sotrender'},
+  {name:'TikTok — wideo',w:'×0,5',src:'Sotrender'},
+  {name:'X — interakcje',w:'×0,5',src:'Sotrender'},
+  {name:'X — odsłony postów',w:'×0,5',src:'Sotrender'},
+];
+
+function LogoMark() {
+  return (
+    <svg width="36" height="24" viewBox="0 0 58 38" fill="none">
+      <polygon points="0,2 8,2 13,36 5,36" fill="#F05A28"/>
+      <polygon points="10,36 18,36 28,3 20,3" fill="#F05A28"/>
+      <polygon points="30,3 38,3 43,36 35,36" fill="#F05A28"/>
+      <polygon points="40,36 48,36 58,2 50,2" fill="#F05A28"/>
+    </svg>
+  );
+}
+
+function App() {
+  const [dark, setDark] = React.useState(false);
+  const [tweaksOpen, setTweaksOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    document.documentElement.toggleAttribute('data-dark', dark);
+  }, [dark]);
+
+  React.useEffect(() => {
+    const handler = e => {
+      if (e.data?.type === '__activate_edit_mode') setTweaksOpen(true);
+      if (e.data?.type === '__deactivate_edit_mode') setTweaksOpen(false);
+    };
+    window.addEventListener('message', handler);
+    window.parent.postMessage({type: '__edit_mode_available'}, '*');
+    return () => window.removeEventListener('message', handler);
+  }, []);
+
+  return (
+    <>
+      {/* HERO */}
+      <div className="hero">
+        <div className="wrap">
+          <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:36, paddingBottom:24, borderBottom:'1px solid rgba(255,255,255,0.10)'}}>
+            <a href="https://www.wirtualnemedia.pl" target="_blank" rel="noopener">
+              <img src="uploads/wm_logo (1).png" alt="Wirtualne Media" style={{height:28, display:'block'}}/>
+            </a>
+            <a href="https://www.wirtualnemedia.pl/wskaznik/" target="_blank" rel="noopener">
+              <img src="uploads/WWW_pomarancz_sygnet.png" alt="Wirtualny Wskaźnik Wpływu" style={{height:36, display:'block', opacity:0.9}}/>
+            </a>
+          </div>
+          <div style={{display:'flex', alignItems:'flex-start', justifyContent:'space-between', gap:16, marginBottom:16}}>
+            <div>
+              <div className="hero-badge">Projekt Wirtualne Media · od 2025 r.</div>
+              <h1 className="hero-title">Wirtualny<br/>Wskaźnik <span>Wpływu</span></h1>
+            </div>
+          </div>
+          <p className="hero-sub">Miesięczny ranking skumulowanej cyfrowej aktywności polskich mediów — 130 marek, 14 kategorii danych, jeden syntetyczny wskaźnik.</p>
+          <div className="hero-stats">
+            <div><div className="hstat-val">~130</div><div className="hstat-lbl">Marek medialnych</div></div>
+            <div><div className="hstat-val">600+</div><div className="hstat-lbl">Profili social media</div></div>
+            <div><div className="hstat-val">14</div><div className="hstat-lbl">Kategorii danych</div></div>
+            <div><div className="hstat-val">7</div><div className="hstat-lbl">Kategorii tematycznych</div></div>
+          </div>
+        </div>
+      </div>
+
+      {/* MONTHS */}
+      <section className="section">
+        <div className="wrap">
+          <div className="section-label">Wyniki — wybierz miesiąc</div>
+          <div className="months-grid">
+
+            {MONTHS.map((m, i) => (
+              <React.Fragment key={m.id}>
+                {i === 1 && (
+                  <a className="month-card bonus" href="#">
+                    <div className="month-label" style={{color:'var(--orange)'}}>Raport półroczny</div>
+                    <div className="bonus-inner">
+                      <div className="bonus-icon">★</div>
+                      <div>
+                        <div className="bonus-name">Bonus z analizą</div>
+                        <div className="bonus-sub">Wrzesień 2025 – Luty 2026 · Meta-analiza 6 edycji</div>
+                      </div>
+                      <div style={{marginLeft:'auto'}}><span className="month-arrow">↗</span></div>
+                    </div>
+                  </a>
+                )}
+                <a className={`month-card${m.current?' current':''}`} href={m.href}>
+                  <div className="month-label">Raport miesięczny</div>
+                  <div className="month-name">{m.name}</div>
+                  <div className="month-year">{m.year}</div>
+                  <div className="month-divider"></div>
+                  <div className="month-cta">
+                    <span>Zobacz wyniki</span>
+                    <span className="month-arrow">↗</span>
+                  </div>
+                </a>
+              </React.Fragment>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* METHODOLOGY */}
+      <section className="section">
+        <div className="wrap">
+          <div className="section-label">14 kategorii — wagi i źródła</div>
+          <div className="method-grid">
+            {WEIGHTS.map(({name,w,src}) => (
+              <div key={name} className="method-card">
+                <div className="method-weight">{w}</div>
+                <div className="method-name">{name}</div>
+                <div className="method-src">{src}</div>
+              </div>
+            ))}
+          </div>
+          <p style={{marginTop:20, fontSize:13, color:'var(--text2)', lineHeight:1.7}}>
+            Lider każdej kategorii otrzymuje <strong style={{color:'var(--text)'}}>100 punktów</strong>. Reszta jest przeliczana proporcjonalnie. Wyniki sumowane z uwzględnieniem wag i dzielone przez 14.
+          </p>
+        </div>
+      </section>
+
+      {/* Q&A */}
+      <section className="section">
+        <div className="wrap">
+          <div className="section-label">O rankingu WWW</div>
+          <div>
+            {[
+              ['Czym jest Wirtualny Wskaźnik Wpływu (WWW)?','Autorski projekt serwisu Wirtualne Media, który mierzy skumulowaną cyfrową aktywność polskich wydawców. To swego rodzaju „power ranking" — nie bada pojedynczej metryki, lecz łączy <strong>14 kategorii danych</strong> w jeden syntetyczny wskaźnik. Analizowane jest wyłącznie to, co dzieje się w internecie.'],
+              ['Jakie dane składają się na wynik WWW?','Wskaźnik bazuje na 14 kategoriach z odpowiednimi wagami: <strong>realni użytkownicy strony</strong> (waga ×2), odsłony strony (×1), średnia dzienna liczba RU (×1), średni czas na stronie (×1), cytowania (×1), odsłony YouTube (×1,5), interakcje na Facebooku (×1), odsłony wideo FB (×0,5), interakcje na Instagramie (×1), odsłony wideo IG (×0,5), interakcje na TikToku (×1), odsłony wideo TikTok (×0,5), interakcje na X/Twitterze (×0,5) i odsłony postów na X (×0,5).'],
+              ['Jak jest wyliczany wynik końcowy?','Metodą benchmarku. W każdej kategorii lider (najwyższy wynik bezwzględny) otrzymuje <strong>100 punktów</strong>. Reszta jest przeliczana proporcjonalnie — np. połowa wyniku lidera = 50 pkt. Następnie wyniki wszystkich kategorii są sumowane z uwzględnieniem wag i dzielone przez liczbę kategorii (14), dając finalny wskaźnik WWW.'],
+              ['Skąd pochodzą dane?','Z czterech źródeł: <strong>Mediapanel</strong> (dane o ruchu na stronach), <strong>Social Blade</strong> (YouTube), <strong>Sotrender</strong> (Facebook, Instagram, TikTok, X/Twitter — ok. 600 profili) oraz <strong>Mediaboard</strong> (cytowalność mediów).'],
+              ['Ile marek jest analizowanych i jak często?','Ranking obejmuje ok. <strong>130 marek medialnych</strong> i ponad <strong>600 profili social media</strong>. Wyniki publikowane są <strong>co miesiąc</strong>. Jeśli medium ma kilka profili na danej platformie, ich wyniki się sumują — liczy się skumulowana aktywność marki.'],
+            ].map(([q,a],i) => (
+              <div key={i} className="qa-item">
+                <div className="qa-q"><span className="qa-num">{i+1}</span>{q}</div>
+                <div className="qa-a" dangerouslySetInnerHTML={{__html:a}}/>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer>
+        <div className="wrap">
+          <div className="footer">
+            <div className="footer-brand">Wirtualny Wskaźnik Wpływu · Archiwum 2025–2026</div>
+            <div className="footer-src">Źródło: Wirtualnemedia.pl · Kwiecień 2026</div>
+          </div>
+        </div>
+      </footer>
+
+      {/* TWEAKS */}
+      <div className={`tweaks-panel${tweaksOpen?' visible':''}`}>
+        <div className="tweaks-title">
+          Tweaks
+          <span className="tweaks-close" onClick={() => { setTweaksOpen(false); window.parent.postMessage({type:'__edit_mode_dismissed'},'*'); }}>×</span>
+        </div>
+        <div className="tw-label">Motyw</div>
+        <div className="tw-row">
+          <div className={`tw-opt${!dark?' active':''}`} onClick={() => setDark(false)}>Jasny</div>
+          <div className={`tw-opt${dark?' active':''}`} onClick={() => setDark(true)}>Ciemny</div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
