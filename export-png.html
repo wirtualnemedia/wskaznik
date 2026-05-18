@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>Render</title>
+<script src="https://unpkg.com/html-to-image@1.11.11/dist/html-to-image.min.js"></script>
+</head>
+<body style="margin: 0; padding: 0; background: rgb(13, 27, 42)">
+<iframe id="frame" src="social-informacje.html" style="width:1050px;height:1500px;border:0;display:block" frameborder="0"></iframe>
+<a id="link" download="social-informacje.png" style="position:fixed;top:10px;right:10px;background:#F05A28;color:#fff;padding:10px 20px;font-family:sans-serif;text-decoration:none;font-weight:700;display:none">Pobierz PNG</a>
+<script>
+window.addEventListener('load', async () => {
+  await new Promise(r => setTimeout(r, 1500));
+  const iframe = document.getElementById('frame');
+  const slide = iframe.contentDocument.querySelector('.slide');
+  if (!slide) { alert('No slide'); return; }
+  try {
+    const dataUrl = await htmlToImage.toPng(slide, {
+      width: 1050, height: 1500,
+      pixelRatio: 2,
+      backgroundColor: '#F5EFE6'
+    });
+    const link = document.getElementById('link');
+    link.href = dataUrl;
+    link.style.display = 'block';
+    link.textContent = 'Pobierz PNG (kliknij)';
+    // Auto-trigger download
+    link.click();
+  } catch (e) {
+    alert('Error: ' + e.message);
+  }
+});
+</script>
+</body>
+</html>

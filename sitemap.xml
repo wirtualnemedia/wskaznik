@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/0.9">
+
+  <!-- Strona główna / archiwum -->
+  <url>
+    <loc>https://www.wirtualnemedia.pl/wskaznik/</loc>
+    <lastmod>2026-05-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Najnowszy raport — Kwiecień 2026 -->
+  <url>
+    <loc>https://www.wirtualnemedia.pl/wskaznik/www-kwiecien2026.html</loc>
+    <lastmod>2026-05-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://www.wirtualnemedia.pl/wskaznik/og-kwiecien-2026.jpg</image:loc>
+      <image:title>Wirtualny Wskaźnik Wpływu — Kwiecień 2026</image:title>
+    </image:image>
+  </url>
+
+  <!-- Raport — Marzec 2026 -->
+  <url>
+    <loc>https://www.wirtualnemedia.pl/wskaznik/www-marzec2026.html</loc>
+    <lastmod>2026-04-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.wirtualnemedia.pl/wskaznik/og-marzec-2026.jpg</image:loc>
+      <image:title>Wirtualny Wskaźnik Wpływu — Marzec 2026</image:title>
+    </image:image>
+  </url>
+
+  <!-- Raport — Luty 2026 -->
+  <url>
+    <loc>https://www.wirtualnemedia.pl/wskaznik/www-luty2026.html</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://www.wirtualnemedia.pl/wskaznik/og-luty-2026.jpg</image:loc>
+      <image:title>Wirtualny Wskaźnik Wpływu — Luty 2026</image:title>
+    </image:image>
+  </url>
+
+  <!-- Raport — Styczeń 2026 -->
+  <url>
+    <loc>https://www.wirtualnemedia.pl/wskaznik/www-styczen2026.html</loc>
+    <lastmod>2026-02-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <image:image>
+      <image:loc>https://www.wirtualnemedia.pl/wskaznik/og-styczen-2026.jpg</image:loc>
+      <image:title>Wirtualny Wskaźnik Wpływu — Styczeń 2026</image:title>
+    </image:image>
+  </url>
+
+  <!-- Raport — Grudzień 2025 -->
+  <url>
+    <loc>https://www.wirtualnemedia.pl/wskaznik/www-grudzien2025.html</loc>
+    <lastmod>2026-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <image:image>
+      <image:loc>https://www.wirtualnemedia.pl/wskaznik/og-grudzien-2025.jpg</image:loc>
+      <image:title>Wirtualny Wskaźnik Wpływu — Grudzień 2025</image:title>
+    </image:image>
+  </url>
+
+  <!-- Raport — Listopad 2025 -->
+  <url>
+    <loc>https://www.wirtualnemedia.pl/wskaznik/www-listopad2025.html</loc>
+    <lastmod>2025-12-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <image:image>
+      <image:loc>https://www.wirtualnemedia.pl/wskaznik/og-listopad-2025.jpg</image:loc>
+      <image:title>Wirtualny Wskaźnik Wpływu — Listopad 2025</image:title>
+    </image:image>
+  </url>
+
+  <!-- Raport — Październik 2025 -->
+  <url>
+    <loc>https://www.wirtualnemedia.pl/wskaznik/www-pazdziernik2025.html</loc>
+    <lastmod>2025-11-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <image:image>
+      <image:loc>https://www.wirtualnemedia.pl/wskaznik/og-pazdziernik-2025.jpg</image:loc>
+      <image:title>Wirtualny Wskaźnik Wpływu — Październik 2025</image:title>
+    </image:image>
+  </url>
+
+  <!-- Raport — Wrzesień 2025 (premiera) -->
+  <url>
+    <loc>https://www.wirtualnemedia.pl/wskaznik/www-wrzesien2025.html</loc>
+    <lastmod>2025-10-21</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+    <image:image>
+      <image:loc>https://www.wirtualnemedia.pl/wskaznik/og-wrzesien-2025.jpg</image:loc>
+      <image:title>Wirtualny Wskaźnik Wpływu — Wrzesień 2025 · Premiera</image:title>
+    </image:image>
+  </url>
+
+  <!-- Analiza półroczna (bonus) -->
+  <url>
+    <loc>https://www.wirtualnemedia.pl/wskaznik/analiza.html</loc>
+    <lastmod>2026-03-15</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+</urlset>

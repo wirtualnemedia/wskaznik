@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://www.wirtualnemedia.pl/wskaznik/sitemap.xml
+
+# Crawl-delay (optional, polite)
+Crawl-delay: 1

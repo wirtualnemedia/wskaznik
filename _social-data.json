@@ -1,0 +1,670 @@
+{
+  "TOP": [
+    {
+      "rank": 1,
+      "name": "Wirtualna Polska",
+      "ch": 1,
+      "score": 49.2
+    },
+    {
+      "rank": 2,
+      "name": "Onet",
+      "ch": -1,
+      "score": 46.38
+    },
+    {
+      "rank": 3,
+      "name": "Interia",
+      "ch": 0,
+      "score": 35.6
+    },
+    {
+      "rank": 4,
+      "name": "TVN24",
+      "ch": 1,
+      "score": 23.46
+    },
+    {
+      "rank": 5,
+      "name": "TVP",
+      "ch": -1,
+      "score": 23.42
+    },
+    {
+      "rank": 6,
+      "name": "Kanał Zero",
+      "ch": 2,
+      "score": 21.3
+    },
+    {
+      "rank": 7,
+      "name": "Goniec",
+      "ch": 0,
+      "score": 19.79
+    },
+    {
+      "rank": 8,
+      "name": "Super Express",
+      "ch": -2,
+      "score": 19.77
+    },
+    {
+      "rank": 9,
+      "name": "Polsat",
+      "ch": 0,
+      "score": 18.53
+    },
+    {
+      "rank": 10,
+      "name": "Fakt",
+      "ch": 0,
+      "score": 18.16
+    },
+    {
+      "rank": 11,
+      "name": "Gazeta.pl",
+      "ch": 0,
+      "score": 16.62
+    },
+    {
+      "rank": 12,
+      "name": "RMF FM",
+      "ch": 0,
+      "score": 16.48
+    },
+    {
+      "rank": 13,
+      "name": "Polsat News",
+      "ch": 0,
+      "score": 16.37
+    },
+    {
+      "rank": 14,
+      "name": "Radio Zet",
+      "ch": 11,
+      "score": 16.19
+    },
+    {
+      "rank": 15,
+      "name": "TVN",
+      "ch": -1,
+      "score": 15.78
+    },
+    {
+      "rank": 16,
+      "name": "Meczyki",
+      "ch": -1,
+      "score": 15.73
+    },
+    {
+      "rank": 17,
+      "name": "Gazeta Wyborcza",
+      "ch": -1,
+      "score": 14.68
+    },
+    {
+      "rank": 18,
+      "name": "TV Republika",
+      "ch": 0,
+      "score": 14.61
+    },
+    {
+      "rank": 19,
+      "name": "O2",
+      "ch": -2,
+      "score": 14.09
+    },
+    {
+      "rank": 20,
+      "name": "Radio Eska",
+      "ch": 0,
+      "score": 13.47
+    },
+    {
+      "rank": 21,
+      "name": "Filmweb",
+      "ch": 1,
+      "score": 12.7
+    },
+    {
+      "rank": 22,
+      "name": "Rzeczpospolita",
+      "ch": 1,
+      "score": 12.4
+    },
+    {
+      "rank": 23,
+      "name": "TVP Info",
+      "ch": -4,
+      "score": 12.25
+    },
+    {
+      "rank": 24,
+      "name": "Business Insider",
+      "ch": 0,
+      "score": 11.79
+    },
+    {
+      "rank": 25,
+      "name": "RMF24",
+      "ch": -4,
+      "score": 11.46
+    },
+    {
+      "rank": 26,
+      "name": "Infor",
+      "ch": 0,
+      "score": 10.88
+    },
+    {
+      "rank": 27,
+      "name": "Money",
+      "ch": 0,
+      "score": 10.54
+    },
+    {
+      "rank": 28,
+      "name": "Pudelek",
+      "ch": 0,
+      "score": 10.34
+    },
+    {
+      "rank": 29,
+      "name": "Sport.pl",
+      "ch": 6,
+      "score": 9.93
+    },
+    {
+      "rank": 30,
+      "name": "Portal Samorządowy",
+      "ch": 8,
+      "score": 9.7
+    },
+    {
+      "rank": 31,
+      "name": "Polsat Sport",
+      "ch": -2,
+      "score": 9.23
+    },
+    {
+      "rank": 32,
+      "name": "Nasze Miasto",
+      "ch": 1,
+      "score": 9.12
+    },
+    {
+      "rank": 33,
+      "name": "Wprost",
+      "ch": -3,
+      "score": 9.12
+    },
+    {
+      "rank": 34,
+      "name": "Pomponik",
+      "ch": -3,
+      "score": 9.02
+    },
+    {
+      "rank": 35,
+      "name": "Świat Gwiazd",
+      "ch": 2,
+      "score": 8.84
+    },
+    {
+      "rank": 36,
+      "name": "Dziennik.pl",
+      "ch": -2,
+      "score": 8.71
+    },
+    {
+      "rank": 37,
+      "name": "Rynek Zdrowia",
+      "ch": -1,
+      "score": 8.64
+    },
+    {
+      "rank": 38,
+      "name": "Forsal",
+      "ch": -6,
+      "score": 8.63
+    },
+    {
+      "rank": 39,
+      "name": "WNP",
+      "ch": 8,
+      "score": 8.51
+    },
+    {
+      "rank": 40,
+      "name": "Plejada",
+      "ch": 1,
+      "score": 8.38
+    },
+    {
+      "rank": 41,
+      "name": "Bankier",
+      "ch": -2,
+      "score": 8.32
+    },
+    {
+      "rank": 42,
+      "name": "Medonet",
+      "ch": 0,
+      "score": 8.29
+    },
+    {
+      "rank": 43,
+      "name": "Kozaczek",
+      "ch": 2,
+      "score": 8.11
+    },
+    {
+      "rank": 44,
+      "name": "Kanał Sportowy",
+      "ch": -1,
+      "score": 7.96
+    },
+    {
+      "rank": 45,
+      "name": "TOK FM",
+      "ch": -1,
+      "score": 7.61
+    },
+    {
+      "rank": 46,
+      "name": "naTemat",
+      "ch": 2,
+      "score": 7.42
+    },
+    {
+      "rank": 47,
+      "name": "Polskie Radio24",
+      "ch": -7,
+      "score": 7.37
+    },
+    {
+      "rank": 48,
+      "name": "Party",
+      "ch": 6,
+      "score": 7.35
+    },
+    {
+      "rank": 49,
+      "name": "Polki",
+      "ch": -3,
+      "score": 7.17
+    },
+    {
+      "rank": 50,
+      "name": "Polskie Radio",
+      "ch": 1,
+      "score": 6.94
+    }
+  ],
+  "CATS": {
+    "informacje": [
+      {
+        "name": "Wirtualna Polska",
+        "ch": 1,
+        "score": 49.2
+      },
+      {
+        "name": "Onet",
+        "ch": -1,
+        "score": 46.38
+      },
+      {
+        "name": "Interia",
+        "ch": 0,
+        "score": 35.6
+      },
+      {
+        "name": "TVN24",
+        "ch": 0,
+        "score": 23.46
+      },
+      {
+        "name": "Kanał Zero",
+        "ch": 2,
+        "score": 21.3
+      },
+      {
+        "name": "Goniec",
+        "ch": 0,
+        "score": 19.79
+      },
+      {
+        "name": "Super Express",
+        "ch": -2,
+        "score": 19.77
+      },
+      {
+        "name": "Fakt",
+        "ch": 0,
+        "score": 18.16
+      },
+      {
+        "name": "Gazeta.pl",
+        "ch": 0,
+        "score": 16.62
+      },
+      {
+        "name": "RMF FM",
+        "ch": 0,
+        "score": 16.48
+      }
+    ],
+    "sport": [
+      {
+        "name": "TVP Sport",
+        "ch": 0,
+        "score": 20.03
+      },
+      {
+        "name": "Meczyki",
+        "ch": 0,
+        "score": 15.73
+      },
+      {
+        "name": "canal+ sport",
+        "ch": 7,
+        "score": 15.29
+      },
+      {
+        "name": "Przegląd Sportowy",
+        "ch": -1,
+        "score": 14.66
+      },
+      {
+        "name": "WP SportoweFakty",
+        "ch": -1,
+        "score": 10.76
+      },
+      {
+        "name": "Sport.pl",
+        "ch": 2,
+        "score": 9.93
+      },
+      {
+        "name": "Polsat Sport",
+        "ch": -2,
+        "score": 9.23
+      },
+      {
+        "name": "Kanał Sportowy",
+        "ch": 1,
+        "score": 7.96
+      },
+      {
+        "name": "Weszło",
+        "ch": 0,
+        "score": 6.59
+      },
+      {
+        "name": "Eurosport Polska",
+        "ch": -3,
+        "score": 6.24
+      }
+    ],
+    "biznes": [
+      {
+        "name": "Business Insider",
+        "ch": 0,
+        "score": 11.79
+      },
+      {
+        "name": "Infor",
+        "ch": 0,
+        "score": 10.88
+      },
+      {
+        "name": "Money",
+        "ch": 0,
+        "score": 10.54
+      },
+      {
+        "name": "Forsal",
+        "ch": 0,
+        "score": 8.63
+      },
+      {
+        "name": "WNP",
+        "ch": 1,
+        "score": 8.51
+      },
+      {
+        "name": "Bankier",
+        "ch": -1,
+        "score": 8.32
+      },
+      {
+        "name": "Gazeta Prawna",
+        "ch": 0,
+        "score": 6.81
+      },
+      {
+        "name": "Biznes Info",
+        "ch": 1,
+        "score": 6.26
+      },
+      {
+        "name": "Wirtualnemedia",
+        "ch": -1,
+        "score": 5.12
+      },
+      {
+        "name": "Dla Handlu",
+        "ch": 0,
+        "score": 5.06
+      }
+    ],
+    "rozrywka": [
+      {
+        "name": "Filmweb",
+        "ch": 0,
+        "score": 12.7
+      },
+      {
+        "name": "Pudelek",
+        "ch": 0,
+        "score": 10.34
+      },
+      {
+        "name": "Pomponik",
+        "ch": 0,
+        "score": 9.02
+      },
+      {
+        "name": "Świat Gwiazd",
+        "ch": 0,
+        "score": 8.84
+      },
+      {
+        "name": "Plejada",
+        "ch": 0,
+        "score": 8.38
+      },
+      {
+        "name": "Kozaczek",
+        "ch": 0,
+        "score": 8.11
+      },
+      {
+        "name": "Party",
+        "ch": 2,
+        "score": 7.35
+      },
+      {
+        "name": "Plotek",
+        "ch": -1,
+        "score": 6.62
+      },
+      {
+        "name": "Jastrząb Post",
+        "ch": -1,
+        "score": 6.34
+      },
+      {
+        "name": "Lubimy czytać",
+        "ch": 0,
+        "score": 4.73
+      }
+    ],
+    "lokalne": [
+      {
+        "name": "Nasze Miasto",
+        "ch": 0,
+        "score": 9.12
+      },
+      {
+        "name": "Gazeta Pomorska",
+        "ch": 0,
+        "score": 6.62
+      },
+      {
+        "name": "Dziennik Zachodni",
+        "ch": 0,
+        "score": 6.21
+      },
+      {
+        "name": "Trójmiasto",
+        "ch": 0,
+        "score": 5.89
+      },
+      {
+        "name": "Gazeta Wrocławska",
+        "ch": 0,
+        "score": 5.34
+      },
+      {
+        "name": "Głos Wielkopolski",
+        "ch": 1,
+        "score": 5.01
+      },
+      {
+        "name": "Epoznań",
+        "ch": 2,
+        "score": 4.68
+      },
+      {
+        "name": "Gazeta Krakowska",
+        "ch": -2,
+        "score": 4.67
+      },
+      {
+        "name": "Dziennik Bałtycki",
+        "ch": -1,
+        "score": 4.51
+      },
+      {
+        "name": "Nowości",
+        "ch": 0,
+        "score": 4.49
+      }
+    ],
+    "tech": [
+      {
+        "name": "Spiders Web",
+        "ch": 0,
+        "score": 5.87
+      },
+      {
+        "name": "Gry Online",
+        "ch": 1,
+        "score": 5.42
+      },
+      {
+        "name": "Komputer Świat",
+        "ch": -1,
+        "score": 5.35
+      },
+      {
+        "name": "Telepolis",
+        "ch": 0,
+        "score": 4.99
+      },
+      {
+        "name": "Antyweb",
+        "ch": 3,
+        "score": 4.3
+      },
+      {
+        "name": "Android.com.pl",
+        "ch": 1,
+        "score": 4.26
+      },
+      {
+        "name": "PPE",
+        "ch": -2,
+        "score": 4.17
+      },
+      {
+        "name": "Dobreprogramy",
+        "ch": -2,
+        "score": 3.95
+      },
+      {
+        "name": "Gsmmaniak",
+        "ch": 1,
+        "score": 3.93
+      },
+      {
+        "name": "Benchmark",
+        "ch": -1,
+        "score": 3.66
+      }
+    ],
+    "lifestyle": [
+      {
+        "name": "Polki",
+        "ch": 0,
+        "score": 7.17
+      },
+      {
+        "name": "Ofeminin",
+        "ch": 0,
+        "score": 6.15
+      },
+      {
+        "name": "Viva",
+        "ch": 3,
+        "score": 5.89
+      },
+      {
+        "name": "Vogue",
+        "ch": -1,
+        "score": 5.75
+      },
+      {
+        "name": "Zwierciadło",
+        "ch": 3,
+        "score": 5.42
+      },
+      {
+        "name": "Kobieta",
+        "ch": -1,
+        "score": 5.35
+      },
+      {
+        "name": "Wizaż",
+        "ch": 2,
+        "score": 5.21
+      },
+      {
+        "name": "Glamour",
+        "ch": -1,
+        "score": 5.2
+      },
+      {
+        "name": "National Geographic – (nowa pozycja)",
+        "ch": 0,
+        "score": 5.15
+      },
+      {
+        "name": "Elle",
+        "ch": -6,
+        "score": 4.94
+      }
+    ]
+  }
+}
