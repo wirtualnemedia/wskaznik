@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
 <title>Katalog Firm v4 — Wirtualne Media</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -10,8 +11,11 @@
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { overflow-x: hidden; max-width: 100%; }
 body { font-family: 'DM Sans', system-ui, sans-serif; background: #F4F4F5; color: #18181B; min-height: 100vh; }
+/* Prevent iOS Safari auto-detected phone/address blue underlines */
+a[href^="tel:"], a[href^="mailto:"], a[href^="sms:"] { color: inherit; text-decoration: inherit; }
 #root { min-height: 100vh; display: flex; flex-direction: column; }
 
 /* Generic patterns */
@@ -23,19 +27,33 @@ body { font-family: 'DM Sans', system-ui, sans-serif; background: #F4F4F5; color
 /* ── Mobile responsiveness ── */
 @media (max-width: 760px) {
   /* Hero */
-  .kh-hero { padding: 28px 0 24px !important; }
+  .kh-hero { padding: 24px 0 22px !important; }
   .kh-hero-wrap { padding: 0 16px !important; }
-  .kh-hero-row { flex-direction: column !important; gap: 20px !important; align-items: flex-start !important; }
+  .kh-hero-row { flex-direction: column !important; gap: 14px !important; align-items: stretch !important; }
+  .kh-hero-row > div:first-child { width: 100%; min-width: 0 !important; }
   .kh-hero-row h1 { font-size: 24px !important; line-height: 1.15 !important; }
-  .kh-stats { width: 100%; gap: 6px !important; }
-  .kh-stats > div { flex: 1; padding: 12px 14px !important; min-width: 0 !important; }
+
+  /* Stats grid: 2 stat boxes top row, "Dodaj firmę" button full-width below */
+  .kh-stats { width: 100%; display: grid !important; grid-template-columns: 1fr 1fr; gap: 8px !important; }
+  .kh-stats > div { flex: none; padding: 12px 14px !important; min-width: 0 !important; }
   .kh-stats > div > div:first-child { font-size: 20px !important; }
+  .kh-hero-add-btn {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 12px 18px !important;
+    gap: 8px !important;
+  }
+  .kh-hero-add-btn > span:first-child { font-size: 14.5px !important; }
+  .kh-hero-add-btn > span:last-child { display: none !important; }
 
   /* Catalog main */
   .kh-main { padding: 0 16px !important; }
   .kh-filters { gap: 6px !important; }
   .kh-filters select, .kh-filters button { font-size: 11.5px !important; padding: 6px 26px 6px 10px !important; }
-  .kh-filters .kh-add-btn { padding: 7px 14px !important; }
   .kh-cat-pills button { font-size: 11.5px !important; padding: 5px 11px !important; }
 
   /* Grid */
@@ -46,7 +64,6 @@ body { font-family: 'DM Sans', system-ui, sans-serif; background: #F4F4F5; color
 }
 @media (max-width: 480px) {
   .kh-hero-row h1 { font-size: 22px !important; }
-  .kh-stats { flex-wrap: wrap; }
 }
 
 /* Tweaks panel */
@@ -667,10 +684,10 @@ function CompanyProfile({ company, onNavigate }) {
         <div className="profile-grid" style={{ display:'grid', gridTemplateColumns:'1fr 320px', gap:24, alignItems:'flex-start' }}>
 
           {/* ─── MAIN COLUMN ────────────────────────────────────── */}
-          <div style={{ display:'flex', flexDirection:'column', gap:16, minWidth:0 }}>
+          <div className="profile-col-main" style={{ display:'flex', flexDirection:'column', gap:16, minWidth:0 }}>
 
             {/* Header card */}
-            <div style={{ background:'#fff', borderRadius:10, overflow:'hidden', boxShadow:T.shadow1, border: isPremium?`1.5px solid ${T.orange}`:`1px solid ${T.gray200}`, position:'relative' }}>
+            <div className="pf-section pf-header" style={{ background:'#fff', borderRadius:10, overflow:'hidden', boxShadow:T.shadow1, border: isPremium?`1.5px solid ${T.orange}`:`1px solid ${T.gray200}`, position:'relative' }}>
               <div className="profile-header" style={{ padding:'26px 28px', display:'flex', alignItems:'flex-start', gap:20 }}>
                 <CompanyLogoPlaceholder name={c.name} size={84} bg={isPremium?'#FEF0E9':'#F4F4F5'}/>
                 <div style={{ flex:1, minWidth:0 }}>
@@ -698,7 +715,7 @@ function CompanyProfile({ company, onNavigate }) {
             </div>
 
             {/* O firmie */}
-            <div style={sectionCard}>
+            <div className="pf-section pf-about" style={sectionCard}>
               <SectionLabel>O firmie</SectionLabel>
               <p style={{ fontSize:14.5, lineHeight:1.75, color:T.gray700, textWrap:'pretty' }}>{c.short}</p>
               {isPremium && (
@@ -710,7 +727,7 @@ function CompanyProfile({ company, onNavigate }) {
 
             {/* Kontakt — New Business */}
             {isPremium && (
-              <div style={sectionCard}>
+              <div className="pf-section pf-contact" style={sectionCard}>
                 <SectionLabel>Kontakt — New Business</SectionLabel>
                 <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(220px,1fr))', gap:10 }}>
                   {[
@@ -735,7 +752,7 @@ function CompanyProfile({ company, onNavigate }) {
             )}
 
             {/* Artykuły o nas */}
-            <div style={sectionCard}>
+            <div className="pf-section pf-articles" style={sectionCard}>
               <SectionLabel>Artykuły o nas</SectionLabel>
               {isPremium ? (
                 <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
@@ -766,7 +783,7 @@ function CompanyProfile({ company, onNavigate }) {
 
             {/* Oferty pracy — TYLKO PREMIUM */}
             {isPremium && (
-              <div style={sectionCard}>
+              <div className="pf-section pf-jobs" style={sectionCard}>
                 <SectionLabel>Ogłoszenia o pracę</SectionLabel>
                 <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:12, flexWrap:'wrap' }}>
                   <div style={{ display:'flex', alignItems:'center', gap:12 }}>
@@ -787,7 +804,7 @@ function CompanyProfile({ company, onNavigate }) {
 
             {/* Nagrody branżowe */}
             {isPremium && (
-              <div style={sectionCard}>
+              <div className="pf-section pf-awards" style={sectionCard}>
                 <SectionLabel>Nagrody branżowe</SectionLabel>
                 <div style={{ display:'flex', flexWrap:'wrap', gap:10 }}>
                   {[
@@ -811,7 +828,7 @@ function CompanyProfile({ company, onNavigate }) {
 
             {/* Wideo */}
             {isPremium && (
-              <div style={sectionCard}>
+              <div className="pf-section pf-video" style={sectionCard}>
                 <SectionLabel>Wideo</SectionLabel>
                 <div style={{ position:'relative', paddingBottom:'56.25%', borderRadius:8, overflow:'hidden', background:T.gray100, border:`1px solid ${T.gray200}` }}>
                   <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Film firmy"
@@ -823,7 +840,7 @@ function CompanyProfile({ company, onNavigate }) {
 
             {/* Galeria */}
             {isPremium && (
-              <div style={sectionCard}>
+              <div className="pf-section pf-gallery" style={sectionCard}>
                 <SectionLabel>Galeria</SectionLabel>
                 <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(140px,1fr))', gap:10 }}>
                   {[1,2,3].map(i => (
@@ -836,7 +853,7 @@ function CompanyProfile({ company, onNavigate }) {
             )}
 
             {/* Podobne firmy */}
-            <div style={sectionCard}>
+            <div className="pf-section pf-similar" style={sectionCard}>
               <SectionLabel>Podobne firmy</SectionLabel>
               <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(200px,1fr))', gap:10 }}>
                 {COMPANIES.filter(x=>x.cat===c.cat&&x.id!==c.id).slice(0,4).map(x=>(
@@ -859,7 +876,7 @@ function CompanyProfile({ company, onNavigate }) {
           <aside className="profile-sidebar" style={{ position:'sticky', top:108, display:'flex', flexDirection:'column', gap:14 }}>
 
             {/* O firmie — w skrócie */}
-            <div style={{ background:'#fff', borderRadius:10, padding:'4px 20px 14px', boxShadow:T.shadow1, border:`1px solid ${T.gray200}` }}>
+            <div className="pf-section pf-keyfacts" style={{ background:'#fff', borderRadius:10, padding:'4px 20px 14px', boxShadow:T.shadow1, border:`1px solid ${T.gray200}` }}>
               <div style={{ fontSize:11, fontWeight:700, letterSpacing:'.08em', textTransform:'uppercase', color:T.gray500, padding:'14px 0 4px' }}>O firmie — w skrócie</div>
               <KeyFact
                 icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={T.orange} strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>}
@@ -895,7 +912,7 @@ function CompanyProfile({ company, onNavigate }) {
 
             {/* Social media */}
             {isPremium && (
-              <div style={{ background:'#fff', borderRadius:10, padding:'18px 20px', boxShadow:T.shadow1, border:`1px solid ${T.gray200}` }}>
+              <div className="pf-section pf-social" style={{ background:'#fff', borderRadius:10, padding:'18px 20px', boxShadow:T.shadow1, border:`1px solid ${T.gray200}` }}>
                 <div style={{ fontSize:11, fontWeight:700, letterSpacing:'.08em', textTransform:'uppercase', color:T.gray500, marginBottom:12 }}>Social media</div>
                 <div style={{ display:'flex', flexDirection:'column', gap:6 }}>
                   {socials.map(s => (
@@ -916,7 +933,7 @@ function CompanyProfile({ company, onNavigate }) {
 
             {/* "Twoja firma" CTA — non-premium */}
             {!isPremium && (
-              <div style={{ background:T.navy, borderRadius:10, padding:'20px', color:'#fff', position:'relative', overflow:'hidden' }}>
+              <div className="pf-section pf-cta" style={{ background:T.navy, borderRadius:10, padding:'20px', color:'#fff', position:'relative', overflow:'hidden' }}>
                 <div aria-hidden style={{ position:'absolute', top:-30, right:-30, width:120, height:120, borderRadius:'50%', background:'rgba(240,90,40,0.18)' }}/>
                 <div style={{ position:'relative' }}>
                   <div style={{ fontSize:10.5, fontWeight:700, letterSpacing:'.08em', textTransform:'uppercase', color:T.orange, marginBottom:8 }}>Twoja firma</div>
@@ -936,14 +953,36 @@ function CompanyProfile({ company, onNavigate }) {
       {/* Responsive */}
       <style>{`
         @media (max-width: 980px) {
-          .profile-grid { grid-template-columns: 1fr !important; }
+          .profile-grid {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 14px !important;
+          }
+          .profile-col-main, .profile-sidebar {
+            display: contents !important;
+          }
           .profile-sidebar { position: static !important; }
+          /* Mobile order: ogólny opis → o firmie → firma w skrócie → kontakt → artykuły → ogłoszenia → nagrody → wideo → galeria → social → podobne firmy → cta */
+          .pf-header   { order: 1; }
+          .pf-about    { order: 2; }
+          .pf-keyfacts { order: 3; }
+          .pf-contact  { order: 4; }
+          .pf-articles { order: 5; }
+          .pf-jobs     { order: 6; }
+          .pf-awards   { order: 7; }
+          .pf-video    { order: 8; }
+          .pf-gallery  { order: 9; }
+          .pf-social   { order: 10; }
+          .pf-similar  { order: 11; }
+          .pf-cta      { order: 12; }
         }
         @media (max-width: 640px) {
           .profile-wrap { padding: 18px 16px 0 !important; }
           .profile-header { padding: 18px !important; gap: 14px !important; flex-direction: column; align-items: flex-start !important; }
           .profile-header h1 { font-size: 22px !important; }
           .profile-add-btn { font-size: 11.5px !important; padding: 6px 12px !important; }
+          .pf-section[class*="sectionCard"], .pf-about, .pf-contact, .pf-articles, .pf-jobs, .pf-awards, .pf-video, .pf-gallery, .pf-similar { padding: 18px 16px !important; }
+          .pf-social, .pf-keyfacts { padding-left: 16px !important; padding-right: 16px !important; }
         }
       `}</style>
     </main>
