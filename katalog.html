@@ -1,19 +1,82 @@
-
 <!DOCTYPE html>
 <html lang="pl">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Katalog Firm — Wirtualne Media</title>
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<title>Katalog Firm v4 — Wirtualne Media</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { overflow-x: hidden; max-width: 100%; }
 body { font-family: 'DM Sans', system-ui, sans-serif; background: #F4F4F5; color: #18181B; min-height: 100vh; }
+/* Prevent iOS Safari auto-detected phone/address blue underlines */
+a[href^="tel:"], a[href^="mailto:"], a[href^="sms:"] { color: inherit; text-decoration: inherit; }
 #root { min-height: 100vh; display: flex; flex-direction: column; }
+
+/* Generic patterns */
+.card-hover { transition: box-shadow .2s, transform .15s, border-color .15s; }
+.card-hover:hover { transform: translateY(-2px); }
+.line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* ── Mobile responsiveness ── */
+@media (max-width: 760px) {
+  /* Hero */
+  .kh-hero { padding: 20px 0 22px !important; }
+  .kh-hero-wrap { padding: 0 16px !important; }
+  .kh-hero-row {
+    flex-direction: column !important;
+    gap: 16px !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+  }
+  .kh-hero-row > div:first-child {
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+  .kh-hero-row h1 { font-size: 24px !important; line-height: 1.15 !important; margin-bottom: 8px !important; }
+
+  /* Stats grid: 2 stat boxes top row, "Dodaj firmę" button full-width below */
+  .kh-stats { width: 100%; display: grid !important; grid-template-columns: 1fr 1fr; gap: 8px !important; }
+  .kh-stats > div { flex: none; padding: 12px 14px !important; min-width: 0 !important; }
+  .kh-stats > div > div:first-child { font-size: 20px !important; }
+  .kh-hero-add-btn {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 12px 18px !important;
+    gap: 8px !important;
+  }
+  .kh-hero-add-btn > span:first-child { font-size: 14.5px !important; }
+  .kh-hero-add-btn > span:last-child { display: none !important; }
+
+  /* Catalog main */
+  .kh-main { padding: 0 16px !important; }
+  .kh-filters { gap: 6px !important; }
+  .kh-filters select, .kh-filters button { font-size: 11.5px !important; padding: 6px 26px 6px 10px !important; }
+  .kh-cat-pills button { font-size: 11.5px !important; padding: 5px 11px !important; color: #18181B !important; }
+  .kh-cat-pills button > span { color: #52525B !important; }
+  .kh-cat-pills button[data-active="1"] { color: #F05A28 !important; }
+  .kh-cat-pills button[data-active="1"] > span { color: #F05A28 !important; }
+
+  /* Grid */
+  .kh-grid { grid-template-columns: 1fr !important; gap: 10px !important; }
+
+  /* Pagination */
+  .kh-pagination button { width: 30px !important; height: 30px !important; font-size: 12px !important; }
+}
+@media (max-width: 480px) {
+  .kh-hero-row h1 { font-size: 22px !important; }
+}
 
 /* Tweaks panel */
 #tweaks-panel {
@@ -32,24 +95,13 @@ body { font-family: 'DM Sans', system-ui, sans-serif; background: #F4F4F5; color
 </head>
 <body>
 <div id="root"></div>
-<div id="tweaks-panel">
-  <div class="tweak-title">Tweaks</div>
-  <div class="tweak-group">
-    <div class="tweak-label">Wariant listy</div>
-    <div class="tweak-options" id="tweak-variant"></div>
-  </div>
-  <div class="tweak-group">
-    <div class="tweak-label">Widok</div>
-    <div class="tweak-options" id="tweak-view"></div>
-  </div>
-</div>
 
 <script type="text/babel">
 /* ─── DATA ─────────────────────────────────────────────────────── */
 const CATS = [
   'Wszystkie', 'Agencje reklamowe', 'Wydawcy i media', 'MarTech / AdTech',
   'Badania i monitoring', 'Produkcja treści', 'Events i szkolenia',
-  'Agencje PR', 'Drukarnie i reklama OOH', 'Usługi dla mediów', 'Freelance'
+  'Agencje PR', 'Drukarnie i reklama OOH', 'Usługi dla mediów'
 ];
 const EMP_RANGES = ['1–10','11–50','51–100','101–500','500+'];
 
@@ -97,13 +149,12 @@ const PACKAGES = [
       'Przynależność do 3 kategorii',
       'Krótki opis działalności (do 600 znaków)',
       'Adres siedziby firmy',
-      'Numer telefonu i adres e-mail',
-      '2 kontakty personalne',
+      'Adres e-mail',
       'Rozbudowany opis firmy (do 2000 znaków)',
       'Link do strony WWW',
       'Profile w mediach społecznościowych (do 3)',
       'Wyróżniona ramka na karcie firmy',
-      'Publikacja w ciągu 1 dnia roboczego',
+      'Badge „Zweryfikowany” na karcie i profilu',
     ],
     cta: 'Wybierz Standard',
   },
@@ -116,15 +167,14 @@ const PACKAGES = [
       'Krótki opis działalności (do 800 znaków)',
       'Adres siedziby firmy',
       'Numer telefonu i adres e-mail',
-      '3 kontakty personalne',
+      'Kontakty personalne (do 3)',
       'Rozbudowany opis firmy (do 5000 znaków)',
-      'Link dofollow do strony WWW',
+      'Link do strony WWW',
       'Profile w mediach społecznościowych (do 5)',
       'Galeria zdjęć (do 3 plików, maks. 5 MB każdy)',
-      'Embed wideo z YouTube lub Vimeo',
+      'Embed wideo z YouTube',
       'Badge „Wyróżniony" na karcie i profilu',
       'Priorytetowa pozycja w wynikach wyszukiwania',
-      'Rotacja w sekcji „Wyróżnieni partnerzy" (homepage)',
       'Dedykowany opiekun konta w redakcji WM',
     ],
     cta: 'Wybierz Premium',
@@ -139,7 +189,7 @@ const PACKAGES = [
       '2 ogłoszenia o pracę w roku',
       'Artykuł na portalu z 7-dniową promocją na SG i social media (1× w roku)',
       'Sekcja prezentacji nagród branżowych (Effie, KTR i inne)',
-      'Kontakt personalny do wskazanych osób w firmie',
+      '2 zaproszenia na galę Wirtuale — nagrody dla najlepszych mediów i ludzi mediów w kraju',
     ],
     cta: 'Wybierz Super Premium',
   },
@@ -217,6 +267,77 @@ function Badge({ label, style={} }) {
   );
 }
 
+/* Section label with thin orange accent line — used on profile sections */
+function SectionLabel({ children, action, style={} }) {
+  return (
+    <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:14, ...style }}>
+      <div style={{ width:18, height:2, background:T.orange, borderRadius:1 }}/>
+      <span style={{ fontSize:11, fontWeight:700, letterSpacing:'0.08em', textTransform:'uppercase', color:T.gray500 }}>{children}</span>
+      <div style={{ flex:1, height:1, background:T.gray200 }}/>
+      {action}
+    </div>
+  );
+}
+
+/* Inline key/value row used in sidebar */
+function KeyFact({ icon, label, value }) {
+  return (
+    <div style={{ display:'flex', alignItems:'flex-start', gap:10, padding:'10px 0', borderBottom:`1px solid ${T.gray100}` }}>
+      <div style={{ width:28, height:28, borderRadius:6, background:T.orangeLight, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+        {icon}
+      </div>
+      <div style={{ flex:1, minWidth:0 }}>
+        <div style={{ fontSize:10, fontWeight:700, letterSpacing:'.06em', textTransform:'uppercase', color:T.gray400, marginBottom:2 }}>{label}</div>
+        <div style={{ fontSize:13, fontWeight:600, color:T.gray900, lineHeight:1.4 }}>{value}</div>
+      </div>
+    </div>
+  );
+}
+
+/* useFavorites — local-only saved companies (heart icon on cards) */
+function useFavorites() {
+  const [favs, setFavs] = React.useState(() => {
+    try { return new Set(JSON.parse(localStorage.getItem('wm_katalog_favs')||'[]')); }
+    catch { return new Set(); }
+  });
+  const toggle = id => {
+    setFavs(prev => {
+      const n = new Set(prev);
+      if (n.has(id)) n.delete(id); else n.add(id);
+      try { localStorage.setItem('wm_katalog_favs', JSON.stringify([...n])); } catch {}
+      return n;
+    });
+  };
+  return { favs, toggle };
+}
+
+/* Heart icon for favoriting */
+function FavoriteBtn({ id, favs, toggle, size=18 }) {
+  const active = favs.has(id);
+  return (
+    <button
+      onClick={e => { e.stopPropagation(); toggle(id); }}
+      aria-label={active ? 'Usuń z zapisanych' : 'Zapisz firmę'}
+      style={{ width:size+12, height:size+12, borderRadius:'50%', background: active ? 'rgba(240,90,40,0.12)' : 'rgba(255,255,255,0.9)', border:'none', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', backdropFilter:'blur(8px)' }}>
+      <svg width={size} height={size} viewBox="0 0 24 24" fill={active?T.orange:'none'} stroke={active?T.orange:T.gray500} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+      </svg>
+    </button>
+  );
+}
+
+/* Verified checkmark, used on cards & profile */
+function VerifiedIcon({ size=14, title='Profil zweryfikowany' }) {
+  return (
+    <span title={title} style={{ display:'inline-flex' }}>
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="#3B82F6">
+        <path d="M12 2l2.4 2.4 3.4-.6.6 3.4 3 1.7-1.7 3 1.7 3-3 1.7-.6 3.4-3.4-.6L12 22l-2.4-2.4-3.4.6-.6-3.4-3-1.7 1.7-3-1.7-3 3-1.7.6-3.4 3.4.6L12 2z"/>
+        <polyline points="9 12 11 14 15 10" stroke="#fff" strokeWidth="2.2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    </span>
+  );
+}
+
 function CompanyLogoPlaceholder({ name, size=48, bg='#E8E8EA' }) {
   const initials = name.split(' ').slice(0,2).map(w=>w[0]).join('');
   return (
@@ -227,70 +348,64 @@ function CompanyLogoPlaceholder({ name, size=48, bg='#E8E8EA' }) {
 }
 
 /* ─── COMPANY CARD ───────────────────────────────────────────────── */
-function CompanyCard({ company, onClick, variant='A' }) {
-  const [hov, setHov] = React.useState(false);
-  const isPremium = company.premium || company.featured;
-
-  const cardStyle = {
-    background: '#fff', borderRadius: 8, overflow:'hidden', cursor:'pointer',
-    boxShadow: hov ? T.shadow2 : T.shadow1,
-    transition: 'box-shadow 0.2s, transform 0.15s',
-    transform: hov ? 'translateY(-2px)' : 'none',
-    border: isPremium ? `2px solid ${T.orange}` : `1px solid ${T.gray200}`,
-    position: 'relative',
+/* Deterministic synthetic meta so existing data can drive richer cards. */
+function companyMeta(c) {
+  const sizes = ['1–10','11–50','51–100','101–500','500+'];
+  return {
+    size: sizes[c.id % sizes.length],
+    founded: 2025 - (((c.id * 7) % 28) + 4),
+    verified: c.premium || c.id % 3 === 0,
   };
-
-  return (
-    <div style={cardStyle} onClick={onClick} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}>
-      {isPremium && <div style={{ background:T.orange, padding:'5px 14px', display:'flex', alignItems:'center', gap:5 }}>
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="#fff"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-        <span style={{ fontSize:10,fontWeight:700,letterSpacing:'0.07em',textTransform:'uppercase',color:'#fff' }}>Wyróżniony</span>
-      </div>}
-      <div style={{ padding:'14px 16px 14px' }}>
-        <div style={{ display:'flex',alignItems:'flex-start',gap:12,marginBottom:10 }}>
-          <CompanyLogoPlaceholder name={company.name} size={48} bg={isPremium?'#FEF0E9':'#F4F4F5'}/>
-          <div style={{ flex:1,minWidth:0 }}>
-            <div style={{ fontSize:14,fontWeight:700,color:hov?T.orange:T.gray900,lineHeight:1.3,marginBottom:3,transition:'color 0.15s',textWrap:'pretty' }}>{company.name}</div>
-            <div style={{ fontSize:11,fontWeight:600,color:T.orange,letterSpacing:'0.04em',textTransform:'uppercase' }}>{company.cat}</div>
-          </div>
-        </div>
-        <p style={{ fontSize:12,color:T.gray600,lineHeight:1.55,marginBottom:10,textWrap:'pretty' }}>{company.short}</p>
-        <div style={{ display:'flex',alignItems:'center',justifyContent:'space-between' }}>
-          <span style={{ fontSize:11,color:T.gray400,display:'flex',alignItems:'center',gap:4 }}>
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            {company.city}
-          </span>
-
-        </div>
-      </div>
-    </div>
-  );
 }
 
-/* ─── FEATURED CARD (large, for Variant C) ───────────────────────── */
-function FeaturedCard({ company, onClick }) {
+function CompanyCard({ company, onClick }) {
   const [hov, setHov] = React.useState(false);
-  return (
-    <div onClick={onClick} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
-      style={{ background:'#fff',borderRadius:8,border:`2px solid ${T.orange}`,cursor:'pointer',padding:'20px 24px',boxShadow:hov?T.shadow2:T.shadow1,transition:'box-shadow 0.2s',position:'relative' }}>
-      <div style={{ background:T.orange,margin:'-20px -24px 16px',padding:'5px 14px',borderRadius:'8px 8px 0 0',display:'flex',alignItems:'center',gap:5 }}>
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="#fff"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-        <span style={{ fontSize:10,fontWeight:700,letterSpacing:'0.07em',textTransform:'uppercase',color:'#fff' }}>Wyróżniony</span>
-      </div>
-      <div style={{ display:'flex',gap:16,alignItems:'flex-start' }}>
-        <CompanyLogoPlaceholder name={company.name} size={64} bg='#FEF0E9'/>
-        <div style={{ flex:1 }}>
-          <div style={{ fontSize:11,fontWeight:700,color:T.orange,letterSpacing:'0.05em',textTransform:'uppercase',marginBottom:4 }}>{company.cat}</div>
-          <div style={{ fontSize:17,fontWeight:700,color:hov?T.orange:T.gray900,marginBottom:6,transition:'color 0.15s' }}>{company.name}</div>
-          <p style={{ fontSize:13,color:T.gray600,lineHeight:1.55 }}>{company.short}</p>
-          <div style={{ display:'flex',gap:16,marginTop:10 }}>
-            <span style={{ fontSize:12,color:T.gray400,display:'flex',alignItems:'center',gap:4 }}>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              {company.city}
-            </span>
+  const isPremium = company.premium || company.featured;
+  const meta = companyMeta(company);
 
+  return (
+    <div
+      onClick={onClick}
+      onMouseEnter={()=>setHov(true)}
+      onMouseLeave={()=>setHov(false)}
+      className="card-hover"
+      style={{
+        position:'relative', background:'#fff', borderRadius:10, cursor:'pointer',
+        padding:'16px 18px 14px',
+        border: isPremium ? `1.5px solid ${T.orange}` : `1px solid ${T.gray200}`,
+        boxShadow: hov ? '0 6px 20px rgba(0,0,0,0.08)' : '0 1px 2px rgba(0,0,0,0.04)',
+        display:'flex', flexDirection:'column', gap:10,
+      }}>
+
+      {/* Top row: logo + name + cat */}
+      <div style={{ display:'flex', gap:12, alignItems:'flex-start' }}>
+        <CompanyLogoPlaceholder name={company.name} size={48} bg={isPremium?'#FEF0E9':'#F4F4F5'}/>
+        <div style={{ flex:1, minWidth:0 }}>
+          <div style={{ fontSize:10, fontWeight:700, color:T.orange, letterSpacing:'0.06em', textTransform:'uppercase', marginBottom:3 }}>{company.cat}</div>
+          <div style={{ display:'flex', alignItems:'center', gap:6, flexWrap:'wrap' }}>
+            <span style={{ fontSize:14.5, fontWeight:700, color:hov?T.orange:T.gray900, lineHeight:1.25, transition:'color 0.15s', textWrap:'pretty' }}>{company.name}</span>
+            {meta.verified && <VerifiedIcon size={14}/>}
           </div>
         </div>
+      </div>
+
+      {/* Description */}
+      <p className="line-clamp-2" style={{ fontSize:12.5, color:T.gray600, lineHeight:1.55, textWrap:'pretty', minHeight:38 }}>{company.short}</p>
+
+      {/* Footer: city + premium pill */}
+      <div style={{ display:'flex', alignItems:'center', gap:10, paddingTop:8, borderTop:`1px solid ${T.gray100}` }}>
+        <span style={{ fontSize:11, color:T.gray500, display:'flex', alignItems:'center', gap:4 }}>
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          {company.city}
+        </span>
+        <span style={{ marginLeft:'auto', display:'flex', alignItems:'center', gap:4 }}>
+          {isPremium && (
+            <span style={{ fontSize:10, fontWeight:700, letterSpacing:'.05em', textTransform:'uppercase', color:'#fff', background:T.orange, padding:'3px 8px', borderRadius:9999, display:'flex', alignItems:'center', gap:3 }}>
+              <svg width="9" height="9" viewBox="0 0 24 24" fill="#fff"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              Wyróżniony
+            </span>
+          )}
+        </span>
       </div>
     </div>
   );
@@ -331,197 +446,317 @@ function CategoryFilters({ active, onChange }) {
   );
 }
 
+const CITIES = ['Wszystkie miasta','Warszawa','Kraków','Gdańsk','Poznań','Wrocław','Łódź','Katowice','Bydgoszcz'];
+
 /* ─── PAGE: KATALOG HOME ─────────────────────────────────────────── */
-function KatalogHome({ onNavigate, listVariant }) {
+function KatalogHome({ onNavigate }) {
   const [search, setSearch] = React.useState('');
   const [activeCat, setActiveCat] = React.useState('Wszystkie');
+  const [activeCity, setActiveCity] = React.useState('Wszystkie miasta');
+  const [activeEmp, setActiveEmp] = React.useState('');
+  const [activePkg, setActivePkg] = React.useState('');
 
   const featured = COMPANIES.filter(c => c.featured);
   const filtered = COMPANIES.filter(c =>
     (activeCat==='Wszystkie'||c.cat===activeCat) &&
+    (activeCity==='Wszystkie miasta'||c.city===activeCity) &&
+    (!activePkg || (activePkg==='premium' ? c.premium : !c.premium)) &&
     (!search || c.name.toLowerCase().includes(search.toLowerCase()) || c.cat.toLowerCase().includes(search.toLowerCase()) || c.tags?.some(t=>t.toLowerCase().includes(search.toLowerCase())))
   );
 
+  // Build category counts for the filter pills
+  const catCounts = {};
+  COMPANIES.forEach(c => { catCounts[c.cat] = (catCounts[c.cat]||0)+1; });
+
+  const activeFilterCount = [activeCity!=='Wszystkie miasta', activeEmp!=='', activePkg!=='', activeCat!=='Wszystkie', search].filter(Boolean).length;
+  const noFilterActive = activeFilterCount === 0;
+  const showFeatured = noFilterActive && featured.length > 0;
+
+  const selectStyle = (active) => ({
+    fontSize:12, fontWeight:600, padding:'7px 30px 7px 12px', borderRadius:9999,
+    border:`1.5px solid ${active?T.orange:T.gray300}`,
+    background: active?T.orangeLight:'#fff',
+    color: active?T.orange:T.gray700,
+    cursor:'pointer', fontFamily:"'DM Sans',sans-serif", appearance:'none',
+    backgroundImage:"url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2371717A' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E\")",
+    backgroundRepeat:'no-repeat', backgroundPosition:'right 10px center',
+  });
+
   return (
-    <main style={{ flex:1, padding:'0 0 48px' }}>
+    <main style={{ flex:1, padding:'0 0 56px' }}>
       {/* Hero banner */}
-      <div style={{ background:T.navy, padding:'32px 0 28px' }}>
-        <div style={{ maxWidth:1200,margin:'0 auto',padding:'0 32px' }}>
-          <div style={{ fontSize:11,fontWeight:700,letterSpacing:'0.08em',textTransform:'uppercase',color:T.orange,marginBottom:8 }}>Katalog Firm</div>
-          <h1 style={{ fontSize:28,fontWeight:800,color:'#fff',marginBottom:6,letterSpacing:'-0.02em' }}>Firmy z branży mediów,<br/>marketingu i reklamy</h1>
-          <p style={{ fontSize:14,color:'rgba(255,255,255,0.55)',marginBottom:20,lineHeight:1.5 }}>Znajdź sprawdzonych partnerów, dostawców i kontrahentów na polskim rynku.</p>
-          <SearchBar value={search} onChange={setSearch} onSearch={()=>{}}/>
-          <div style={{ marginTop:12,fontSize:12,color:'rgba(255,255,255,0.35)' }}>
-            Zarejestrowanych firm: <strong style={{ color:'rgba(255,255,255,0.7)' }}>{COMPANIES.length}</strong> &nbsp;·&nbsp; Wpisów wyróżnionych: <strong style={{ color:T.orange }}>{COMPANIES.filter(c=>c.premium).length}</strong>
+      <div className="kh-hero" style={{ background:T.navy, padding:'40px 0 36px', position:'relative', overflow:'hidden' }}>
+        <div className="kh-hero-wrap" style={{ position:'relative', maxWidth:1200, margin:'0 auto', padding:'0 32px' }}>
+          <div className="kh-hero-row" style={{ display:'flex', alignItems:'flex-start', justifyContent:'space-between', gap:24, flexWrap:'wrap' }}>
+            <div style={{ flex:'1 1 480px', minWidth:280 }}>
+              <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:14 }}>
+                <div style={{ width:24, height:2, background:T.orange, borderRadius:1 }}/>
+                <span style={{ fontSize:11, fontWeight:700, letterSpacing:'0.10em', textTransform:'uppercase', color:T.orange }}>Katalog Firm</span>
+              </div>
+              <h1 style={{ fontSize:34, fontWeight:800, color:'#fff', marginBottom:10, letterSpacing:'-0.02em', lineHeight:1.1 }}>Firmy z branży mediów,<br/>marketingu i reklamy</h1>
+              <p style={{ fontSize:15, color:'rgba(255,255,255,0.6)', marginBottom:24, lineHeight:1.55, maxWidth:540 }}>Znajdź sprawdzonych partnerów, dostawców i kontrahentów na polskim rynku.</p>
+              <SearchBar value={search} onChange={setSearch} onSearch={()=>{}}/>
+            </div>
+            {/* Right side stats — vertical */}
+            <div className="kh-stats" style={{ flex:'0 0 auto', display:'flex', gap:8, alignItems:'stretch' }}>
+              {[
+                { num: COMPANIES.length, label:'Firm w katalogu', color:'#fff' },
+                { num: CATS.length-1, label:'Kategorii', color:'#fff' },
+              ].map(s => (
+                <div key={s.label} style={{ background:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.10)', borderRadius:8, padding:'14px 18px', minWidth:110 }}>
+                  <div style={{ fontSize:24, fontWeight:800, color:s.color, lineHeight:1 }}>{s.num}</div>
+                  <div style={{ fontSize:10.5, color:'rgba(255,255,255,0.5)', marginTop:6, letterSpacing:'.04em', fontWeight:500 }}>{s.label}</div>
+                </div>
+              ))}
+              <button onClick={()=>onNavigate('pakiety')}
+                className="kh-hero-add-btn"
+                style={{ background:T.orange, color:'#fff', border:'none', borderRadius:8, padding:'14px 22px', fontSize:13, fontWeight:700, fontFamily:"'DM Sans',sans-serif", cursor:'pointer', display:'inline-flex', flexDirection:'column', alignItems:'flex-start', justifyContent:'center', minWidth:130, lineHeight:1.2 }}
+                onMouseEnter={e=>e.currentTarget.style.background=T.orangeHover}
+                onMouseLeave={e=>e.currentTarget.style.background=T.orange}>
+                <span style={{ display:'inline-flex', alignItems:'center', gap:6, fontSize:14, fontWeight:800 }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  Dodaj firmę
+                </span>
+                <span style={{ fontSize:10.5, color:'rgba(255,255,255,0.85)', marginTop:6, letterSpacing:'.04em', fontWeight:500 }}>Bezpłatnie lub Premium</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
-      <div style={{ maxWidth:1200,margin:'0 auto',padding:'0 32px' }}>
+      <div className="kh-main" style={{ maxWidth:1200, margin:'0 auto', padding:'0 32px' }}>
 
-        {/* Variant A: Featured mixed into grid */}
-        {listVariant === 'A' && (
-          <>
-            <div style={{ display:'flex',alignItems:'center',justifyContent:'space-between',margin:'28px 0 12px' }}>
-              <CategoryFilters active={activeCat} onChange={setActiveCat}/>
+        {/* Category pills */}
+        <div className="kh-cat-pills" style={{ paddingTop:24, paddingBottom:4 }}>
+          <div style={{ display:'flex', gap:6, flexWrap:'wrap' }}>
+            {CATS.map(c => {
+              const isActive = activeCat === c;
+              const count = c === 'Wszystkie' ? COMPANIES.length : (catCounts[c]||0);
+              return (
+                <button key={c} onClick={()=>setActiveCat(c)}
+                  data-active={isActive ? '1' : '0'}
+                  style={{ fontSize:12, fontWeight:600, padding:'6px 13px', borderRadius:9999,
+                    border:`1.5px solid ${isActive?T.orange:T.gray300}`,
+                    background:isActive?T.orangeLight:'#fff',
+                    color:isActive?T.orange:T.gray700,
+                    cursor:'pointer', fontFamily:"'DM Sans',sans-serif", display:'inline-flex', alignItems:'center', gap:6 }}>
+                  {c}
+                  <span style={{ fontSize:10.5, color:isActive?T.orange:T.gray500, fontWeight:700 }}>{count}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Secondary filter row */}
+        <div className="kh-filters" style={{ display:'flex', alignItems:'center', gap:8, padding:'14px 0 18px', flexWrap:'wrap', borderBottom:`1px solid ${T.gray200}`, marginBottom:20 }}>
+          <select value={activeCity} onChange={e=>setActiveCity(e.target.value)} style={selectStyle(activeCity!=='Wszystkie miasta')}>
+            {CITIES.map(c => <option key={c}>{c}</option>)}
+          </select>
+          <select value={activeEmp} onChange={e=>setActiveEmp(e.target.value)} style={selectStyle(!!activeEmp)}>
+            <option value=''>Wielkość zespołu</option>
+            {EMP_RANGES.map(r => <option key={r}>{r}</option>)}
+          </select>
+          <select value={activePkg} onChange={e=>setActivePkg(e.target.value)} style={selectStyle(!!activePkg)}>
+            <option value=''>Typ wpisu</option>
+            <option value='premium'>Wyróżnione</option>
+            <option value='free'>Podstawowe</option>
+          </select>
+          {activeFilterCount > 0 && (
+            <button onClick={() => { setActiveCat('Wszystkie'); setActiveCity('Wszystkie miasta'); setActiveEmp(''); setActivePkg(''); setSearch(''); }}
+              style={{ fontSize:12, fontWeight:600, color:T.gray500, background:'none', border:`1px dashed ${T.gray300}`, borderRadius:9999, padding:'6px 12px', cursor:'pointer', fontFamily:"'DM Sans',sans-serif" }}>
+              Wyczyść filtry ×
+            </button>
+          )}
+
+          <div style={{ marginLeft:'auto', display:'flex', alignItems:'center', gap:10 }}>
+            <span style={{ fontSize:13, color:T.gray500 }}>Wyników: {filtered.length}{filtered.length !== COMPANIES.length && ` z ${COMPANIES.length}`}</span>
+          </div>
+        </div>
+
+        {/* Featured strip — only when no filters */}
+        {showFeatured && (
+          <div style={{ marginBottom:32 }}>
+            <SectionLabel>Wyróżnione firmy</SectionLabel>
+            <div className="kh-grid" style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(280px,1fr))', gap:14 }}>
+              {featured.slice(0,3).map(c => (
+                <CompanyCard key={c.id} company={c} onClick={()=>onNavigate('company',c)}/>
+              ))}
             </div>
-            <div style={{ display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:16 }}>
-              <span style={{ fontSize:13,color:T.gray500 }}>{filtered.length} firm</span>
-              <button onClick={()=>onNavigate('pakiety')} style={{ background:T.orange,color:'#fff',border:'none',borderRadius:6,padding:'8px 18px',fontSize:13,fontWeight:700,fontFamily:"'DM Sans',sans-serif",cursor:'pointer' }}>
+          </div>
+        )}
+
+        {/* Results header */}
+        <div style={{ display:'flex', alignItems:'baseline', gap:10, marginBottom:14 }}>
+          <h2 style={{ fontSize:18, fontWeight:800, color:T.gray900, letterSpacing:'-.01em' }}>
+            {showFeatured ? 'Wszystkie firmy' : activeCat==='Wszystkie' ? 'Wyniki wyszukiwania' : activeCat}
+          </h2>
+          <span style={{ fontSize:13, color:T.gray500 }}>{filtered.length}{filtered.length !== COMPANIES.length && ` z ${COMPANIES.length}`}</span>
+        </div>
+
+        {/* Grid or empty state */}
+        {filtered.length === 0 ? (
+          <div style={{ textAlign:'center', padding:'56px 24px', background:'#fff', border:`1.5px dashed ${T.gray300}`, borderRadius:10 }}>
+            <div style={{ width:56, height:56, borderRadius:'50%', background:T.gray100, margin:'0 auto 14px', display:'flex', alignItems:'center', justifyContent:'center' }}>
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke={T.gray400} strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </div>
+            <div style={{ fontSize:15, fontWeight:700, color:T.gray900, marginBottom:5 }}>Brak wyników dla wybranych filtrów</div>
+            <div style={{ fontSize:13, color:T.gray500, marginBottom:18, lineHeight:1.6 }}>Spróbuj zmienić kategorię, miasto lub usunąć część filtrów.<br/>Możesz też dodać swoją firmę do katalogu.</div>
+            <div style={{ display:'flex', justifyContent:'center', gap:10, flexWrap:'wrap' }}>
+              <button onClick={()=>{ setActiveCat('Wszystkie'); setActiveCity('Wszystkie miasta'); setActiveEmp(''); setActivePkg(''); setSearch(''); }}
+                style={{ background:'#fff', color:T.gray700, border:`1.5px solid ${T.gray300}`, borderRadius:9999, padding:'8px 18px', fontSize:13, fontWeight:600, cursor:'pointer', fontFamily:"'DM Sans',sans-serif" }}>
+                Wyczyść filtry
+              </button>
+              <button onClick={()=>onNavigate('pakiety')}
+                style={{ background:T.orange, color:'#fff', border:'none', borderRadius:9999, padding:'8px 20px', fontSize:13, fontWeight:700, cursor:'pointer', fontFamily:"'DM Sans',sans-serif" }}>
                 + Dodaj firmę
               </button>
             </div>
-            <div style={{ display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(280px,1fr))',gap:16 }}>
-              {filtered.map(c => <CompanyCard key={c.id} company={c} onClick={()=>onNavigate('company',c)}/>)}
-            </div>
-          </>
-        )}
-
-        {/* Variant B: Featured section on top, then regular grid */}
-        {listVariant === 'B' && (
-          <>
-            <div style={{ padding:'24px 0 0' }}>
-              <div style={{ display:'flex',alignItems:'center',gap:10,marginBottom:14 }}>
-                <span style={{ fontSize:13,fontWeight:700,color:T.orange,letterSpacing:'0.06em',textTransform:'uppercase' }}>⭐ Wyróżnieni partnerzy</span>
-                <div style={{ flex:1,height:1,background:T.gray200 }}/>
-              </div>
-              <div style={{ display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(260px,1fr))',gap:12,marginBottom:28 }}>
-                {featured.map(c => <CompanyCard key={c.id} company={c} onClick={()=>onNavigate('company',c)}/>)}
-              </div>
-            </div>
-            <div style={{ display:'flex',alignItems:'center',gap:10,marginBottom:14 }}>
-              <span style={{ fontSize:13,fontWeight:700,color:T.gray600,letterSpacing:'0.06em',textTransform:'uppercase' }}>Wszystkie firmy</span>
-              <div style={{ flex:1,height:1,background:T.gray200 }}/>
-            </div>
-            <div style={{ display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:16 }}>
-              <CategoryFilters active={activeCat} onChange={setActiveCat}/>
-              <button onClick={()=>onNavigate('pakiety')} style={{ flexShrink:0,background:T.orange,color:'#fff',border:'none',borderRadius:6,padding:'8px 18px',fontSize:13,fontWeight:700,fontFamily:"'DM Sans',sans-serif",cursor:'pointer',marginLeft:12 }}>+ Dodaj firmę</button>
-            </div>
-            <div style={{ display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(260px,1fr))',gap:14 }}>
-              {COMPANIES.filter(c=>!c.featured&&(activeCat==='Wszystkie'||c.cat===activeCat)).map(c => <CompanyCard key={c.id} company={c} onClick={()=>onNavigate('company',c)}/>)}
-            </div>
-          </>
-        )}
-
-        {/* Variant C: Large featured cards at top */}
-        {listVariant === 'C' && (
-          <>
-            <div style={{ padding:'24px 0 0' }}>
-              <div style={{ display:'flex',alignItems:'center',gap:10,marginBottom:14 }}>
-                <span style={{ fontSize:13,fontWeight:700,color:T.orange,letterSpacing:'0.06em',textTransform:'uppercase' }}>⭐ Wyróżnieni</span>
-                <div style={{ flex:1,height:1,background:T.gray200 }}/>
-              </div>
-              <div style={{ display:'grid',gridTemplateColumns:'1fr 1fr',gap:14,marginBottom:28 }}>
-                {featured.slice(0,2).map(c => <FeaturedCard key={c.id} company={c} onClick={()=>onNavigate('company',c)}/>)}
-              </div>
-              {featured.length>2 && <div style={{ display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(260px,1fr))',gap:12,marginBottom:28 }}>
-                {featured.slice(2).map(c => <CompanyCard key={c.id} company={c} onClick={()=>onNavigate('company',c)}/>)}
-              </div>}
-            </div>
-            <div style={{ display:'flex',alignItems:'center',gap:10,marginBottom:14 }}>
-              <span style={{ fontSize:13,fontWeight:700,color:T.gray600,letterSpacing:'0.06em',textTransform:'uppercase' }}>Pozostałe firmy</span>
-              <div style={{ flex:1,height:1,background:T.gray200 }}/>
-            </div>
-            <div style={{ display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:16 }}>
-              <CategoryFilters active={activeCat} onChange={setActiveCat}/>
-              <button onClick={()=>onNavigate('pakiety')} style={{ flexShrink:0,background:T.orange,color:'#fff',border:'none',borderRadius:6,padding:'8px 18px',fontSize:13,fontWeight:700,fontFamily:"'DM Sans',sans-serif",cursor:'pointer',marginLeft:12 }}>+ Dodaj firmę</button>
-            </div>
-            <div style={{ display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(260px,1fr))',gap:14 }}>
-              {COMPANIES.filter(c=>!c.featured&&(activeCat==='Wszystkie'||c.cat===activeCat)).map(c=><CompanyCard key={c.id} company={c} onClick={()=>onNavigate('company',c)}/>)}
-            </div>
-          </>
+          </div>
+        ) : (
+          <div className="kh-grid" style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(280px,1fr))', gap:14 }}>
+            {filtered.map(c => (
+              <CompanyCard key={c.id} company={c} onClick={()=>onNavigate('company',c)}/>
+            ))}
+          </div>
         )}
 
         {/* Pagination */}
-        <div style={{ display:'flex',justifyContent:'center',gap:6,marginTop:32 }}>
-          {[1,2,3,'…',8].map((p,i) => (
-            <button key={i} style={{ width:34,height:34,borderRadius:6,border:`1.5px solid ${p===1?T.orange:T.gray300}`,background:p===1?T.orange:'#fff',color:p===1?'#fff':T.gray600,fontSize:13,fontWeight:600,cursor:'pointer',fontFamily:"'DM Sans',sans-serif" }}>{p}</button>
-          ))}
-        </div>
+        {filtered.length > 0 && (
+          <div className="kh-pagination" style={{ display:'flex', justifyContent:'center', alignItems:'center', gap:6, marginTop:36 }}>
+            <button style={{ width:34, height:34, borderRadius:6, border:`1.5px solid ${T.gray300}`, background:'#fff', color:T.gray600, fontSize:13, fontWeight:600, cursor:'pointer', fontFamily:"'DM Sans',sans-serif", display:'flex', alignItems:'center', justifyContent:'center' }}>‹</button>
+            {[1,2,3,'…',8].map((p,i) => (
+              <button key={i} style={{ width:34, height:34, borderRadius:6, border:`1.5px solid ${p===1?T.orange:T.gray300}`, background:p===1?T.orange:'#fff', color:p===1?'#fff':T.gray600, fontSize:13, fontWeight:600, cursor:p==='…'?'default':'pointer', fontFamily:"'DM Sans',sans-serif" }}>{p}</button>
+            ))}
+            <button style={{ width:34, height:34, borderRadius:6, border:`1.5px solid ${T.gray300}`, background:'#fff', color:T.gray600, fontSize:13, fontWeight:600, cursor:'pointer', fontFamily:"'DM Sans',sans-serif", display:'flex', alignItems:'center', justifyContent:'center' }}>›</button>
+          </div>
+        )}
       </div>
     </main>
   );
 }
 
 /* ─── PAGE: COMPANY PROFILE ──────────────────────────────────────── */
+/* Generate plausible social URLs for a company (placeholder data). */
+function companySocials(c) {
+  const slug = c.www ? c.www.replace(/\.(pl|com|io|net|org|eu).*$/, '').replace(/[^\w]/g,'') : c.name.toLowerCase().replace(/[^\w]/g,'').slice(0,20);
+  return [
+    { kind:'linkedin', label:'LinkedIn', url:'https://linkedin.com/company/'+slug, color:'#0A66C2' },
+    { kind:'facebook', label:'Facebook', url:'https://facebook.com/'+slug, color:'#1877F2' },
+    { kind:'x', label:'X (Twitter)', url:'https://x.com/'+slug, color:'#000' },
+    { kind:'instagram', label:'Instagram', url:'https://instagram.com/'+slug, color:'#E4405F' },
+    { kind:'youtube', label:'YouTube', url:'https://youtube.com/@'+slug, color:'#FF0000' },
+  ];
+}
+
+function SocialIcon({ kind, size=18, color='#fff' }) {
+  // Crisp, well-known brand glyphs (Simple Icons-style paths, 24×24)
+  const paths = {
+    linkedin: 'M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.852 3.37-1.852 3.601 0 4.267 2.37 4.267 5.455v6.288zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.063 2.063 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z',
+    facebook: 'M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z',
+    x: 'M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z',
+    instagram: 'M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z',
+    youtube: 'M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z',
+  };
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill={color} aria-hidden="true">
+      <path d={paths[kind]}/>
+    </svg>
+  );
+}
+
 function CompanyProfile({ company, onNavigate }) {
   const c = company || COMPANIES[0];
+  const isPremium = c.premium || c.featured;
+  const meta = companyMeta(c);
+  const socials = companySocials(c);
+
+  const sectionCard = { background:'#fff', borderRadius:10, padding:'22px 24px', boxShadow:T.shadow1, border:`1px solid ${T.gray200}` };
 
   return (
-    <main style={{ flex:1, padding:'0 0 48px' }}>
-      <div style={{ maxWidth:1200,margin:'0 auto',padding:'24px 32px 0' }}>
-        <Breadcrumb items={[
-          { label:'Katalog Firm', onClick:()=>onNavigate('katalog') },
-          { label:c.cat, onClick:()=>onNavigate('katalog') },
-          { label:c.name }
-        ]}/>
-        <div style={{ display:'flex',flexDirection:'column',gap:16 }}>
+    <main className="profile-main" style={{ flex:1, padding:'0 0 56px' }}>
+      <div className="profile-wrap" style={{ maxWidth:1200, margin:'0 auto', padding:'24px 32px 0' }}>
+        {/* Breadcrumb row + Add company CTA */}
+        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:12, flexWrap:'wrap', marginBottom:4 }}>
+          <Breadcrumb items={[
+            { label:'Katalog Firm', onClick:()=>onNavigate('katalog') },
+            { label:c.cat, onClick:()=>onNavigate('katalog') },
+            { label:c.name }
+          ]}/>
+          <button onClick={()=>onNavigate('pakiety')}
+            className="profile-add-btn"
+            style={{ background:'#fff', color:T.orange, border:`1.5px solid ${T.orange}`, borderRadius:9999, padding:'7px 16px', fontSize:12.5, fontWeight:700, fontFamily:"'DM Sans',sans-serif", cursor:'pointer', display:'inline-flex', alignItems:'center', gap:6, marginBottom:16 }}
+            onMouseEnter={e=>{e.currentTarget.style.background=T.orange; e.currentTarget.style.color='#fff';}}
+            onMouseLeave={e=>{e.currentTarget.style.background='#fff'; e.currentTarget.style.color=T.orange;}}>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Dodaj swoją firmę
+          </button>
+        </div>
 
-          {/* Main column */}
-          <div style={{ display:'flex',flexDirection:'column',gap:16 }}>
+        {/* Two-column layout */}
+        <div className="profile-grid" style={{ display:'grid', gridTemplateColumns:'1fr 320px', gap:24, alignItems:'flex-start' }}>
 
-            {/* 1. Header card */}
-            <div style={{ background:'#fff',borderRadius:8,boxShadow:T.shadow1,border:c.premium?`2px solid ${T.orange}`:`1px solid ${T.gray200}`,overflow:'hidden' }}>
-              {c.premium && <div style={{ background:T.orange,padding:'6px 20px',display:'flex',alignItems:'center',gap:6 }}>
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="#fff"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                <span style={{ fontSize:11,fontWeight:700,letterSpacing:'0.07em',textTransform:'uppercase',color:'#fff' }}>Wyróżniony wpis</span>
-              </div>}
-              <div style={{ padding:'24px',display:'flex',alignItems:'flex-start',gap:20 }}>
-                <CompanyLogoPlaceholder name={c.name} size={80} bg={c.premium?'#FEF0E9':'#F4F4F5'}/>
-                <div style={{ flex:1 }}>
-                  <h1 style={{ fontSize:22,fontWeight:800,color:T.gray900,marginBottom:4,letterSpacing:'-0.01em' }}>{c.name}</h1>
-                  <div style={{ fontSize:12,fontWeight:700,color:T.orange,letterSpacing:'0.05em',textTransform:'uppercase',marginBottom:10 }}>{c.cat}</div>
-                  <div style={{ display:'flex',gap:16,flexWrap:'wrap',alignItems:'center' }}>
-                    <span style={{ fontSize:13,color:T.gray500,display:'flex',alignItems:'center',gap:5 }}>
-                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                      {c.city}
-                    </span>
-                    {c.www && <a href="#" style={{ fontSize:13,color:T.orange,fontWeight:600,display:'flex',alignItems:'center',gap:4 }}>
-                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                      {c.www}
-                    </a>}
-                    <span style={{ fontSize:12,color:T.gray400,display:'flex',alignItems:'center',gap:5 }}>
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                      51–100 pracowników
-                    </span>
+          {/* ─── MAIN COLUMN ────────────────────────────────────── */}
+          <div className="profile-col-main" style={{ display:'flex', flexDirection:'column', gap:16, minWidth:0 }}>
+
+            {/* Header card */}
+            <div className="pf-section pf-header" style={{ background:'#fff', borderRadius:10, overflow:'hidden', boxShadow:T.shadow1, border: isPremium?`1.5px solid ${T.orange}`:`1px solid ${T.gray200}`, position:'relative' }}>
+              <div className="profile-header" style={{ padding:'26px 28px', display:'flex', alignItems:'flex-start', gap:20 }}>
+                <CompanyLogoPlaceholder name={c.name} size={84} bg={isPremium?'#FEF0E9':'#F4F4F5'}/>
+                <div style={{ flex:1, minWidth:0 }}>
+                  <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:6, flexWrap:'wrap' }}>
+                    <span style={{ fontSize:11.5, fontWeight:700, color:T.orange, letterSpacing:'0.05em', textTransform:'uppercase' }}>{c.cat}</span>
+                    {meta.verified && <span style={{ display:'inline-flex', alignItems:'center', gap:4, fontSize:11, color:'#3B82F6', fontWeight:600 }}><VerifiedIcon size={13}/> Zweryfikowany</span>}
+                    {isPremium && (
+                      <span style={{ fontSize:10, fontWeight:700, letterSpacing:'.05em', textTransform:'uppercase', color:'#fff', background:T.orange, padding:'3px 9px', borderRadius:9999, display:'inline-flex', alignItems:'center', gap:4 }}>
+                        <svg width="9" height="9" viewBox="0 0 24 24" fill="#fff"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        Wyróżniony
+                      </span>
+                    )}
                   </div>
-                  {c.tags && <div style={{ display:'flex',gap:5,flexWrap:'wrap',marginTop:10 }}>
-                    {c.tags.map(tag=>(
-                      <span key={tag} style={{ fontSize:11,fontWeight:600,color:T.gray500,background:T.gray100,padding:'3px 8px',borderRadius:3 }}>{tag}</span>
-                    ))}
-                  </div>}
+                  <h1 style={{ fontSize:26, fontWeight:800, color:T.gray900, lineHeight:1.15, letterSpacing:'-0.02em', marginBottom:10, textWrap:'pretty' }}>{c.name}</h1>
+                  <p style={{ fontSize:14, color:T.gray600, lineHeight:1.55, textWrap:'pretty' }}>{c.short}</p>
+                  {c.tags && (
+                    <div style={{ display:'flex', flexWrap:'wrap', gap:5, marginTop:14 }}>
+                      {c.tags.map(tag => (
+                        <span key={tag} style={{ fontSize:11, fontWeight:600, color:T.gray600, background:T.gray100, padding:'3px 9px', borderRadius:4 }}>{tag}</span>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
 
-            {/* 2. Opis firmy */}
-            <div style={{ background:'#fff',borderRadius:8,padding:'24px',boxShadow:T.shadow1,border:`1px solid ${T.gray200}` }}>
-              <div style={{ fontSize:12,fontWeight:700,color:T.gray500,letterSpacing:'0.07em',textTransform:'uppercase',marginBottom:14 }}>O firmie</div>
-              <p style={{ fontSize:14,lineHeight:1.75,color:T.gray600,marginBottom: c.premium ? 12 : 0 }}>{c.short}</p>
-              {c.premium && <p style={{ fontSize:14,lineHeight:1.75,color:T.gray600 }}>
-                Firma działa na polskim rynku od ponad 20 lat, obsługując klientów z segmentu enterprise i mid-market. Nasz zespół liczy ponad 500 specjalistów z zakresu mediów, kreacji, strategii i analityki danych. Jesteśmy dumni z nagrody Effie Gold 2024 za kampanię dla jednego z największych klientów FMCG w Polsce.
-              </p>}
+            {/* O firmie */}
+            <div className="pf-section pf-about" style={sectionCard}>
+              <SectionLabel>O firmie</SectionLabel>
+              <p style={{ fontSize:14.5, lineHeight:1.75, color:T.gray700, textWrap:'pretty' }}>{c.short}</p>
+              {isPremium && (
+                <p style={{ fontSize:14.5, lineHeight:1.75, color:T.gray700, marginTop:14, textWrap:'pretty' }}>
+                  Firma działa na polskim rynku od ponad 20 lat, obsługując klientów z segmentu enterprise i mid-market. Nasz zespół liczy ponad 500 specjalistów z zakresu mediów, kreacji, strategii i analityki danych. Jesteśmy dumni z nagrody Effie Gold 2024 za kampanię dla jednego z największych klientów FMCG w Polsce.
+                </p>
+              )}
             </div>
 
-            {/* 3. Kontakt — New Business */}
-            {c.premium && (
-              <div style={{ background:'#fff',borderRadius:8,padding:'22px 24px',boxShadow:T.shadow1,border:`1px solid ${T.gray200}` }}>
-                <div style={{ fontSize:12,fontWeight:700,color:T.gray500,letterSpacing:'0.07em',textTransform:'uppercase',marginBottom:14 }}>Kontakt — New Business</div>
-                <div style={{ display:'flex',gap:14,flexWrap:'wrap' }}>
+            {/* Kontakt — New Business */}
+            {isPremium && (
+              <div className="pf-section pf-contact" style={sectionCard}>
+                <SectionLabel>Kontakt — New Business</SectionLabel>
+                <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(220px,1fr))', gap:10 }}>
                   {[
-                    {name:'Anna Kowalska',role:'Head of New Business',email:'a.kowalska@'+c.www,phone:'+48 601 234 567'},
-                    {name:'Marek Wiśniewski',role:'Business Development Manager',email:'m.wisniewski@'+c.www,phone:'+48 602 345 678'},
-                    {name:'Julia Nowak',role:'Client Partner',email:'j.nowak@'+c.www,phone:'+48 603 456 789'},
-                  ].map(person=>(
-                    <div key={person.name} style={{ flex:'1 1 180px',display:'flex',gap:12,alignItems:'flex-start',padding:'12px',background:T.gray50,borderRadius:6,border:`1px solid ${T.gray200}` }}>
-                      <div style={{ width:40,height:40,borderRadius:'50%',background:T.orange,display:'flex',alignItems:'center',justifyContent:'center',fontSize:14,fontWeight:700,color:'#fff',flexShrink:0 }}>
-                        {person.name.split(' ').map(w=>w[0]).join('')}
+                    { name:'Anna Kowalska', role:'Head of New Business', email:'a.kowalska@'+c.www, phone:'+48 601 234 567' },
+                    { name:'Marek Wiśniewski', role:'Business Development Manager', email:'m.wisniewski@'+c.www, phone:'+48 602 345 678' },
+                    { name:'Julia Nowak', role:'Client Partner', email:'j.nowak@'+c.www, phone:'+48 603 456 789' },
+                  ].map(p => (
+                    <div key={p.name} style={{ display:'flex', gap:11, alignItems:'flex-start', padding:'14px', background:T.gray50, borderRadius:8, border:`1px solid ${T.gray200}` }}>
+                      <div style={{ width:40, height:40, borderRadius:'50%', background:T.orange, color:'#fff', display:'flex', alignItems:'center', justifyContent:'center', fontSize:13, fontWeight:700, flexShrink:0 }}>
+                        {p.name.split(' ').map(w=>w[0]).join('')}
                       </div>
                       <div style={{ minWidth:0 }}>
-                        <div style={{ fontSize:13,fontWeight:700,color:T.gray900,lineHeight:1.2 }}>{person.name}</div>
-                        <div style={{ fontSize:11,color:T.gray500,marginBottom:6 }}>{person.role}</div>
-                        <a href={'mailto:'+person.email} style={{ fontSize:11,color:T.orange,fontWeight:600,display:'block',marginBottom:2,textDecoration:'none',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap' }}>{person.email}</a>
-                        <div style={{ fontSize:11,color:T.gray500 }}>{person.phone}</div>
+                        <div style={{ fontSize:13, fontWeight:700, color:T.gray900, lineHeight:1.2 }}>{p.name}</div>
+                        <div style={{ fontSize:11, color:T.gray500, marginBottom:6 }}>{p.role}</div>
+                        <a href={'mailto:'+p.email} style={{ fontSize:11.5, color:T.orange, fontWeight:600, display:'block', marginBottom:2, textDecoration:'none', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{p.email}</a>
+                        <div style={{ fontSize:11, color:T.gray500 }}>{p.phone}</div>
                       </div>
                     </div>
                   ))}
@@ -529,52 +764,74 @@ function CompanyProfile({ company, onNavigate }) {
               </div>
             )}
 
-            {/* 4. Artykuły + ogłoszenia o pracę */}
-            <div style={{ background:'#fff',borderRadius:8,overflow:'hidden',boxShadow:T.shadow1,border:`1px solid ${T.gray200}` }}>
-              <div style={{ padding:'18px 20px',borderBottom:`1px solid ${T.gray200}` }}>
-                <div style={{ fontSize:12,fontWeight:700,color:T.gray500,letterSpacing:'0.07em',textTransform:'uppercase',marginBottom:12 }}>Artykuły o nas</div>
-                {c.premium ? (
-                  <div style={{ display:'flex',flexDirection:'column',gap:7 }}>
-                    {['Publicis Groupe Poland podsumowuje rok 2024','Nowe kampanie — wyniki Q1 2025','Wywiad z CEO: strategia na 2025','Effie 2024: złoto dla agencji'].map((title,j)=>(
-                      <div key={j} style={{ display:'flex',alignItems:'center',gap:8,padding:'7px 10px',background:T.gray50,borderRadius:4,border:`1px solid ${T.gray200}`,cursor:'pointer' }}>
-                        <div style={{ flex:1 }}>
-                          <div style={{ fontSize:12,fontWeight:600,color:T.gray900,lineHeight:1.3 }}>{title}</div>
-                          <div style={{ fontSize:10,color:T.gray400,marginTop:2 }}>{['3 dni temu','2 tyg. temu','1 mies. temu','3 mies. temu'][j]}</div>
-                        </div>
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={T.gray400} strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            {/* Artykuły o nas */}
+            <div className="pf-section pf-articles" style={sectionCard}>
+              <SectionLabel>Artykuły o nas</SectionLabel>
+              {isPremium ? (
+                <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+                  {[
+                    { title:c.name+' podsumowuje rok 2024', when:'3 dni temu' },
+                    { title:'Nowe kampanie — wyniki Q1 2025', when:'2 tyg. temu' },
+                    { title:'Wywiad z CEO: strategia na 2025', when:'1 mies. temu' },
+                    { title:'Effie 2024: złoto dla agencji', when:'3 mies. temu' },
+                  ].map((a,j) => (
+                    <a href="#" key={j} style={{ display:'flex', alignItems:'center', gap:10, padding:'10px 12px', background:T.gray50, borderRadius:6, border:`1px solid ${T.gray200}`, textDecoration:'none', transition:'border-color .15s' }}
+                       onMouseEnter={e=>{e.currentTarget.style.borderColor=T.orange;}}
+                       onMouseLeave={e=>{e.currentTarget.style.borderColor=T.gray200;}}>
+                      <div style={{ width:32, height:32, borderRadius:6, background:T.orangeLight, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={T.orange} strokeWidth="2"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8M15 18h-5M10 6h8v4h-8z"/></svg>
                       </div>
-                    ))}
-                  </div>
-                ) : <div style={{ fontSize:12,color:T.gray400,fontStyle:'italic' }}>Brak artykułów</div>}
-              </div>
-              <div style={{ padding:'16px 20px',display:'flex',alignItems:'center',justifyContent:'space-between',gap:12 }}>
-                <div style={{ display:'flex',alignItems:'center',gap:8 }}>
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1E3A5F" strokeWidth="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
-                  <span style={{ fontSize:12,fontWeight:700,color:T.gray700 }}>Nasze ogłoszenia o pracę</span>
+                      <div style={{ flex:1, minWidth:0 }}>
+                        <div style={{ fontSize:13, fontWeight:600, color:T.gray900, lineHeight:1.3 }}>{a.title}</div>
+                        <div style={{ fontSize:11, color:T.gray400, marginTop:2 }}>{a.when}</div>
+                      </div>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={T.gray400} strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                    </a>
+                  ))}
                 </div>
-                <button style={{ fontSize:12,fontWeight:700,color:'#fff',background:'#1E3A5F',border:'none',borderRadius:6,padding:'7px 14px',cursor:'pointer',fontFamily:"'DM Sans',sans-serif",display:'flex',alignItems:'center',gap:5 }}>
-                  Zobacz oferty <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                </button>
-              </div>
+              ) : (
+                <div style={{ fontSize:12, color:T.gray400, fontStyle:'italic', padding:'8px 0' }}>Brak powiązanych artykułów.</div>
+              )}
             </div>
 
-            {/* 5. Nagrody branżowe */}
-            {c.premium && (
-              <div style={{ background:'#fff',borderRadius:8,padding:'22px 24px',boxShadow:T.shadow1,border:`1px solid ${T.gray200}` }}>
-                <div style={{ fontSize:12,fontWeight:700,color:T.gray500,letterSpacing:'0.07em',textTransform:'uppercase',marginBottom:14 }}>Nagrody branżowe</div>
-                <div style={{ display:'flex',flexWrap:'wrap',gap:10 }}>
+            {/* Oferty pracy — TYLKO PREMIUM */}
+            {isPremium && (
+              <div className="pf-section pf-jobs" style={sectionCard}>
+                <SectionLabel>Ogłoszenia o pracę</SectionLabel>
+                <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:12, flexWrap:'wrap' }}>
+                  <div style={{ display:'flex', alignItems:'center', gap:12 }}>
+                    <div style={{ width:40, height:40, borderRadius:8, background:'#EFF6FF', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1E3A5F" strokeWidth="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+                    </div>
+                    <div>
+                      <div style={{ fontSize:14, fontWeight:700, color:T.gray900, marginBottom:2 }}>Sprawdź aktualne oferty pracy</div>
+                      <div style={{ fontSize:12, color:T.gray500, lineHeight:1.5 }}>Zobacz wszystkie ogłoszenia rekrutacyjne tej firmy w serwisie Praca.</div>
+                    </div>
+                  </div>
+                  <button style={{ fontSize:12.5, fontWeight:700, color:'#fff', background:'#1E3A5F', border:'none', borderRadius:9999, padding:'8px 18px', cursor:'pointer', fontFamily:"'DM Sans',sans-serif", display:'flex', alignItems:'center', gap:5 }}>
+                    Zobacz oferty <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Nagrody branżowe */}
+            {isPremium && (
+              <div className="pf-section pf-awards" style={sectionCard}>
+                <SectionLabel>Nagrody branżowe</SectionLabel>
+                <div style={{ display:'flex', flexWrap:'wrap', gap:10 }}>
                   {[
-                    {name:'Effie Gold',year:'2024',cat:'FMCG'},
-                    {name:'KTR',year:'2023',cat:'Kampania cyfrowa'},
-                    {name:'IAB Mixx',year:'2023',cat:'Innowacja'},
-                  ].map(award=>(
-                    <div key={award.name+award.year} style={{ display:'flex',alignItems:'center',gap:10,padding:'10px 14px',background:'#FFFBEB',border:'1px solid #FDE68A',borderRadius:6 }}>
-                      <div style={{ width:32,height:32,borderRadius:4,background:'#F59E0B',display:'flex',alignItems:'center',justifyContent:'center' }}>
+                    { name:'Effie Gold', year:'2024', cat:'FMCG' },
+                    { name:'KTR', year:'2023', cat:'Kampania cyfrowa' },
+                    { name:'IAB Mixx', year:'2023', cat:'Innowacja' },
+                  ].map(a => (
+                    <div key={a.name+a.year} style={{ display:'flex', alignItems:'center', gap:10, padding:'10px 14px', background:'#FFFBEB', border:'1px solid #FDE68A', borderRadius:8 }}>
+                      <div style={{ width:32, height:32, borderRadius:6, background:'#F59E0B', display:'flex', alignItems:'center', justifyContent:'center' }}>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                       </div>
                       <div>
-                        <div style={{ fontSize:12,fontWeight:700,color:'#92400E' }}>{award.name} {award.year}</div>
-                        <div style={{ fontSize:11,color:'#B45309' }}>{award.cat}</div>
+                        <div style={{ fontSize:12.5, fontWeight:700, color:'#92400E' }}>{a.name} {a.year}</div>
+                        <div style={{ fontSize:11, color:'#B45309' }}>{a.cat}</div>
                       </div>
                     </div>
                   ))}
@@ -582,25 +839,25 @@ function CompanyProfile({ company, onNavigate }) {
               </div>
             )}
 
-            {/* 6. Wideo YouTube */}
-            {c.premium && (
-              <div style={{ background:'#fff',borderRadius:8,padding:'24px',boxShadow:T.shadow1,border:`1px solid ${T.gray200}` }}>
-                <div style={{ fontSize:12,fontWeight:700,color:T.gray500,letterSpacing:'0.07em',textTransform:'uppercase',marginBottom:14 }}>Wideo</div>
-                <div style={{ position:'relative',paddingBottom:'56.25%',borderRadius:6,overflow:'hidden',background:T.gray100,border:`1px solid ${T.gray200}` }}>
+            {/* Wideo */}
+            {isPremium && (
+              <div className="pf-section pf-video" style={sectionCard}>
+                <SectionLabel>Wideo</SectionLabel>
+                <div style={{ position:'relative', paddingBottom:'56.25%', borderRadius:8, overflow:'hidden', background:T.gray100, border:`1px solid ${T.gray200}` }}>
                   <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Film firmy"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen style={{ position:'absolute',top:0,left:0,width:'100%',height:'100%',border:'none' }}/>
+                    allowFullScreen style={{ position:'absolute', top:0, left:0, width:'100%', height:'100%', border:'none' }}/>
                 </div>
               </div>
             )}
 
-            {/* 7. Galeria */}
-            {c.premium && (
-              <div style={{ background:'#fff',borderRadius:8,padding:'24px',boxShadow:T.shadow1,border:`1px solid ${T.gray200}` }}>
-                <div style={{ fontSize:12,fontWeight:700,color:T.gray500,letterSpacing:'0.07em',textTransform:'uppercase',marginBottom:14 }}>Galeria</div>
-                <div style={{ display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(140px,1fr))',gap:10 }}>
-                  {[1,2,3].map(i=>(
-                    <div key={i} style={{ aspectRatio:'4/3',borderRadius:6,background:T.gray100,border:`1px solid ${T.gray200}`,display:'flex',alignItems:'center',justifyContent:'center' }}>
+            {/* Galeria */}
+            {isPremium && (
+              <div className="pf-section pf-gallery" style={sectionCard}>
+                <SectionLabel>Galeria</SectionLabel>
+                <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(140px,1fr))', gap:10 }}>
+                  {[1,2,3].map(i => (
+                    <div key={i} style={{ aspectRatio:'4/3', borderRadius:8, background:T.gray100, border:`1px solid ${T.gray200}`, display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer' }}>
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={T.gray300} strokeWidth="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
                     </div>
                   ))}
@@ -608,60 +865,299 @@ function CompanyProfile({ company, onNavigate }) {
               </div>
             )}
 
-            {/* 8. Dane kontaktowe */}
-            <div style={{ background:'#fff',borderRadius:8,padding:'24px',boxShadow:T.shadow1,border:`1px solid ${T.gray200}` }}>
-              <div style={{ fontSize:12,fontWeight:700,color:T.gray500,letterSpacing:'0.07em',textTransform:'uppercase',marginBottom:14 }}>Dane kontaktowe</div>
-              <div style={{ display:'flex',flexDirection:'column',gap:10 }}>
-                {[
-                  ['Adres','ul. Marszałkowska 82, 00-517 Warszawa'],
-                  ['Telefon','+48 22 123 45 67'],
-                  ['E-mail','kontakt@'+(c.www||'firma.pl')],
-                  ['NIP','123-456-78-90'],
-                ].map(([l,v])=>(
-                  <div key={l} style={{ display:'flex',gap:12,fontSize:13 }}>
-                    <span style={{ width:72,fontWeight:600,color:T.gray400,flexShrink:0 }}>{l}</span>
-                    <span style={{ color:T.gray900 }}>{v}</span>
+            {/* Podobne firmy */}
+            <div className="pf-section pf-similar" style={sectionCard}>
+              <SectionLabel>Podobne firmy</SectionLabel>
+              <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(200px,1fr))', gap:10 }}>
+                {COMPANIES.filter(x=>x.cat===c.cat&&x.id!==c.id).slice(0,4).map(x=>(
+                  <div key={x.id} onClick={()=>onNavigate('company',x)}
+                    style={{ display:'flex', gap:10, cursor:'pointer', alignItems:'center', padding:'12px', borderRadius:8, border:`1px solid ${T.gray200}`, transition:'border-color .15s, box-shadow .15s' }}
+                    onMouseEnter={e=>{e.currentTarget.style.borderColor=T.orange; e.currentTarget.style.boxShadow=T.shadow1;}}
+                    onMouseLeave={e=>{e.currentTarget.style.borderColor=T.gray200; e.currentTarget.style.boxShadow='none';}}>
+                    <CompanyLogoPlaceholder name={x.name} size={36}/>
+                    <div style={{ minWidth:0, flex:1 }}>
+                      <div style={{ fontSize:12.5, fontWeight:700, color:T.gray900, lineHeight:1.25, textWrap:'pretty' }}>{x.name}</div>
+                      <div style={{ fontSize:11, color:T.gray400, marginTop:2 }}>{x.city}</div>
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
           </div>
 
-          {/* 9. Podobne firmy */}
-          <div style={{ background:'#fff',borderRadius:8,padding:'24px',boxShadow:T.shadow1,border:`1px solid ${T.gray200}` }}>
-            <div style={{ fontSize:12,fontWeight:700,color:T.gray500,letterSpacing:'0.07em',textTransform:'uppercase',marginBottom:16 }}>Podobne firmy</div>
-            <div style={{ display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(200px,1fr))',gap:16 }}>
-              {COMPANIES.filter(x=>x.cat===c.cat&&x.id!==c.id).slice(0,4).map(x=>(
-                <div key={x.id} onClick={()=>onNavigate('company',x)} style={{ display:'flex',gap:12,cursor:'pointer',alignItems:'center',padding:'12px',borderRadius:6,border:`1px solid ${T.gray200}`,transition:'box-shadow 0.15s' }}
-                  onMouseEnter={e=>e.currentTarget.style.boxShadow=T.shadow2}
-                  onMouseLeave={e=>e.currentTarget.style.boxShadow='none'}>
-                  <CompanyLogoPlaceholder name={x.name} size={40}/>
-                  <div>
-                    <div style={{ fontSize:12,fontWeight:600,color:T.gray900 }}>{x.name}</div>
-                    <div style={{ fontSize:11,color:T.gray400 }}>{x.city}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-          {!c.premium && (
-            <div style={{ background:T.orangeLight,borderRadius:8,padding:'20px 24px',border:`1px solid ${T.orange}44`,display:'flex',alignItems:'center',justifyContent:'space-between',gap:16 }}>
-              <div>
-                <div style={{ fontSize:14,fontWeight:700,color:T.orange,marginBottom:4 }}>Czy to Twoja firma?</div>
-                <p style={{ fontSize:13,color:T.gray600,lineHeight:1.5 }}>Wyróżnij wpis, dodaj opis, galerię i link do strony. Zyskaj więcej widoczności wśród tysięcy czytelników WM.</p>
+          {/* ─── SIDEBAR ────────────────────────────────────────── */}
+          <aside className="profile-sidebar" style={{ position:'sticky', top:108, display:'flex', flexDirection:'column', gap:14 }}>
+
+            {/* O firmie — w skrócie */}
+            <div className="pf-section pf-keyfacts" style={{ background:'#fff', borderRadius:10, padding:'4px 20px 14px', boxShadow:T.shadow1, border:`1px solid ${T.gray200}` }}>
+              <div style={{ fontSize:11, fontWeight:700, letterSpacing:'.08em', textTransform:'uppercase', color:T.gray500, padding:'14px 0 4px' }}>O firmie — w skrócie</div>
+              <KeyFact
+                icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={T.orange} strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>}
+                label="Założono" value={meta.founded}/>
+              <KeyFact
+                icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={T.orange} strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>}
+                label="Wielkość zespołu" value={meta.size+' osób'}/>
+              <KeyFact
+                icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={T.orange} strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>}
+                label="Siedziba" value={c.city}/>
+              <KeyFact
+                icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={T.orange} strokeWidth="2"><rect x="3" y="3" width="7" height="18"/><rect x="14" y="7" width="7" height="14"/><path d="M3 21h18"/></svg>}
+                label="Kategoria" value={c.cat}/>
+              {c.www && isPremium && (
+                <KeyFact
+                  icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={T.orange} strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>}
+                  label="Strona WWW" value={<a href={'https://'+c.www} target="_blank" rel="noopener noreferrer" style={{ color:T.orange, fontWeight:700, textDecoration:'none', wordBreak:'break-all' }}>{c.www}</a>}/>
+              )}
+              {isPremium && (
+                <KeyFact
+                  icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={T.orange} strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>}
+                  label="E-mail" value={'kontakt@'+(c.www||'firma.pl')}/>
+              )}
+              <div style={{ paddingTop:10 }}>
+                <a href="#" style={{ fontSize:12, color:T.gray500, fontWeight:600, display:'inline-flex', alignItems:'center', gap:4, textDecoration:'none' }}
+                   onMouseEnter={e=>e.currentTarget.style.color=T.orange}
+                   onMouseLeave={e=>e.currentTarget.style.color=T.gray500}>
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                  Zgłoś korektę informacji
+                </a>
               </div>
-              <button onClick={()=>onNavigate('pakiety')} style={{ flexShrink:0,background:T.orange,color:'#fff',border:'none',borderRadius:6,padding:'10px 22px',fontSize:13,fontWeight:700,fontFamily:"'DM Sans',sans-serif",cursor:'pointer',whiteSpace:'nowrap' }}>Zobacz pakiety →</button>
             </div>
-          )}
+
+            {/* Social media */}
+            {isPremium && (
+              <div className="pf-section pf-social" style={{ background:'#fff', borderRadius:10, padding:'18px 20px', boxShadow:T.shadow1, border:`1px solid ${T.gray200}` }}>
+                <div style={{ fontSize:11, fontWeight:700, letterSpacing:'.08em', textTransform:'uppercase', color:T.gray500, marginBottom:12 }}>Social media</div>
+                <div style={{ display:'flex', flexDirection:'column', gap:6 }}>
+                  {socials.map(s => (
+                    <a key={s.kind} href={s.url} target="_blank" rel="noopener noreferrer"
+                      style={{ display:'flex', alignItems:'center', gap:11, padding:'9px 11px', borderRadius:6, border:`1px solid ${T.gray200}`, textDecoration:'none', transition:'border-color .15s, background .15s' }}
+                      onMouseEnter={e=>{e.currentTarget.style.borderColor=s.color; e.currentTarget.style.background=T.gray50;}}
+                      onMouseLeave={e=>{e.currentTarget.style.borderColor=T.gray200; e.currentTarget.style.background='#fff';}}>
+                      <div style={{ width:30, height:30, borderRadius:6, background:s.color, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+                        <SocialIcon kind={s.kind} size={16} color="#fff"/>
+                      </div>
+                      <span style={{ fontSize:13, fontWeight:600, color:T.gray900, flex:1, minWidth:0 }}>{s.label}</span>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={T.gray400} strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* "Twoja firma" CTA — non-premium */}
+            {!isPremium && (
+              <div className="pf-section pf-cta" style={{ background:T.navy, borderRadius:10, padding:'20px', color:'#fff', position:'relative', overflow:'hidden' }}>
+                <div aria-hidden style={{ position:'absolute', top:-30, right:-30, width:120, height:120, borderRadius:'50%', background:'rgba(240,90,40,0.18)' }}/>
+                <div style={{ position:'relative' }}>
+                  <div style={{ fontSize:10.5, fontWeight:700, letterSpacing:'.08em', textTransform:'uppercase', color:T.orange, marginBottom:8 }}>Twoja firma</div>
+                  <div style={{ fontSize:16, fontWeight:800, color:'#fff', marginBottom:6, letterSpacing:'-0.01em' }}>Wyróżnij swój wpis</div>
+                  <p style={{ fontSize:12.5, color:'rgba(255,255,255,0.65)', lineHeight:1.55, marginBottom:14 }}>Dodaj rozbudowany opis, galerię i kontakty. Zyskaj widoczność wśród czytelników WM.</p>
+                  <button onClick={()=>onNavigate('pakiety')}
+                    style={{ width:'100%', background:T.orange, color:'#fff', border:'none', borderRadius:9999, padding:'9px', fontSize:12.5, fontWeight:700, fontFamily:"'DM Sans',sans-serif", cursor:'pointer' }}>
+                    Zobacz pakiety →
+                  </button>
+                </div>
+              </div>
+            )}
+          </aside>
         </div>
       </div>
+
+      {/* Responsive */}
+      <style>{`
+        @media (max-width: 980px) {
+          .profile-grid {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 14px !important;
+          }
+          .profile-col-main, .profile-sidebar {
+            display: contents !important;
+          }
+          .profile-sidebar { position: static !important; }
+          /* Mobile order: ogólny opis → o firmie → firma w skrócie → kontakt → artykuły → ogłoszenia → nagrody → wideo → galeria → social → podobne firmy → cta */
+          .pf-header   { order: 1; }
+          .pf-about    { order: 2; }
+          .pf-keyfacts { order: 3; }
+          .pf-contact  { order: 4; }
+          .pf-articles { order: 5; }
+          .pf-jobs     { order: 6; }
+          .pf-awards   { order: 7; }
+          .pf-video    { order: 8; }
+          .pf-gallery  { order: 9; }
+          .pf-social   { order: 10; }
+          .pf-similar  { order: 11; }
+          .pf-cta      { order: 12; }
+        }
+        @media (max-width: 640px) {
+          .profile-wrap { padding: 18px 0 0 !important; }
+          .profile-wrap > div:first-child { padding-left: 16px !important; padding-right: 16px !important; }
+          .pf-section { border-radius: 0 !important; border-left: none !important; border-right: none !important; }
+          .profile-header { padding: 18px !important; gap: 14px !important; flex-direction: column; align-items: flex-start !important; }
+          .profile-header h1 { font-size: 22px !important; }
+          .profile-add-btn { font-size: 11.5px !important; padding: 6px 12px !important; }
+        }
+      `}</style>
     </main>
+  );
+}
+
+/* ─── COMPARE PACKAGES — data + table ───────────────────────────── */
+/* value: true = included, false = not included, string = scoped detail */
+const PKG_COMPARE_SECTIONS = [
+  {
+    title: 'Podstawowa obecność',
+    rows: [
+      { label: 'Nazwa firmy i logotyp (miniatura)', values: { free:true, standard:true, premium:true, superpremium:true } },
+      { label: 'Adres siedziby firmy', values: { free:true, standard:true, premium:true, superpremium:true } },
+      { label: 'Adres e-mail', values: { free:true, standard:true, premium:true, superpremium:true } },
+      { label: 'Liczba kategorii', values: { free:'1', standard:'3', premium:'5', superpremium:'5' } },
+      { label: 'Krótki opis działalności', values: { free:'300 znaków', standard:'600 znaków', premium:'800 znaków', superpremium:'800 znaków' } },
+      { label: 'Rozbudowany opis firmy', values: { free:false, standard:'2 000 znaków', premium:'5 000 znaków', superpremium:'5 000 znaków' } },
+    ],
+  },
+  {
+    title: 'Profil firmy',
+    rows: [
+      { label: 'Kontakty personalne', values: { free:false, standard:false, premium:'do 3', superpremium:'do 3' } },
+      { label: 'Link do strony WWW', values: { free:false, standard:true, premium:true, superpremium:true } },
+      { label: 'Profile w mediach społecznościowych', values: { free:false, standard:'do 3', premium:'do 5', superpremium:'do 5' } },
+      { label: 'Galeria zdjęć (do 3 plików)', values: { free:false, standard:false, premium:true, superpremium:true } },
+      { label: 'Embed wideo z YouTube', values: { free:false, standard:false, premium:true, superpremium:true } },
+      { label: 'Sekcja nagród branżowych (Effie, KTR i inne)', values: { free:false, standard:false, premium:false, superpremium:true } },
+    ],
+  },
+  {
+    title: 'Widoczność i promocja',
+    rows: [
+      { label: 'Widoczność w wynikach wyszukiwania katalogu', values: { free:true, standard:true, premium:true, superpremium:true } },
+      { label: 'Wyróżniona ramka na karcie firmy', values: { free:false, standard:true, premium:true, superpremium:true } },
+      { label: 'Badge „Zweryfikowany” na karcie i profilu', values: { free:false, standard:true, premium:true, superpremium:true } },
+      { label: 'Badge „Wyróżniony" na karcie i profilu', values: { free:false, standard:false, premium:true, superpremium:true } },
+      { label: 'Priorytetowa pozycja w wynikach wyszukiwania', values: { free:false, standard:false, premium:true, superpremium:true } },
+      { label: 'Artykuł na portalu z 7-dniową promocją (SG i social)', values: { free:false, standard:false, premium:false, superpremium:'1× w roku' } },
+    ],
+  },
+  {
+    title: 'Dodatki branżowe',
+    rows: [
+      { label: 'Ogłoszenia o pracę w roku', values: { free:false, standard:false, premium:false, superpremium:'2 szt.' } },
+      { label: 'Zaproszenia na Brand New(s) (2× w roku)', values: { free:false, standard:false, premium:false, superpremium:'3 szt.' } },
+      { label: 'Zaproszenia na galę Wirtuale (nagrody dla mediów)', values: { free:false, standard:false, premium:false, superpremium:'2 szt.' } },
+      { label: 'Wcześniejszy dostęp do Wirtualnego Wskaźnika Wpływu', values: { free:false, standard:false, premium:false, superpremium:true } },
+    ],
+  },
+  {
+    title: 'Obsługa i publikacja',
+    rows: [
+      { label: 'Wpis moderowany przez redakcję WM', values: { free:true, standard:true, premium:true, superpremium:true } },
+      { label: 'Dedykowany opiekun konta w redakcji WM', values: { free:false, standard:false, premium:true, superpremium:true } },
+    ],
+  },
+];
+
+function PkgCompareCell({ val, highlight, accent }) {
+  if (val === true) {
+    return (
+      <div style={{ display:'flex', alignItems:'center', justifyContent:'center' }}>
+        <div style={{ width:22, height:22, borderRadius:'50%', background:accent||T.orange, display:'flex', alignItems:'center', justifyContent:'center' }}>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+      </div>
+    );
+  }
+  if (val === false) {
+    return <div style={{ textAlign:'center', color:T.gray300, fontSize:18, fontWeight:600, lineHeight:1 }}>—</div>;
+  }
+  return (
+    <div style={{ textAlign:'center' }}>
+      <span style={{ display:'inline-block', padding:'3px 9px', borderRadius:9999, background: highlight ? 'rgba(240,90,40,0.12)' : T.gray100, color: highlight ? T.orange : T.gray700, fontSize:11, fontWeight:700, whiteSpace:'nowrap' }}>{val}</span>
+    </div>
+  );
+}
+
+function PkgComparePackages({ chosen, onSelect, onClose }) {
+  const cols = PACKAGES.map(p => p.id);
+  return (
+    <div style={{ background:'#fff', border:`1.5px solid ${T.gray200}`, borderRadius:8, marginTop:0, overflow:'hidden' }}>
+      <div style={{ padding:'16px 22px', borderBottom:`1px solid ${T.gray200}`, display:'flex', alignItems:'center', justifyContent:'space-between', gap:12, background:T.gray50 }}>
+        <div>
+          <div style={{ fontSize:15, fontWeight:800, color:T.gray900, letterSpacing:'-.01em' }}>Porównanie pakietów</div>
+          <div style={{ fontSize:12, color:T.gray500, marginTop:2 }}>Pełne zestawienie świadczeń wszystkich czterech pakietów.</div>
+        </div>
+        <button onClick={onClose} style={{ fontSize:12, fontWeight:700, color:T.gray500, background:'none', border:`1.5px solid ${T.gray300}`, borderRadius:9999, padding:'6px 14px', cursor:'pointer', fontFamily:"'DM Sans',sans-serif" }}>Zwiń tabelę ✕</button>
+      </div>
+      <div style={{ overflowX:'auto' }}>
+        <table style={{ width:'100%', borderCollapse:'collapse', fontFamily:"'DM Sans',sans-serif", minWidth:760 }}>
+          <thead>
+            <tr>
+              <th style={{ textAlign:'left', padding:'14px 22px', fontSize:11, fontWeight:700, letterSpacing:'.08em', textTransform:'uppercase', color:T.gray500, borderBottom:`1.5px solid ${T.gray200}`, width:'32%' }}>Świadczenie</th>
+              {PACKAGES.map(p => {
+                const isSel = chosen === p.id;
+                const accent = p.id === 'superpremium' ? '#D97706' : T.orange;
+                return (
+                  <th key={p.id} style={{ padding:'12px 12px', borderBottom:`1.5px solid ${T.gray200}`, background: isSel ? 'rgba(240,90,40,0.06)' : 'transparent', borderLeft:`1px solid ${T.gray100}`, width:'17%' }}>
+                    <button onClick={() => onSelect(p.id)} style={{ width:'100%', background:'none', border:'none', cursor:'pointer', padding:0, fontFamily:"'DM Sans',sans-serif" }}>
+                      <div style={{ fontSize:14, fontWeight:800, color: isSel ? T.orange : T.gray900, marginBottom:2 }}>{p.name}</div>
+                      <div style={{ fontSize:12, fontWeight:700, color:T.gray700 }}>
+                        {p.price === 0 ? '0 zł' : <>{p.price.toLocaleString('pl-PL')} zł <span style={{ fontSize:10, color:T.gray400, fontWeight:500 }}>/{p.period}</span></>}
+                      </div>
+                      <div style={{ fontSize:10, fontWeight:700, letterSpacing:'.05em', textTransform:'uppercase', color: isSel ? T.orange : T.gray400, marginTop:6 }}>
+                        {isSel ? '✓ Wybrany' : 'Wybierz'}
+                      </div>
+                    </button>
+                  </th>
+                );
+              })}
+            </tr>
+          </thead>
+          <tbody>
+            {PKG_COMPARE_SECTIONS.map(sec => (
+              <React.Fragment key={sec.title}>
+                <tr>
+                  <td colSpan={5} style={{ padding:'12px 22px 6px', fontSize:10, fontWeight:700, letterSpacing:'.08em', textTransform:'uppercase', color:T.gray400, background:T.gray50, borderTop:`1px solid ${T.gray200}`, borderBottom:`1px solid ${T.gray200}` }}>{sec.title}</td>
+                </tr>
+                {sec.rows.map((r, i) => (
+                  <tr key={r.label} style={{ background: i % 2 === 0 ? '#fff' : T.gray50 }}>
+                    <td style={{ padding:'12px 22px', fontSize:12.5, color:T.gray700, borderBottom:`1px solid ${T.gray100}`, lineHeight:1.45 }}>{r.label}</td>
+                    {cols.map(c => {
+                      const isSel = chosen === c;
+                      const accent = c === 'superpremium' ? '#D97706' : T.orange;
+                      return (
+                        <td key={c} style={{ padding:'12px 10px', borderBottom:`1px solid ${T.gray100}`, background: isSel ? 'rgba(240,90,40,0.05)' : 'transparent', borderLeft:`1px solid ${T.gray100}`, verticalAlign:'middle' }}>
+                          <PkgCompareCell val={r.values[c]} highlight={isSel} accent={accent}/>
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+              </React.Fragment>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
   );
 }
 
 /* ─── PAGE: PAKIETY / CENNIK ─────────────────────────────────────── */
 function PakietyPage({ onNavigate }) {
   const [chosen, setChosen] = React.useState(null);
+  const [showCompare, setShowCompare] = React.useState(false);
+  const compareRef = React.useRef(null);
+  function toggleCompare() {
+    const next = !showCompare;
+    setShowCompare(next);
+    if (next) {
+      setTimeout(() => {
+        const el = compareRef.current;
+        if (el) {
+          const y = el.getBoundingClientRect().top + window.scrollY - 90;
+          window.scrollTo({ top:y, behavior:'smooth' });
+        }
+      }, 80);
+    }
+  }
 
   return (
     <main style={{ flex:1, padding:'0 0 48px' }}>
@@ -740,7 +1236,38 @@ function PakietyPage({ onNavigate }) {
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={T.orange} strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
           Pytania? Skontaktuj się z nami: <a href="mailto:katalog@wirtualnemedia.pl" style={{ color:T.orange, fontWeight:700 }}>katalog@wirtualnemedia.pl</a>
         </div>
-        <div style={{ fontSize:12, color:T.gray400, marginBottom:4 }}>Ceny netto. Do kwoty zostanie doliczony VAT 23%.</div>
+        <div style={{ fontSize:12, color:T.gray400, marginBottom:18 }}>Ceny netto. Do kwoty zostanie doliczony VAT 23%.</div>
+
+        {/* Compare packages — collapsible */}
+        <div ref={compareRef}>
+          <button
+            onClick={toggleCompare}
+            style={{
+              width:'100%', padding:'14px 18px',
+              background: showCompare ? T.gray50 : '#fff',
+              border:`1.5px solid ${T.gray200}`,
+              borderBottom: showCompare ? 'none' : `1.5px solid ${T.gray200}`,
+              borderRadius: showCompare ? '8px 8px 0 0' : 8,
+              fontFamily:"'DM Sans',sans-serif", fontSize:14, fontWeight:700,
+              color:T.gray900, cursor:'pointer',
+              display:'flex', alignItems:'center', justifyContent:'center', gap:10,
+              transition:'all .15s',
+            }}
+            onMouseEnter={e => { if (!showCompare) { e.currentTarget.style.borderColor = T.navy; e.currentTarget.style.color = T.navy; } }}
+            onMouseLeave={e => { if (!showCompare) { e.currentTarget.style.borderColor = T.gray200; e.currentTarget.style.color = T.gray900; } }}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
+            </svg>
+            Porównaj pakiety — pełne zestawienie świadczeń
+            <span style={{ display:'inline-block', transition:'transform .2s', transform: showCompare ? 'rotate(180deg)' : 'rotate(0)' }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </span>
+          </button>
+          {showCompare && (
+            <PkgComparePackages chosen={chosen} onSelect={setChosen} onClose={() => setShowCompare(false)}/>
+          )}
+        </div>
       </div>
     </main>
   );
@@ -903,7 +1430,7 @@ function AddCompanyForm({ onNavigate, initPkg }) {
                 <div style={{ fontSize:13, fontWeight:600, color:T.gray600 }}>Dodaj zdjęcia (do 3 plików, maks. 5 MB każdy)</div>
                 <div style={{ fontSize:11, color:T.gray400 }}>PNG lub JPG</div>
               </div>
-              <Sect label="Wideo YouTube / Vimeo"/>
+              <Sect label="Wideo YouTube"/>
               <Inp label="Link do wideo" id="ytUrl" value={form.ytUrl} onChange={v=>set('ytUrl',v)} placeholder="https://www.youtube.com/watch?v=..." hint="Wideo będzie widoczne na profilu firmy jako odtwarzacz."/>
             </>)}
           </>)}
@@ -948,18 +1475,49 @@ function AddCompanyForm({ onNavigate, initPkg }) {
 
           {/* STEP — Potwierdzenie */}
           {step===confirmStep && (
-            <div style={{ textAlign:'center', padding:'20px 0' }}>
-              <div style={{ width:64, height:64, borderRadius:'50%', background:'#DCFCE7', display:'flex', alignItems:'center', justifyContent:'center', margin:'0 auto 16px' }}>
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22C55E" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            isPaid ? (
+              <div style={{ textAlign:'center', padding:'20px 0' }}>
+                <div style={{ width:72,height:72,borderRadius:'50%',background:'#DCFCE7',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 16px' }}>
+                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#22C55E" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <h2 style={{ fontSize:20,fontWeight:800,color:T.gray900,marginBottom:8 }}>Zgłoszenie wysłane!</h2>
+                <p style={{ fontSize:14,color:T.gray500,lineHeight:1.6,maxWidth:420,margin:'0 auto 16px' }}>
+                  Twoja firma (pakiet {pkgData.name}) trafiła do weryfikacji. Skontaktujemy się na <strong style={{color:T.gray900}}>{form.contactEmail||form.billingEmail||'podany e-mail'}</strong> w ciągu 1 dnia roboczego.
+                </p>
+                <div style={{ display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(150px,1fr))',gap:12,maxWidth:520,margin:'0 auto 20px',textAlign:'left' }}>
+                  {[
+                    {icon:'📋',label:'Status',val:'Oczekuje na weryfikację'},
+                    {icon:'📦',label:'Pakiet',val:pkgData.name},
+                    {icon:'💳',label:'Kwota',val:`${Math.round(pkgData.price*1.23).toLocaleString('pl-PL')} zł brutto`},
+                    {icon:'⏱',label:'Czas aktywacji',val:'do 1 dnia roboczego'},
+                  ].map(it=>(
+                    <div key={it.label} style={{ padding:'14px',background:T.gray50,borderRadius:6,border:`1px solid ${T.gray200}` }}>
+                      <div style={{ fontSize:20,marginBottom:4 }}>{it.icon}</div>
+                      <div style={{ fontSize:10,fontWeight:700,textTransform:'uppercase',letterSpacing:'.06em',color:T.gray400,marginBottom:2 }}>{it.label}</div>
+                      <div style={{ fontSize:12,fontWeight:700,color:T.gray900 }}>{it.val}</div>
+                    </div>
+                  ))}
+                </div>
+                <div style={{ padding:'12px 18px',background:'rgba(240,90,40,0.06)',border:`1px solid rgba(240,90,40,0.2)`,borderRadius:8,maxWidth:420,margin:'0 auto 24px',fontSize:13,color:T.gray700,lineHeight:1.6 }}>
+                  📧 Wysłaliśmy potwierdzenie na <strong>{form.contactEmail||form.billingEmail}</strong>. Sprawdź też folder SPAM.
+                </div>
+                <button onClick={()=>onNavigate('katalog')} style={{ background:T.orange,color:'#fff',border:'none',borderRadius:6,padding:'10px 28px',fontSize:14,fontWeight:700,fontFamily:"'DM Sans',sans-serif",cursor:'pointer' }}>Wróć do katalogu</button>
               </div>
-              <h2 style={{ fontSize:20, fontWeight:800, color:T.gray900, marginBottom:8 }}>Zgłoszenie wysłane!</h2>
-              <p style={{ fontSize:14, color:T.gray500, lineHeight:1.6, maxWidth:420, margin:'0 auto 24px' }}>
-                {isPaid
-                  ? `Twoja firma (pakiet ${pkgData.name}) trafiła do weryfikacji. Skontaktujemy się na ${form.contactEmail||form.billingEmail||'podany e-mail'} w ciągu 1 dnia roboczego w sprawie aktywacji i faktury.`
-                  : 'Twoja firma trafiła do moderacji. Redakcja WM zweryfikuje wpis i poinformuje Cię e-mailem o publikacji.'}
-              </p>
-              <button onClick={()=>onNavigate('katalog')} style={{ background:T.orange, color:'#fff', border:'none', borderRadius:6, padding:'10px 28px', fontSize:14, fontWeight:700, fontFamily:"'DM Sans',sans-serif", cursor:'pointer' }}>Wróć do katalogu</button>
-            </div>
+            ) : (
+              <div style={{ textAlign:'center', padding:'20px 0' }}>
+                <div style={{ width:72,height:72,borderRadius:'50%',background:'#DCFCE7',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 16px' }}>
+                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#22C55E" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <h2 style={{ fontSize:20,fontWeight:800,color:T.gray900,marginBottom:8 }}>Zgłoszenie wysłane!</h2>
+                <p style={{ fontSize:14,color:T.gray500,lineHeight:1.6,maxWidth:400,margin:'0 auto 16px' }}>
+                  Twoja firma trafiła do moderacji. Redakcja WM zweryfikuje wpis w ciągu 1–2 dni roboczych.
+                </p>
+                <div style={{ padding:'12px 18px',background:T.gray50,border:`1px solid ${T.gray200}`,borderRadius:6,maxWidth:380,margin:'0 auto 24px',fontSize:13,color:T.gray600 }}>
+                  🔔 Powiadomimy Cię e-mailem gdy wpis będzie widoczny publicznie.
+                </div>
+                <button onClick={()=>onNavigate('katalog')} style={{ background:T.orange,color:'#fff',border:'none',borderRadius:6,padding:'10px 28px',fontSize:14,fontWeight:700,fontFamily:"'DM Sans',sans-serif",cursor:'pointer' }}>Wróć do katalogu</button>
+              </div>
+            )
           )}
 
           {step < confirmStep && (
@@ -992,50 +1550,21 @@ function Footer() {
 }
 
 /* ─── APP ────────────────────────────────────────────────────────── */
-const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "listVariant": "A"
-}/*EDITMODE-END*/;
-
 function App() {
   const saved = (() => { try { return JSON.parse(localStorage.getItem('wm_katalog')||'{}'); } catch { return {}; }})();
   const [page, setPage] = React.useState(saved.page||'katalog');
   const [pageData, setPageData] = React.useState(saved.pageData||null);
-  const [tweaks, setTweaks] = React.useState({ ...TWEAK_DEFAULTS, ...saved.tweaks });
 
   function navigate(p, data) {
     setPage(p); setPageData(data||null);
-    localStorage.setItem('wm_katalog', JSON.stringify({ page:p, pageData:data||null, tweaks }));
+    localStorage.setItem('wm_katalog', JSON.stringify({ page:p, pageData:data||null }));
     window.scrollTo(0,0);
   }
-
-  // Tweaks panel wiring
-  React.useEffect(() => {
-    const handler = e => {
-      if (e.data?.type === '__activate_edit_mode') document.getElementById('tweaks-panel')?.classList.add('visible');
-      if (e.data?.type === '__deactivate_edit_mode') document.getElementById('tweaks-panel')?.classList.remove('visible');
-    };
-    window.addEventListener('message', handler);
-    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
-
-    function renderTweaks() {
-      const variantEl = document.getElementById('tweak-variant');
-      if (variantEl) {
-        variantEl.innerHTML = '';
-        const btn = document.createElement('button');
-        btn.className = 'tweak-chip active';
-        btn.textContent = 'A — Siatka mieszana';
-        btn.style.cssText = 'font-size:11px;font-weight:600;padding:4px 10px;border-radius:9999px;border:1.5px solid #F05A28;background:#FEF0E9;color:#F05A28;cursor:default;';
-        variantEl.appendChild(btn);
-      }
-    }
-    renderTweaks();
-    return () => window.removeEventListener('message', handler);
-  }, [tweaks]);
 
   return (
     <div style={{ display:'flex',flexDirection:'column',minHeight:'100vh' }}>
       <WmNav onNavigate={navigate} currentPage={page}/>
-      {page==='katalog' && <KatalogHome onNavigate={navigate} listVariant={tweaks.listVariant}/>}
+      {page==='katalog' && <KatalogHome onNavigate={navigate}/>}
       {page==='company' && <CompanyProfile company={pageData} onNavigate={navigate}/>}
       {page==='pakiety' && <PakietyPage onNavigate={navigate}/>}
       {page==='add' && <AddCompanyForm onNavigate={navigate} initPkg={pageData?.pkg}/>}
