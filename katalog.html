@@ -49,8 +49,14 @@ a[href^="tel:"], a[href^="mailto:"], a[href^="sms:"] { color: inherit; text-deco
   .kh-hero-text p { font-size: 13px !important; }
 
   /* Search + stats row collapses to grid */
-  .kh-search-row { flex-direction: column !important; gap: 12px !important; }
-  .kh-search-wrap { max-width: none !important; width: 100% !important; }
+  .kh-search-row { flex-direction: column !important; gap: 10px !important; }
+  .kh-search-row .kh-search-wrap {
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+  }
+  .kh-search-row .kh-search-wrap > div { max-width: none !important; }
 
   .kh-stats {
     width: 100%;
@@ -1048,16 +1054,13 @@ function CompanyProfile({ company, onNavigate }) {
             box-sizing: border-box;
           }
 
-          /* Header card stays as a contained card — restore margin, border-radius, full border */
+          /* Header card stays as a contained card — orange border all around, margins on sides */
           .pf-header {
             margin: 0 16px !important;
             width: calc(100% - 32px) !important;
             max-width: calc(100% - 32px) !important;
             border-radius: 10px !important;
-            border-left-width: 1.5px !important;
-            border-right-width: 1.5px !important;
-            border-left-style: solid !important;
-            border-right-style: solid !important;
+            border: 1.5px solid #F05A28 !important;
             box-shadow: 0 1px 3px rgba(0,0,0,0.08) !important;
             padding: 0 !important;
           }
