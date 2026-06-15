@@ -1,0 +1,754 @@
+<!-- Quiz wiedzy o mediach — Wirtualne Media (izolowana ramka) -->
+<iframe
+  title="Quiz wiedzy o mediach"
+  loading="lazy"
+  style="width:100%;border:0;display:block;height:560px"
+  srcdoc="<!DOCTYPE html>
+<html lang=&quot;pl&quot;>
+<head>
+<style data-omelette-injected>html,body{background:transparent}</style><script data-omelette-injected>(()=>{var j=[&quot;https://claude.ai&quot;,&quot;https://preview.claude.ai&quot;];var x=true;var S=30000;var f=3000;document.addEventListener(&quot;DOMContentLoaded&quot;,()=>{const H=window.Babel;const G=&quot;om-src-id&quot;;if(H&amp;&amp;H.registerPlugin&amp;&amp;!(H.availablePlugins&amp;&amp;H.availablePlugins[G])){H.registerPlugin(G,({types:Y})=>({visitor:{JSXOpeningElement(U,Q){const J=U.node;if(J.name&amp;&amp;J.name.type===&quot;JSXMemberExpression&quot;)return;for(let V=0;V<J.attributes.length;V++){const L=J.attributes[V];if(L.type===&quot;JSXAttribute&quot;&amp;&amp;L.name&amp;&amp;L.name.name===&quot;data-om-id&quot;)return}const W=Q.file&amp;&amp;Q.file.opts&amp;&amp;Q.file.opts.filename||&quot;?&quot;;const Z=J.loc&amp;&amp;J.loc.start;const z=`jsx:${W}:${J.start??0}:${Z?Z.line:0}:${Z?Z.column+1:0}`;J.attributes.push(Y.jsxAttribute(Y.jsxIdentifier(&quot;data-om-id&quot;),Y.stringLiteral(z)))}}}))}const k=&quot;om-text-extract&quot;;let A=false;if(x&amp;&amp;H&amp;&amp;H.registerPlugin&amp;&amp;!(H.availablePlugins&amp;&amp;H.availablePlugins[k])){const Y=window.React;if(Y&amp;&amp;Y.useSyncExternalStore&amp;&amp;Y.createElement){A=true;const U={};const Q=new Set;let J=0;window.__omTextO=U;window.__omTextSet=(z)=>{for(const V in z){const L=z[V];if(L==null)delete U[V];else U[V]=L}J++;Q.forEach((V)=>V())};const W=(z)=>{Q.add(z);return()=>Q.delete(z)};const Z=()=>J;window.__OmT=function z(V){Y.useSyncExternalStore(W,Z,Z);return Y.createElement(&quot;span&quot;,{&quot;data-om-text&quot;:V.i,className:&quot;__om-t&quot;},V.i in U?U[V.i]:V.children)};H.registerPlugin(k,({types:z})=>{const V={style:1,script:1,noscript:1,textarea:1,title:1,option:1,text:1,tspan:1,textPath:1};const L={placeholder:1,alt:1,title:1,label:1,&quot;aria-label&quot;:1,&quot;aria-description&quot;:1,&quot;aria-placeholder&quot;:1};const _=($,C)=>z.logicalExpression(&quot;??&quot;,z.memberExpression(z.logicalExpression(&quot;||&quot;,z.memberExpression(z.identifier(&quot;window&quot;),z.identifier(&quot;__omTextO&quot;)),z.objectExpression([])),z.stringLiteral($),true),C);const E=($)=>$.file&amp;&amp;$.file.opts&amp;&amp;$.file.opts.filename||&quot;?&quot;;const B=($)=>$.file&amp;&amp;$.file.code||&quot;&quot;;const b=($,C)=>{const X=(F)=>F&amp;&amp;F.start!=null&amp;&amp;F.end!=null&amp;&amp;(F.type===&quot;StringLiteral&quot;||F.type===&quot;TemplateLiteral&quot;&amp;&amp;F.expressions.length===0)?[F.start,F.end]:null;const N=X(C);if(N)return N;if(C&amp;&amp;C.type===&quot;Identifier&quot;){const F=$.scope.getBinding(C.name);if(F&amp;&amp;F.constant&amp;&amp;F.path.node.type===&quot;VariableDeclarator&quot;){return X(F.path.node.init)}}return null};const M=($,C,X)=>{const N=$.node;let F=false;const w=(K,q)=>{F=true;return z.jsxElement(z.jsxOpeningElement(z.jsxIdentifier(&quot;__OmT&quot;),[z.jsxAttribute(z.jsxIdentifier(&quot;i&quot;),z.stringLiteral(K))],false),z.jsxClosingElement(z.jsxIdentifier(&quot;__OmT&quot;)),[q],false)};const D=N.children.map((K)=>{if(K.type===&quot;JSXText&quot;){if(K.start==null||K.end==null)return K;const q=X.slice(K.start,K.end);const R=q.length-q.trimStart().length;const m=q.length-q.trimEnd().length;if(R+m>=q.length)return K;return w(`txt:${C}:${K.start+R}:${K.end-m}`,K)}if(K.type===&quot;JSXExpressionContainer&quot;){const q=b($,K.expression);if(q)return w(`str:${C}:${q[0]}:${q[1]}`,K)}return K});if(F)N.children=D};return{visitor:{JSXOpeningElement($,C){const X=$.node;const N=E(C);const F={};for(let w=0;w<X.attributes.length;w++){const D=X.attributes[w];if(D.type!==&quot;JSXAttribute&quot;||!D.name)continue;const K=D.name.name;if(!L[K])continue;if(!D.value||D.value.type!==&quot;StringLiteral&quot;)continue;if(D.value.start==null||D.value.end==null)continue;const q=`txt:${N}:${D.value.start}:${D.value.end}`;F[K]=q;D.value=z.jsxExpressionContainer(_(q,z.stringLiteral(D.value.value)))}if(Object.keys(F).length){X.attributes.push(z.jsxAttribute(z.jsxIdentifier(&quot;data-om-text-attrs&quot;),z.stringLiteral(JSON.stringify(F))))}},JSXElement($,C){const X=$.node.openingElement;const N=X&amp;&amp;X.name&amp;&amp;X.name.name;if(N===&quot;__OmT&quot;)return;if(typeof N===&quot;string&quot;&amp;&amp;V[N])return;M($,E(C),B(C))},JSXFragment($,C){M($,E(C),B(C))}}}})}}const u=A?[&quot;transform-react-jsx-source&quot;,G,k]:[&quot;transform-react-jsx-source&quot;,G];document.querySelectorAll('script[type=&quot;text/babel&quot;],script[type=&quot;text/jsx&quot;]').forEach((Y,U)=>{const Q=Y.getAttribute(&quot;data-plugins&quot;)||&quot;&quot;;const J=u.filter((W)=>Q.indexOf(W)<0);if(J.length){Y.setAttribute(&quot;data-plugins&quot;,Q?`${Q},${J.join(&quot;,&quot;)}`:J.join(&quot;,&quot;))}if(!Y.hasAttribute(&quot;data-filename&quot;)){Y.setAttribute(&quot;data-filename&quot;,Y.getAttribute(&quot;src&quot;)||`inline-${U}`)}})});var y=window.parent;if(y&amp;&amp;y!==window){const H=(Q,J)=>{try{y.postMessage({__omelette_log:true,type:Q,data:J},&quot;*&quot;)}catch{}};[&quot;log&quot;,&quot;warn&quot;,&quot;error&quot;].forEach((Q)=>{const J=console[Q];console[Q]=(...W)=>{const Z=W.map((z)=>{try{return typeof z===&quot;object&quot;?JSON.stringify(z):String(z)}catch{try{return String(z)}catch{return&quot;[unstringifiable]&quot;}}}).join(&quot; &quot;);H(Q,Z);J.apply(console,W)}});window.addEventListener(&quot;error&quot;,(Q)=>{const J=Q.target;if(J&amp;&amp;J!==window&amp;&amp;J.tagName){const W=J.src||J.href||&quot;&quot;;H(&quot;resource_error&quot;,`${J.tagName} failed to load: ${W}`)}else{H(&quot;error&quot;,`${Q.message||&quot;Unknown error&quot;} at ${Q.filename||&quot;?&quot;}:${Q.lineno||0}:${Q.colno||0}`)}},true);window.addEventListener(&quot;unhandledrejection&quot;,(Q)=>{const J=Q.reason;const W=J instanceof Error?`${J.message} ${J.stack}`:String(J);H(&quot;error&quot;,`Unhandled rejection: ${W}`)});const G=()=>{try{y.postMessage({type:&quot;omelette:height&quot;,height:document.documentElement.scrollHeight},&quot;*&quot;)}catch{}};if(document.readyState===&quot;complete&quot;)G();else window.addEventListener(&quot;load&quot;,G);if(window.ResizeObserver)new ResizeObserver(G).observe(document.documentElement);const k={};let A=0;window.claude={complete(Q){return new Promise((J,W)=>{if(!j.length){W(new Error(&quot;claude.complete: no parent origin&quot;));return}const Z=`c${++A}`;const z=()=>setTimeout(()=>{delete k[Z];W(new Error(`claude.complete: no data for ${S/1000}s`))},S);const V=z();k[Z]={resolve:J,reject:W,text:&quot;&quot;,t:V,arm:z};try{for(const L of j){y.postMessage({__om_api:true,id:Z,body:Q},L)}}catch(L){clearTimeout(V);delete k[Z];W(L)}})}};const u={};let Y=0;window.omelette={writeFile:(Q,J)=>new Promise((W,Z)=>{if(!j.length){W();return}const z=`f${++Y}`;const V=setTimeout(()=>{delete u[z];W()},f);u[z]={resolve:W,reject:Z,t:V};try{for(const L of j){y.postMessage({__om_file:true,id:z,op:&quot;write&quot;,path:Q,content:J},L)}}catch{clearTimeout(V);delete u[z];W()}})};const U=(Q)=>{try{return JSON.stringify(Q)}catch{return JSON.stringify(String(Q))}};window.addEventListener(&quot;message&quot;,(Q)=>{if(j.indexOf(Q.origin)<0)return;if(Q.source!==y)return;const J=Q.data;if(!J)return;if(J.type===&quot;omelette-preview-refresh&quot;){if(typeof J.token!==&quot;string&quot;||!/^[0-9a-f.-]+(\.(rc|pr-[0-9]+))?(\.[0-9]+\.[0-9a-f]{16})?$/.test(J.token))return;const z=Math.max(1,Math.floor((J.expiresAt||0)-Date.now()/1000));document.cookie=&quot;__Host-omelette-preview=&quot;+J.token+&quot;; Path=/; Secure; SameSite=None; Partitioned; Max-Age=&quot;+z;return}if(J.__om_file_r){const z=u[J.id];if(!z)return;clearTimeout(z.t);delete u[J.id];if(J.ok)z.resolve();else z.reject(new Error(J.error||&quot;write failed&quot;));return}if(J.__om_api_r){const z=k[J.id];if(!z)return;if(J.error!=null){clearTimeout(z.t);delete k[J.id];z.reject(new Error(J.error));return}if(J.chunk!=null){clearTimeout(z.t);z.t=z.arm();z.text+=J.chunk;return}if(J.done){clearTimeout(z.t);delete k[J.id];z.resolve(J.text!=null?J.text:z.text);return}return}if(!J.__om_eval)return;const W=J;const Z=(z)=>{Q.source.postMessage({...z,__om_eval_r:1,id:W.id},Q.origin)};try{const z=(0,eval)(W.code);if(z&amp;&amp;typeof z.then===&quot;function&quot;){z.then((V)=>Z({ok:1,v:U(V)}),(V)=>Z({ok:0,e:String(V)}))}else{Z({ok:1,v:U(z)})}}catch(z){Z({ok:0,e:String(z)})}})}})();
+</script>
+
+
+<meta charset=&quot;UTF-8&quot;>
+<meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;>
+<title>Quiz — Wirtualne Media</title>
+<link rel=&quot;preconnect&quot; href=&quot;https://fonts.googleapis.com&quot;>
+<link rel=&quot;preconnect&quot; href=&quot;https://fonts.gstatic.com&quot; crossorigin>
+<link rel=&quot;stylesheet&quot; href=&quot;https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&amp;display=swap&quot;>
+<style>
+/* ============ Tokens (Wirtualne Media) ============ */
+:root {
+  --navy:        rgb(7, 28, 45);
+  --navy-2:      rgb(9, 44, 72);
+  --brand-600:   rgb(11, 121, 190);
+  --brand-700:   rgb(10, 96, 154);
+  --brand-50:    rgb(241, 248, 254);
+  --accent-600:  rgb(251, 95, 5);
+  --accent-700:  rgb(201, 67, 5);
+  --accent-50:   rgb(255, 247, 236);
+  --accent-100:  rgb(255, 238, 211);
+  --success-600: rgb(5, 150, 105);
+  --success-700: rgb(4, 120, 87);
+  --success-50:  rgb(236, 253, 245);
+  --success-100: rgb(209, 250, 229);
+  --danger-600:  rgb(220, 38, 38);
+  --danger-50:   rgb(254, 242, 242);
+  --danger-100:  rgb(254, 226, 226);
+  --n-50:  rgb(242, 243, 247);
+  --n-100: rgb(243, 244, 246);
+  --n-200: rgb(229, 231, 235);
+  --n-300: rgb(209, 213, 219);
+  --n-400: rgb(156, 163, 175);
+  --n-500: rgb(107, 114, 128);
+  --n-600: rgb(75, 85, 99);
+  --n-700: rgb(55, 65, 81);
+  --n-800: rgb(31, 41, 55);
+  --n-900: rgb(7, 28, 45);
+  --white: #fff;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 9999px;
+  --shadow-lg: 0 12px 24px -6px rgba(16,24,40,.12), 0 4px 8px -4px rgba(16,24,40,.06);
+  --ease: cubic-bezier(.4,0,.2,1);
+  --font: &quot;DM Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, sans-serif;
+}
+
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+
+html, body {
+  font-family: var(--font);
+  color: var(--n-800);
+  background: var(--n-50);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+body {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 24px 16px;
+  min-height: 100vh;
+}
+/* When embedded in an iframe: wrap to content so the frame can self-size */
+html[data-embedded] body { min-height: 0; padding: 0; background: transparent; }
+
+
+/* ============ Shell ============ */
+.quiz {
+  width: 100%;
+  max-width: 680px;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  position: relative;
+}
+
+
+/* Masthead */
+.qhead {
+  background: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  gap: 16px;
+}
+.qhead .brand { display: flex; align-items: center; gap: 12px; }
+.qhead img.logo { height: 40px; display: block; }
+.qhead .tag {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent-600);
+  white-space: nowrap;
+}
+.qhead .divider { width: 1px; height: 20px; background: rgba(255,255,255,.18); }
+.qhead .tagline {
+  font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+  color: rgba(255,255,255,.55); white-space: nowrap;
+}
+
+
+/* Progress */
+.qprogress { height: 4px; background: var(--n-200); position: relative; }
+.qprogress .bar {
+  position: absolute; inset: 0 auto 0 0; height: 100%;
+  background: var(--accent-600); width: 0%;
+  transition: width .4s var(--ease);
+}
+
+
+/* Body */
+.qbody { padding: 32px 36px 36px; }
+
+
+/* ============ Screens / animation ============ */
+.screen { opacity: 1; animation: fade .35s var(--ease); }
+@keyframes fade {
+  from { transform: translateY(10px); }
+  to   { transform: translateY(0); }
+}
+
+
+/* ============ Start screen ============ */
+.kicker {
+  font-size: 12px; font-weight: 600; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--brand-600);
+}
+.start .mark {
+  width: 56px; height: auto; color: var(--accent-600); margin-bottom: 22px; display: block;
+}
+.start h1 {
+  font-size: 34px; line-height: 1.12; font-weight: 600;
+  letter-spacing: -1px; color: var(--n-900); margin: 12px 0 16px;
+  text-wrap: balance;
+}
+.start p.lead {
+  font-size: 16px; line-height: 26px; color: var(--n-600); max-width: 56ch;
+}
+.meta {
+  display: flex; flex-wrap: wrap; gap: 10px 22px; margin: 26px 0 30px;
+}
+.meta .item { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: var(--n-700); }
+.meta .item svg { width: 18px; height: 18px; stroke: var(--accent-600); }
+
+
+/* ============ Buttons ============ */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  font-family: var(--font); font-size: 16px; font-weight: 600; line-height: 1;
+  border: none; border-radius: var(--radius-pill); cursor: pointer;
+  padding: 15px 28px; transition: background .12s var(--ease), transform .12s var(--ease);
+  white-space: nowrap;
+}
+.btn:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(251,95,5,.35); }
+.btn-primary { background: var(--accent-600); color: #fff; }
+.btn-primary:hover { background: var(--accent-700); }
+.btn-primary:active { transform: translateY(1px); }
+.btn-ghost { background: transparent; color: var(--n-700); padding: 15px 18px; }
+.btn-ghost:hover { color: var(--n-900); background: var(--n-100); }
+.btn-secondary { background: var(--n-800); color: #fff; }
+.btn-secondary:hover { background: var(--n-900); }
+.btn .arr { width: 18px; height: 18px; }
+.btn:disabled { opacity: .4; cursor: not-allowed; }
+
+
+/* ============ Question screen ============ */
+.qmeta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.qmeta .count { font-size: 12px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--brand-600); }
+.qmeta .score {
+  font-size: 12px; font-weight: 600; color: var(--n-500);
+  display: flex; align-items: center; gap: 7px;
+}
+.qmeta .score b { color: var(--accent-600); }
+.qtext {
+  font-size: 23px; line-height: 31px; font-weight: 600; letter-spacing: -.4px;
+  color: var(--n-900); margin-bottom: 24px; text-wrap: pretty;
+}
+
+
+.options { display: flex; flex-direction: column; gap: 12px; }
+.opt {
+  display: flex; align-items: center; gap: 16px; width: 100%; text-align: left;
+  background: var(--white); border: 1.5px solid var(--n-200); border-radius: var(--radius-sm);
+  padding: 16px 18px; cursor: pointer; font-family: var(--font);
+  transition: border-color .12s var(--ease), background .12s var(--ease), box-shadow .12s var(--ease);
+  position: relative;
+}
+.opt:hover:not(.locked) { border-color: var(--brand-600); background: var(--brand-50); }
+.opt:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(251,95,5,.30); }
+.opt .letter {
+  flex: 0 0 auto; width: 30px; height: 30px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 600; color: var(--n-600);
+  background: var(--n-100); border: 1.5px solid var(--n-200);
+  transition: all .12s var(--ease);
+}
+.opt:hover:not(.locked) .letter { border-color: var(--brand-600); color: var(--brand-700); }
+.opt .label { font-size: 15.5px; line-height: 22px; font-weight: 500; color: var(--n-800); flex: 1; }
+.opt .icon { flex: 0 0 auto; width: 22px; height: 22px; opacity: 0; transition: opacity .15s var(--ease); }
+
+
+/* locked states */
+.opt.locked { cursor: default; }
+.opt.dim { opacity: .5; }
+.opt.correct { border-color: var(--success-600); background: var(--success-50); }
+.opt.correct .letter { background: var(--success-600); border-color: var(--success-600); color: #fff; }
+.opt.correct .label { color: var(--success-700); font-weight: 600; }
+.opt.correct .icon { opacity: 1; color: var(--success-600); }
+.opt.wrong { border-color: var(--danger-600); background: var(--danger-50); }
+.opt.wrong .letter { background: var(--danger-600); border-color: var(--danger-600); color: #fff; }
+.opt.wrong .label { color: var(--danger-600); }
+.opt.wrong .icon { opacity: 1; color: var(--danger-600); }
+
+
+/* feedback row */
+.feedback {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  margin-top: 24px; padding-top: 22px; border-top: 1px solid var(--n-100);
+  animation: fade .3s var(--ease);
+}
+.feedback .verdict { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 600; }
+.feedback .verdict.ok { color: var(--success-700); }
+.feedback .verdict.no { color: var(--danger-600); }
+.feedback .verdict svg { width: 22px; height: 22px; }
+
+
+/* ============ Result screen ============ */
+.result { text-align: center; }
+.scorewrap { display: flex; flex-direction: column; align-items: center; margin: 6px 0 4px; }
+.ring { position: relative; width: 168px; height: 168px; margin-bottom: 20px; }
+.ring svg { transform: rotate(-90deg); }
+.ring .center {
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+}
+.ring .num { font-size: 44px; font-weight: 600; letter-spacing: -1px; color: var(--n-900); line-height: 1; }
+.ring .num span { font-size: 22px; color: var(--n-400); }
+.ring .pct { font-size: 11px; font-weight: 600; letter-spacing: .3px; text-transform: uppercase; color: var(--accent-600); margin-top: 6px; }
+.result h2 { font-size: 27px; font-weight: 600; letter-spacing: -.5px; color: var(--n-900); margin-bottom: 10px; }
+.result p.sub { font-size: 16px; line-height: 25px; color: var(--n-600); max-width: 46ch; margin: 0 auto 28px; }
+.result .actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+
+/* review */
+.review { margin-top: 34px; text-align: left; border-top: 1px solid var(--n-100); padding-top: 26px; display: none; }
+.review.open { display: block; }
+.review h3 { font-size: 13px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--brand-600); margin-bottom: 18px; }
+.rev-item { padding: 14px 0; border-bottom: 1px solid var(--n-100); }
+.rev-item:last-child { border-bottom: none; }
+.rev-q { font-size: 15px; font-weight: 600; color: var(--n-900); line-height: 22px; display: flex; gap: 10px; }
+.rev-q .n { color: var(--n-400); flex: 0 0 auto; }
+.rev-a { display: flex; align-items: flex-start; gap: 8px; margin: 8px 0 0 26px; font-size: 14px; line-height: 21px; }
+.rev-a svg { width: 17px; height: 17px; flex: 0 0 auto; margin-top: 2px; }
+.rev-a.correct-ans { color: var(--success-700); font-weight: 500; }
+.rev-a.correct-ans svg { color: var(--success-600); }
+.rev-a.your-wrong { color: var(--danger-600); }
+.rev-a.your-wrong svg { color: var(--danger-600); }
+.rev-badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: var(--radius-pill); margin-left: 6px; vertical-align: middle; }
+.rev-badge.ok { background: var(--success-100); color: var(--success-700); }
+.rev-badge.no { background: var(--danger-100); color: var(--danger-600); }
+
+
+/* footer note */
+.qfoot { padding: 14px 24px; background: var(--n-50); border-top: 1px solid var(--n-100); text-align: center; }
+.qfoot span { font-size: 11px; color: var(--n-400); letter-spacing: .3px; }
+.qfoot b { color: var(--n-500); font-weight: 600; }
+
+
+.hint { font-size: 12px; color: var(--n-400); margin-top: 14px; }
+
+
+/* responsive */
+@media (max-width: 560px) {
+  body { padding: 0; align-items: stretch; }
+  .quiz { border-radius: 0; box-shadow: none; min-height: 100vh; }
+  .qbody { padding: 26px 22px 30px; }
+  .start h1 { font-size: 28px; }
+  .qtext { font-size: 20px; line-height: 28px; }
+  .qhead .tagline { display: none; }
+  .feedback { flex-direction: column; align-items: stretch; }
+  .feedback .btn { width: 100%; }
+}
+</style>
+</head>
+<body>
+<div class=&quot;quiz&quot; id=&quot;quiz&quot; role=&quot;region&quot; aria-label=&quot;Quiz wiedzy o mediach&quot;>
+  <div class=&quot;qhead&quot;>
+    <div class=&quot;brand&quot;>
+      <img class=&quot;logo&quot; src=&quot;data:image/png;base64,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&quot; alt=&quot;Wirtualne Media — 25 lat&quot;>
+      <div class=&quot;divider&quot;></div>
+      <span class=&quot;tag&quot;>Quiz</span>
+    </div>
+    <span class=&quot;tagline&quot;>Wiedza o mediach</span>
+  </div>
+  <div class=&quot;qprogress&quot;><div class=&quot;bar&quot; id=&quot;bar&quot;></div></div>
+  <div class=&quot;qbody&quot; id=&quot;screen&quot;></div>
+</div>
+
+
+<script>
+/* Quiz wiedzy o mediach, reklamie i wirtualnych mediach.
+   Źródło: dokument redakcyjny. Imiona autorów pytań usunięte,
+   poprawne odpowiedzi oznaczono polem `correct` (indeks od 0). */
+window.QUIZ_DATA = {
+  title: &quot;Quiz wiedzy o mediach, reklamie i wirtualnych mediach&quot;,
+  intro: &quot;Sprawdź, jak dobrze znasz historię polskich mediów, reklamy i internetu. 25 pytań, jedna poprawna odpowiedź. Po każdym wyborze zobaczysz prawidłowe rozwiązanie.&quot;,
+  questions: [
+    { q: &quot;Kiedy ruszył portal Wirtualne Media?&quot;,
+      a: [&quot;2000 rok&quot;, &quot;2001 rok&quot;, &quot;2002 rok&quot;, &quot;1992 rok&quot;], correct: 1 },
+
+
+    { q: &quot;Jaka była pierwsza nazwa portalu?&quot;,
+      a: [&quot;Wirtualny Świat&quot;, &quot;MojeMedia.pl&quot;, &quot;Omediach.pl&quot;, &quot;Odziennikarzach.pl&quot;], correct: 1 },
+
+
+    { q: &quot;Kiedy ruszył pierwszy portal internetowy w Polsce?&quot;,
+      a: [&quot;1993 rok&quot;, &quot;2000 rok&quot;, &quot;1995 rok&quot;, &quot;1998 rok&quot;], correct: 2 },
+
+
+    { q: &quot;Jaki był pierwszy polski reality show?&quot;,
+      a: [&quot;„Agent”&quot;, &quot;„Big Brother”&quot;, &quot;„Bar”&quot;, &quot;„Ryzykanci”&quot;], correct: 0 },
+
+
+    { q: &quot;Jak nazywał się pierwszy program informacyjny Polsatu?&quot;,
+      a: [&quot;„Raport”&quot;, &quot;„Informacje”&quot;, &quot;„Teleskop”&quot;, &quot;„Słonecznik”&quot;], correct: 1 },
+
+
+    { q: &quot;Kto założył radio RMF FM?&quot;,
+      a: [&quot;Robert Kozyra&quot;, &quot;Zbigniew Benbenek&quot;, &quot;Stanisław Tyczyński&quot;, &quot;Kazimierz Gródek&quot;], correct: 2 },
+
+
+    { q: &quot;Który kabaret reklamował sieć komórkową Plus?&quot;,
+      a: [&quot;Kabaret Moralnego Niepokoju&quot;, &quot;Mumio&quot;, &quot;Neo-Nówka&quot;, &quot;Ani Mru Mru&quot;], correct: 1 },
+
+
+    { q: &quot;Którą markę promowały Serce i Rozum?&quot;,
+      a: [&quot;Era&quot;, &quot;Play&quot;, &quot;Plus&quot;, &quot;Orange&quot;], correct: 3 },
+
+
+    { q: &quot;Przed kim ze strachu trzęsły się galaretki w reklamie Biedronki?&quot;,
+      a: [&quot;Przed ostrym ketchupem&quot;, &quot;Przed ananasem, który „wyszedł z puszki”&quot;, &quot;Przed kwaszonym ogórkiem&quot;, &quot;Przed twardym serem żółtym&quot;], correct: 1 },
+
+
+    { q: &quot;Kto nie pojawił się nigdy w reklamie banku BZ WBK?&quot;,
+      a: [&quot;Danny DeVito&quot;, &quot;Chuck Norris&quot;, &quot;Pelé&quot;, &quot;Brad Pitt&quot;], correct: 3 },
+
+
+    { q: &quot;W którym roku pojawił się przycisk „Lubię to!”?&quot;,
+      a: [&quot;2005 roku&quot;, &quot;2009 roku&quot;, &quot;2012 roku&quot;, &quot;2011 roku&quot;], correct: 1 },
+
+
+    { q: &quot;Jak nazywał się TikTok, zanim został TikTokiem?&quot;,
+      a: [&quot;Gridaly&quot;, &quot;TikTak&quot;, &quot;Douyin&quot;, &quot;Musical.ly&quot;], correct: 3 },
+
+
+    { q: &quot;Czym była medialna marka „n”?&quot;,
+      a: [&quot;Serwisem streamingowym&quot;, &quot;Platformą cyfrową&quot;, &quot;Kanałem telewizyjnym&quot;, &quot;Agencją reklamową&quot;], correct: 1 },
+
+
+    { q: &quot;Uruchomienie jakiego dodatkowego kanału rozważał ojciec Rydzyk?&quot;,
+      a: [&quot;Stacji młodzieżowo-muzycznej&quot;, &quot;Kanału dokumentalnego&quot;, &quot;Kanału transmitującego nabożeństwa i różaniec&quot;, &quot;Stacji filmowo-serialowej&quot;], correct: 0 },
+
+
+    { q: &quot;Który z kanałów telewizyjnych nie wchodził w skład portfolio Polsatu?&quot;,
+      a: [&quot;Polsat Zdrowie i Uroda&quot;, &quot;Polsat Junior&quot;, &quot;Polsat Podróże&quot;, &quot;Polsat Romans&quot;], correct: 2 },
+
+
+    { q: &quot;Dlaczego kanał RTL7 zniknął z polskiego rynku?&quot;,
+      a: [&quot;Z powodu fatalnych wyników oglądalności&quot;, &quot;Został przejęty przez Grupę ITI, wówczas właściciela TVN&quot;, &quot;KRRiT uchyliła koncesję niemieckiemu nadawcy&quot;, &quot;Z powodu późniejszego startu naziemnej telewizji cyfrowej&quot;], correct: 1 },
+
+
+    { q: &quot;Czym są DVB-T2 i HEVC?&quot;,
+      a: [&quot;Systemami emisyjnymi w stacjach telewizyjnych&quot;, &quot;Standardem i kodekiem w naziemnej telewizji cyfrowej&quot;, &quot;Systemami kodowania na satelicie&quot;, &quot;Aplikacjami zmniejszającymi opóźnienie telewizji w streamingu&quot;], correct: 1 },
+
+
+    { q: &quot;Czym są Final Cut Pro i Avid?&quot;,
+      a: [&quot;Programami do montażu w telewizji&quot;, &quot;Systemami stosowanymi w wozach transmisyjnych&quot;, &quot;Aplikacjami AI do wirtualnych studiów telewizyjnych&quot;, &quot;Narzędziami do mierzenia skuteczności reklam telewizyjnych&quot;], correct: 0 },
+
+
+    { q: &quot;Kiedy Google otworzyło oddział w Polsce?&quot;,
+      a: [&quot;2001&quot;, &quot;2003&quot;, &quot;2005&quot;, &quot;2008&quot;], correct: 2 },
+
+
+    { q: &quot;Jak nazywał się dziennik Agory, który wydawany był tylko kilka miesięcy na przełomie 2025 i 2026 roku?&quot;,
+      a: [&quot;„Nowy Dzień”&quot;, &quot;„Metro”&quot;, &quot;„Gazeta Wyborcza Light”&quot;, &quot;„Dzień za dniem”&quot;], correct: 0 },
+
+
+    { q: &quot;Które tytuły nie były wydawane przez tę samą spółkę?&quot;,
+      a: [&quot;„Komputer Świat”, „Newsweek”&quot;, &quot;„Popcorn”, „Dziennik”&quot;, &quot;„Parkiet”, „Przekrój”&quot;, &quot;„Viva!”, „Chwila dla Ciebie”&quot;], correct: 3 },
+
+
+    { q: &quot;Jaki magazyn ekonomiczny zastąpiła polska wersja miesięcznika „Forbes”?&quot;,
+      a: [&quot;„Manager Magazin”&quot;, &quot;„Biznes”&quot;, &quot;„Prestiż”&quot;, &quot;„Profit”&quot;], correct: 3 },
+
+
+    { q: &quot;Kto był pierwszym dyrektorem TVP Sport?&quot;,
+      a: [&quot;Robert Korzeniowski&quot;, &quot;Marek Szkolnikowski&quot;, &quot;Włodzimierz Saranowicz&quot;, &quot;Dariusz Szpakowski&quot;], correct: 0 },
+
+
+    { q: &quot;W jakim filmie z poniższych wystąpił komentator sportowy Mateusz Borek?&quot;,
+      a: [&quot;„Chłopaki nie płaczą”&quot;, &quot;„E=mc²”&quot;, &quot;„Killer”&quot;, &quot;„Poranek Kojota”&quot;], correct: 1 },
+
+
+    { q: &quot;Kto był naczelnym Orange Sport po tym, jak zrezygnował Janusz Basałaj?&quot;,
+      a: [&quot;Mateusz Święcicki&quot;, &quot;Krzysztof Stanowski&quot;, &quot;Kacper Sosnowski&quot;, &quot;Krzysztof Sendecki&quot;], correct: 2 }
+  ]
+};
+
+
+</script>
+<script>
+/* Quiz — Wirtualne Media. Vanilla JS, no dependencies.
+   Screens: start → question (immediate feedback) → result (+ review). */
+(function () {
+  &quot;use strict&quot;;
+
+
+  var DATA = window.QUIZ_DATA;
+  var LETTERS = [&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;, &quot;E&quot;, &quot;F&quot;];
+
+
+  var state = {
+    screen: &quot;start&quot;,   // start | question | result
+    index: 0,          // current question
+    score: 0,
+    answers: [],       // chosen index per question (-1 if none)
+    locked: false      // current question answered
+  };
+
+
+  var screenEl = document.getElementById(&quot;screen&quot;);
+  var barEl = document.getElementById(&quot;bar&quot;);
+  var total = DATA.questions.length;
+
+
+  /* ---------- icons ---------- */
+  function ico(name) {
+    var p = {
+      check: '<path d=&quot;M20 6L9 17l-5-5&quot;/>',
+      x: '<path d=&quot;M18 6L6 18M6 6l12 12&quot;/>',
+      arrow: '<path d=&quot;M5 12h14M13 6l6 6-6 6&quot;/>',
+      reload: '<path d=&quot;M3 12a9 9 0 0 1 15.5-6.2M21 12a9 9 0 0 1-15.5 6.2&quot;/><path d=&quot;M17 4.5V8h-3.5M7 19.5V16h3.5&quot;/>',
+      list: '<path d=&quot;M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01&quot;/>',
+      clock: '<circle cx=&quot;12&quot; cy=&quot;12&quot; r=&quot;9&quot;/><path d=&quot;M12 7v5l3 2&quot;/>',
+      layers: '<path d=&quot;M12 3l9 5-9 5-9-5 9-5z&quot;/><path d=&quot;M3 13l9 5 9-5&quot;/>',
+      target: '<circle cx=&quot;12&quot; cy=&quot;12&quot; r=&quot;9&quot;/><circle cx=&quot;12&quot; cy=&quot;12&quot; r=&quot;1&quot;/>'
+    };
+    return '<svg viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; ' +
+           'stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;>' + p[name] + '</svg>';
+  }
+
+
+  function esc(s) {
+    return String(s).replace(/[&amp;<>&quot;]/g, function (c) {
+      return { &quot;&amp;&quot;: &quot;&amp;amp;&quot;, &quot;<&quot;: &quot;&amp;lt;&quot;, &quot;>&quot;: &quot;&amp;gt;&quot;, '&quot;': &quot;&amp;quot;&quot; }[c];
+    });
+  }
+
+
+  /* ---------- progress ---------- */
+  function setProgress() {
+    var pct = 0;
+    if (state.screen === &quot;question&quot;) pct = (state.index / total) * 100;
+    else if (state.screen === &quot;result&quot;) pct = 100;
+    barEl.style.width = pct + &quot;%&quot;;
+  }
+
+
+  /* ---------- render ---------- */
+  function render() {
+    setProgress();
+    if (state.screen === &quot;start&quot;) renderStart();
+    else if (state.screen === &quot;question&quot;) renderQuestion();
+    else renderResult();
+    postHeight();
+  }
+
+
+  function renderStart() {
+    screenEl.innerHTML =
+      '<div class=&quot;screen start&quot;>' +
+        '<h1>' + esc(DATA.title) + '</h1>' +
+        '<p class=&quot;lead&quot;>' + esc(DATA.intro) + '</p>' +
+        '<div class=&quot;meta&quot;>' +
+          '<div class=&quot;item&quot;>' + ico(&quot;list&quot;) + total + ' pytań</div>' +
+          '<div class=&quot;item&quot;>' + ico(&quot;clock&quot;) + '3–5 min</div>' +
+          '<div class=&quot;item&quot;>' + ico(&quot;target&quot;) + 'Jedna poprawna odpowiedź</div>' +
+        '</div>' +
+        '<button class=&quot;btn btn-primary&quot; id=&quot;startBtn&quot;>Rozpocznij quiz ' +
+          '<span class=&quot;arr&quot;>' + ico(&quot;arrow&quot;) + '</span></button>' +
+        '<p class=&quot;hint&quot;>Po każdym pytaniu od razu zobaczysz prawidłową odpowiedź.</p>' +
+      '</div>';
+    document.getElementById(&quot;startBtn&quot;).addEventListener(&quot;click&quot;, startQuiz);
+  }
+
+
+  function renderQuestion() {
+    var qi = state.index;
+    var q = DATA.questions[qi];
+    var chosen = state.answers[qi];
+    var locked = state.locked;
+    var num = String(qi + 1).padStart(2, &quot;0&quot;);
+    var tot = String(total).padStart(2, &quot;0&quot;);
+
+
+    var opts = q.a.map(function (text, i) {
+      var cls = &quot;opt&quot;;
+      var iconHtml = '<span class=&quot;icon&quot;></span>';
+      if (locked) {
+        cls += &quot; locked&quot;;
+        if (i === q.correct) { cls += &quot; correct&quot;; iconHtml = '<span class=&quot;icon&quot;>' + ico(&quot;check&quot;) + '</span>'; }
+        else if (i === chosen) { cls += &quot; wrong&quot;; iconHtml = '<span class=&quot;icon&quot;>' + ico(&quot;x&quot;) + '</span>'; }
+        else { cls += &quot; dim&quot;; }
+      }
+      return '<button class=&quot;' + cls + '&quot; data-i=&quot;' + i + '&quot;' + (locked ? ' disabled' : '') + '>' +
+               '<span class=&quot;letter&quot;>' + LETTERS[i] + '</span>' +
+               '<span class=&quot;label&quot;>' + esc(text) + '</span>' +
+               iconHtml +
+             '</button>';
+    }).join(&quot;&quot;);
+
+
+    var feedback = &quot;&quot;;
+    if (locked) {
+      var correct = chosen === q.correct;
+      var last = qi === total - 1;
+      var verdict = correct
+        ? '<div class=&quot;verdict ok&quot;>' + ico(&quot;check&quot;) + 'Dobra odpowiedź!</div>'
+        : '<div class=&quot;verdict no&quot;>' + ico(&quot;x&quot;) + 'Niepoprawnie — poprawna jest „' + esc(q.a[q.correct].replace(/^[„&quot;]|[&quot;”]$/g, &quot;&quot;)) + '”</div>';
+      feedback =
+        '<div class=&quot;feedback&quot;>' + verdict +
+          '<button class=&quot;btn btn-primary&quot; id=&quot;nextBtn&quot;>' +
+            (last ? 'Zobacz wynik' : 'Następne pytanie') +
+            ' <span class=&quot;arr&quot;>' + ico(&quot;arrow&quot;) + '</span></button>' +
+        '</div>';
+    }
+
+
+    screenEl.innerHTML =
+      '<div class=&quot;screen&quot; data-screen-label=&quot;Pytanie ' + num + '&quot;>' +
+        '<div class=&quot;qmeta&quot;>' +
+          '<span class=&quot;count&quot;>Pytanie ' + num + ' / ' + tot + '</span>' +
+          '<span class=&quot;score&quot;>Wynik <b>' + state.score + '</b></span>' +
+        '</div>' +
+        '<div class=&quot;qtext&quot;>' + esc(q.q) + '</div>' +
+        '<div class=&quot;options&quot;>' + opts + '</div>' +
+        feedback +
+      '</div>';
+
+
+    if (!locked) {
+      [].forEach.call(screenEl.querySelectorAll(&quot;.opt&quot;), function (btn) {
+        btn.addEventListener(&quot;click&quot;, function () { answer(parseInt(btn.dataset.i, 10)); });
+      });
+    } else {
+      var nb = document.getElementById(&quot;nextBtn&quot;);
+      if (nb) nb.addEventListener(&quot;click&quot;, next);
+    }
+  }
+
+
+  function renderResult() {
+    var pct = Math.round((state.score / total) * 100);
+    var msg = resultMessage(pct);
+
+
+    // ring geometry
+    var r = 76, c = 2 * Math.PI * r, off = c * (1 - state.score / total);
+
+
+    var reviewItems = DATA.questions.map(function (q, i) {
+      var chosen = state.answers[i];
+      var correct = chosen === q.correct;
+      var yourLine = &quot;&quot;;
+      if (!correct &amp;&amp; chosen != null &amp;&amp; chosen >= 0) {
+        yourLine = '<div class=&quot;rev-a your-wrong&quot;>' + ico(&quot;x&quot;) +
+          '<span>Twoja odpowiedź: ' + esc(q.a[chosen]) + '</span></div>';
+      }
+      var badge = correct
+        ? '<span class=&quot;rev-badge ok&quot;>+1</span>'
+        : '<span class=&quot;rev-badge no&quot;>0</span>';
+      return '<div class=&quot;rev-item&quot;>' +
+        '<div class=&quot;rev-q&quot;><span class=&quot;n&quot;>' + (i + 1) + '.</span>' +
+          '<span>' + esc(q.q) + badge + '</span></div>' +
+        '<div class=&quot;rev-a correct-ans&quot;>' + ico(&quot;check&quot;) +
+          '<span>' + esc(q.a[q.correct]) + '</span></div>' +
+        yourLine +
+      '</div>';
+    }).join(&quot;&quot;);
+
+
+    screenEl.innerHTML =
+      '<div class=&quot;screen result&quot;>' +
+        '<div class=&quot;scorewrap&quot;>' +
+          '<div class=&quot;ring&quot;>' +
+            '<svg width=&quot;168&quot; height=&quot;168&quot; viewBox=&quot;0 0 168 168&quot;>' +
+              '<circle cx=&quot;84&quot; cy=&quot;84&quot; r=&quot;' + r + '&quot; fill=&quot;none&quot; stroke=&quot;var(--n-200)&quot; stroke-width=&quot;12&quot;/>' +
+              '<circle cx=&quot;84&quot; cy=&quot;84&quot; r=&quot;' + r + '&quot; fill=&quot;none&quot; stroke=&quot;' + msg.color + '&quot; stroke-width=&quot;12&quot; ' +
+                'stroke-linecap=&quot;round&quot; stroke-dasharray=&quot;' + c + '&quot; stroke-dashoffset=&quot;' + off + '&quot; ' +
+                'id=&quot;ringFill&quot;/>' +
+            '</svg>' +
+            '<div class=&quot;center&quot;>' +
+              '<div class=&quot;num&quot;>' + state.score + '<span>/' + total + '</span></div>' +
+              '<div class=&quot;pct&quot;>' + pct + '% poprawnych</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+        '<h2>' + msg.title + '</h2>' +
+        '<p class=&quot;sub&quot;>' + msg.text + '</p>' +
+        '<div class=&quot;actions&quot;>' +
+          '<button class=&quot;btn btn-secondary&quot; id=&quot;reviewBtn&quot;>' +
+            '<span class=&quot;arr&quot;>' + ico(&quot;list&quot;) + '</span> Przejrzyj odpowiedzi</button>' +
+          '<button class=&quot;btn btn-primary&quot; id=&quot;retryBtn&quot;>' +
+            '<span class=&quot;arr&quot;>' + ico(&quot;reload&quot;) + '</span> Powtórz quiz</button>' +
+        '</div>' +
+        '<div class=&quot;review&quot; id=&quot;review&quot;><h3>Wszystkie pytania i poprawne odpowiedzi</h3>' + reviewItems + '</div>' +
+      '</div>';
+
+
+    // animate ring (enhancement only — resting markup is already filled,
+    // so a throttled/hidden iframe still shows the correct value)
+    var ring = document.getElementById(&quot;ringFill&quot;);
+    if (document.visibilityState === &quot;visible&quot;) {
+      ring.style.strokeDashoffset = c;
+      requestAnimationFrame(function () {
+        ring.style.transition = &quot;stroke-dashoffset 1s var(--ease) .15s&quot;;
+        ring.style.strokeDashoffset = off;
+      });
+    }
+
+
+    document.getElementById(&quot;retryBtn&quot;).addEventListener(&quot;click&quot;, reset);
+    document.getElementById(&quot;reviewBtn&quot;).addEventListener(&quot;click&quot;, function () {
+      var rv = document.getElementById(&quot;review&quot;);
+      rv.classList.toggle(&quot;open&quot;);
+      this.querySelector(&quot;.arr&quot;).nextSibling; // noop
+      postHeight();
+    });
+  }
+
+
+  function resultMessage(pct) {
+    if (pct >= 90) return { title: &quot;Mistrz mediów!&quot;, color: &quot;var(--success-600)&quot;,
+      text: &quot;Imponujący wynik — znasz historię polskich mediów lepiej niż niejeden redaktor.&quot; };
+    if (pct >= 70) return { title: &quot;Świetna wiedza&quot;, color: &quot;var(--success-600)&quot;,
+      text: &quot;Bardzo dobry rezultat. Kilka szczegółów wciąż może Cię zaskoczyć — sprawdź odpowiedzi.&quot; };
+    if (pct >= 50) return { title: &quot;Niezły wynik&quot;, color: &quot;var(--accent-600)&quot;,
+      text: &quot;Solidna podstawa. Przejrzyj poprawne odpowiedzi i popraw się przy kolejnym podejściu.&quot; };
+    if (pct >= 30) return { title: &quot;Jest nad czym popracować&quot;, color: &quot;var(--accent-600)&quot;,
+      text: &quot;Media kryją jeszcze przed Tobą sporo tajemnic. Zobacz prawidłowe odpowiedzi poniżej.&quot; };
+    return { title: &quot;Czas nadrobić zaległości&quot;, color: &quot;var(--danger-600)&quot;,
+      text: &quot;Nie szkodzi — przejrzyj poprawne odpowiedzi i spróbuj ponownie.&quot; };
+  }
+
+
+  /* ---------- actions ---------- */
+  function startQuiz() {
+    state.screen = &quot;question&quot;;
+    state.index = 0;
+    state.score = 0;
+    state.answers = [];
+    state.locked = false;
+    render();
+  }
+
+
+  function answer(i) {
+    if (state.locked) return;
+    state.locked = true;
+    state.answers[state.index] = i;
+    if (i === DATA.questions[state.index].correct) state.score++;
+    render();
+  }
+
+
+  function next() {
+    if (state.index < total - 1) {
+      state.index++;
+      state.locked = false;
+      render();
+    } else {
+      state.screen = &quot;result&quot;;
+      render();
+    }
+  }
+
+
+  function reset() {
+    state.screen = &quot;start&quot;;
+    render();
+  }
+
+
+  /* ---------- keyboard ---------- */
+  document.addEventListener(&quot;keydown&quot;, function (e) {
+    if (state.screen === &quot;question&quot;) {
+      if (!state.locked &amp;&amp; /^[1-4]$/.test(e.key)) {
+        var idx = parseInt(e.key, 10) - 1;
+        if (idx < DATA.questions[state.index].a.length) answer(idx);
+      } else if (state.locked &amp;&amp; (e.key === &quot;Enter&quot; || e.key === &quot; &quot;)) {
+        e.preventDefault(); next();
+      }
+    } else if (state.screen === &quot;start&quot; &amp;&amp; (e.key === &quot;Enter&quot; || e.key === &quot; &quot;)) {
+      e.preventDefault(); startQuiz();
+    }
+  });
+
+
+  /* ---------- iframe auto-height ---------- */
+  function applyHeight() {
+    var quiz = document.querySelector(&quot;.quiz&quot;);
+    var h = quiz ? Math.ceil(quiz.getBoundingClientRect().height) : document.documentElement.scrollHeight;
+    // srcdoc / same-origin embeds: resize our own iframe directly (no host script needed)
+    try { if (window.frameElement) { window.frameElement.style.height = h + &quot;px&quot;; } } catch (e) {}
+    // cross-origin embeds: tell the parent page the height
+    try { window.parent.postMessage({ type: &quot;wm-quiz-height&quot;, height: h }, &quot;*&quot;); } catch (e) {}
+  }
+  function postHeight() {
+    applyHeight();               // immediate (layout is ready after render)
+    setTimeout(applyHeight, 60); // fallback after paint/fonts (fires even when rAF is throttled)
+  }
+  window.addEventListener(&quot;resize&quot;, postHeight);
+  window.addEventListener(&quot;load&quot;, postHeight);
+  if (document.fonts &amp;&amp; document.fonts.ready) { document.fonts.ready.then(postHeight); }
+
+
+  /* ---------- go ---------- */
+  if (window.self !== window.top) {
+    try { document.documentElement.setAttribute(&quot;data-embedded&quot;, &quot;&quot;); } catch (e) {}
+  }
+  render();
+})();
+
+
+</script>
+</body>
+</html>
+"></iframe>
